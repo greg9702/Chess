@@ -4,6 +4,7 @@
 
 #include "Board.h"
 #include "Enums.h"
+#include "Bishop.h"
 
 using namespace std;
 
@@ -30,6 +31,6 @@ int main(){
             cout << "Black to move.\n";
         getline(cin,instruction);
     }
-    cout << "Wyjscie z petli";
+
     return 0;
 }
