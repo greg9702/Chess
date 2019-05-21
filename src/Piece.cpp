@@ -1,7 +1,7 @@
 #include "Piece.h"
 #include "Square.h"
 
-Piece::Piece(color col_, std::shared_ptr<Board> & board_, std::shared_ptr<Square> & square_) {
+Piece::Piece(color col_, Board* board_, Square* square_) {
     /**
      * Constructor
      */

@@ -1,6 +1,6 @@
 #include "Pawn.h"
 
-Pawn::Pawn(color col_, std::shared_ptr<Board> board_, std::shared_ptr<Square> square_) : Piece (col_, board_, square_) {
+Pawn::Pawn(color col_, Board* board_, Square* square_) : Piece (col_, board_, square_) {
     this->type = PAWN;
 }
 
