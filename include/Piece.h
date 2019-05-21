@@ -18,6 +18,8 @@ public:
 	Piece(color col_, Board* board_, Square* square_);
 	~Piece();
 	virtual bool move(char x_, char y_) = 0;
+	color getColor();
+	Piece_type getType();
 };
 
 #endif

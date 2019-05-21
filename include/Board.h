@@ -15,6 +15,7 @@ private:
 	game_state game_s;
 	std::map<std::pair<char, char>, Square> matrix;
 	std::vector<std::string> history;
+	std::vector<Piece *> findPieces(color col,Piece_type typ);
 public:
 	Board();
 	~Board();

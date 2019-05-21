@@ -18,3 +18,11 @@ Piece::~Piece() {
     */
 }
 
+color Piece::getColor() {
+    return this->col;
+}
+
+Piece_type Piece::getType() {
+    return this->type;
+}
+

@@ -34,22 +34,53 @@ bool Board::move(std::string instruction) {
      * @param instruction next move in chess notation
      * @return true if the move was successfully performed, false otherwise
      */
-     // TO DO roszada
+    // TO DO roszada
 
-     assert(instruction.size() > 2);
-     char dest_x, char dest_y
+    if (instruction.size() < 2){
+        return false;
+    }
+    char dest_x; char dest_y;Piece_type figToMove;
     // figure move
     if (isupper(instruction.at(0))){
-        assert(instruction.size()==3);
+        if (instruction.size()!=3)
+            return false;
         dest_x = instruction.at(1);
         dest_y = instruction.at(2);
+        switch(instruction.at(0)){
+            case 'B':
+                figToMove = BISHOP;
+                break;
+            case 'K':
+                figToMove = KING;
+                break;
+            case 'N':
+                figToMove = KNIGHT;
+                break;
+            case 'Q':
+                figToMove = QUEEN;
+                break;
+            case 'R':
+                figToMove = ROOK;
+                break;
+            default:
+                return false;
+        }
      }
-     else{
-        assert(instruction.size()==2);
+    else{
+        if (instruction.size()!=2)
+            return false;
         dest_x = instruction.at(0);
         dest_y = instruction.at(1);
+        figToMove = PAWN;
     }
-
+    std::vector<Piece *> candidatesToMove = this->findPieces(turn,figToMove);
+    for (auto it=candidatesToMove.begin();it!=candidatesToMove.end();++it){
+        if ((*it)->move(dest_x,dest_y)) {
+            history.push_back(instruction);
+            turn = turn == WHITE ? BLACK : WHITE;
+            return true;
+        }
+    }
     return false;
 }
 
@@ -58,7 +89,15 @@ std::string Board::getHistory() {
      * Getter of history
      * @return history of the chess game, using standard chess notation
      */
-    return std::__cxx11::string();
+    std::string formattedHistory = "";
+    for (int i=0;i<history.size();++i){
+        formattedHistory += history[i];
+        formattedHistory += "\t";
+        if (i%2==1){
+            formattedHistory+="\n";
+        }
+    }
+    return formattedHistory;
 }
 
 std::map<std::pair<char, char>, Square> Board::getMatrix() {
@@ -74,5 +113,20 @@ color Board::getTurn() {
      * Getter of turn
      * @return if black or white is about to move
      */
-    return BLACK;
+    return turn;
+}
+
+std::vector<Piece *> Board::findPieces(color col, Piece_type typ) {
+    /**
+     * Searches for every possible type of piece on the whole board
+     * @return vector of suitable pieces
+     */
+    std::vector<Piece *> matching_pieces;
+    for (auto & sq : matrix){
+        Piece * sq_occup = sq.second.getOccupator();
+        if (sq_occup->getColor()==col && sq_occup->getType()==typ){
+            matching_pieces.push_back(sq_occup);
+        }
+    }
+    return std::vector<Piece *>();
 }
