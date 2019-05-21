@@ -1,4 +1,7 @@
-enum figure_type {
+#ifndef PIECE_H
+#define PIECE_H
+
+enum Piece_type {
 		PAWN,
 		ROOK,
 		KNIGHT,
@@ -7,16 +10,18 @@ enum figure_type {
 		KING
 };
 
-class Figure {
+class Piece{
 private:
 	color color;
-	figure_type type;
+	Piece_type type;
 	Board& board;
 	Square& square;
 	virtual bool isCorrect() = 0;
 	virtual bool isPossible() = 0;
 public:
-	Figure();
-	~Figure();
+	Piece();
+	~Piece();
 	virtual bool move(char x_, char y_) = 0;
 }
+
+#endif

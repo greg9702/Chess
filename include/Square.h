@@ -1,14 +1,16 @@
-
-
+#ifndef SQUARE_H
+#define SQUARE_H
 
 class Square {
 private:
 	char x;
 	char y;
-	Figure occupator;
+	Piece occupator;
 public:
-	Square(Figure& figure_, );
+	Square(Piece& Piece_, );
 	Square& getOccupator();
 	void setOccupator(Square& occupator_);
-	
+
 };
+
+#endif

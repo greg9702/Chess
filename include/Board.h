@@ -1,3 +1,6 @@
+#ifndef BOARD_H
+#define BOARD_H
+
 #include <iostream>
 
 enum game_state {
@@ -20,3 +23,5 @@ public:
 	Board();
 	~Board();
 };
+
+#endif
