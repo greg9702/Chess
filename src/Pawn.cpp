@@ -8,14 +8,23 @@ Pawn::~Pawn() {
 
 }
 
-bool Pawn::isCorrect() {
+bool Pawn::isCorrect(int x_, int y_) {
+
     return false;
 }
 
-bool Pawn::isPossible() {
+bool Pawn::isPossible(int x_, int y_) {
     return false;
 }
 
 bool Pawn::move(char x_, char y_) {
-    return false;
+
+    //TODO this is how it will be in final version
+//    if (!(isCorrect(x_, y_)) || !(isPossible(x_, y_))) {
+//        return false;
+//    }
+    // now to test only isCorrect()
+    if (!(isCorrect(x_, y_))) {
+        
+    }
 }
