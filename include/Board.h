@@ -6,17 +6,8 @@
 #include <string>
 #include <vector>
 #include "Square.h"
+#include "Enums.h"
 
-enum game_state {
-	NORMAL,
-	CHECK,
-	CHECK_MATE
-};
-
-enum color {
-	BLACK,
-	WHITE
-};
 
 class Board {
 private:
