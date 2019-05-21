@@ -4,18 +4,19 @@
 class Board;
 class Square;
 
+#include <memory>
 #include "Enums.h"
 
 class Piece{
 protected:
 	color col;
 	Piece_type type;
-	Board* board;
-	Square* square;
+	std::shared_ptr<Board> board;
+	std::shared_ptr<Square> square;
 	virtual bool isCorrect() = 0;
 	virtual bool isPossible() = 0;
 public:
-	Piece(color col_, Board* board_, Square* square_);
+	Piece(color col_, std::shared_ptr<Board> & board_, std::shared_ptr<Square> & square_);
 	~Piece();
 	virtual bool move(char x_, char y_) = 0;
 };
