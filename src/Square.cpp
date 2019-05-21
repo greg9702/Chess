@@ -17,11 +17,13 @@ Square::Square(char x_, char y_) {
     assert((x_ >= (int)'a' && x_ <= (int)'h') || (x_ >= (int)'A' && x_ <= (int)'H'));
     assert(y_ >= (int)'1' && y_ <= (int)'8');
 
+    this->occupator = nullptr;
+
     this->x = x_;
     this->y = y_;
 }
 
-Piece* Square::getOccupator() {
+std::shared_ptr<Piece> Square::getOccupator() {
     /**
      * Return pointer to occupator Piece object
      * @return pointer to piece object if piece stand on this square nullptr otherwise
@@ -30,7 +32,7 @@ Piece* Square::getOccupator() {
     return this->occupator;
 }
 
-void Square::setOccupator(Piece* occupator_) {
+void Square::setOccupator(std::shared_ptr<Piece> occupator_) {
     /**
      * Set occupatr
      * @param pointer to occupator obj //TODO what about nullptr

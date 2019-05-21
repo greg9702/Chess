@@ -31,6 +31,5 @@ int main(){
             cout << "Black to move.\n";
         getline(cin,instruction);
     }
-
     return 0;
 }

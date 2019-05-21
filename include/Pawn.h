@@ -8,7 +8,7 @@ private:
     bool isCorrect() override;
     bool isPossible() override;
 public:
-    Pawn(color col_, Board* board_, Square* square_);
+    Pawn(color col_, std::shared_ptr<Board> board_, std::shared_ptr<Square> square_);
     ~Pawn();
     bool move(char x_, char y_) override ;
 };
