@@ -15,7 +15,7 @@ protected:
 	virtual bool isCorrect() = 0;
 	virtual bool isPossible() = 0;
 public:
-	Piece();
+	Piece(color col_, Board* board_, Square* square_);
 	~Piece();
 	virtual bool move(char x_, char y_) = 0;
 };

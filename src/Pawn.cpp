@@ -1,7 +1,7 @@
 #include "Pawn.h"
 
-Pawn::Pawn() {
-
+Pawn::Pawn(color col_, Board* board_, Square* square_) : Piece (col_, board_, square_) {
+    this->type = PAWN;
 }
 
 Pawn::~Pawn() {

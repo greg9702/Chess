@@ -1,13 +1,13 @@
 #ifndef BOARD_H
 #define BOARD_H
 
+#include <utility>
 #include <iostream>
 #include <map>
 #include <string>
 #include <vector>
 #include "Square.h"
 #include "Enums.h"
-
 
 class Board {
 private:
@@ -21,6 +21,7 @@ public:
 	bool isCheck();
 	bool move(std::string instruction);
     std::string getHistory();
+    color getTurn();
     std::map<std::pair<char,char>,Square> getMatrix();
 };
 

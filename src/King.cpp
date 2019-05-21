@@ -13,8 +13,8 @@ bool King::isCorrect() {
     return false;
 }
 
-King::King() {
-
+King::King(color col_, Board* board_, Square* square_) : Piece (col_, board_, square_) {
+    this->type = KING;
 }
 
 King::~King() {
