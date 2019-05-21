@@ -34,7 +34,7 @@ std::shared_ptr<Piece> Square::getOccupator() {
 
 void Square::setOccupator(std::shared_ptr<Piece> occupator_) {
     /**
-     * Set occupatro
+     * Set occupatr
      * @param pointer to occupator obj //TODO what about nullptr
      */
     this->occupator = occupator_;
