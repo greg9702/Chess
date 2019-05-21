@@ -15,7 +15,6 @@ int main(){
     /*
      * Write moves, emty string ends
      */
-    /*
     Board chessBoard;
     string instruction;
     cout << "White to move.\n";
@@ -32,6 +31,6 @@ int main(){
             cout << "Black to move.\n";
         getline(cin,instruction);
     }
-     */
+
     return 0;
 }

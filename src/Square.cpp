@@ -5,7 +5,7 @@
 #include <Square.h>
 #include <assert.h>
 
-Square::Square(char x_, char y_, Piece* piece_) {
+Square::Square(char x_, char y_) {
     /**
      * Constructor
      * @param x cordinate of board square
@@ -14,10 +14,8 @@ Square::Square(char x_, char y_, Piece* piece_) {
      */
 
     //TODO check crectness of x and y asserts
-    assert(x_ >= (int)'a' && x_ <= (int)'h');
+    assert((x_ >= (int)'a' && x_ <= (int)'h') || (x_ >= (int)'A' && x_ <= (int)'H'));
     assert(y_ >= (int)'1' && y_ <= (int)'8');
-
-    this->occupator = piece_;
 
     this->x = x_;
     this->y = y_;
