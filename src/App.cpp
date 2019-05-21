@@ -19,7 +19,7 @@ int main(){
     string instruction;
     cout << "White to move.\n";
     getline(cin,instruction);
-    while (instruction != ""){
+    while (!instruction.empty()){
         if (chessBoard.move(instruction)){
             cout << chessBoard.getHistory();
         } else{

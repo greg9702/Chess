@@ -5,8 +5,8 @@
 
 class Pawn : public Piece{
 private:
-    bool isCorrect() override;
-    bool isPossible() override;
+    bool isCorrect(int x_, int y_) override;
+    bool isPossible(int x_, int y_) override;
 public:
     Pawn(color col_, Board* board_, Square* square_);
     ~Pawn();
