@@ -1,8 +1,8 @@
 #include "Queen.h"
 
 
-Queen::Queen() {
-
+Queen::Queen(color col_, Board* board_, Square* square_) : Piece(col_, board_, square_) {
+    this->type = QUEEN;
 }
 
 Queen::~Queen() {

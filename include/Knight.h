@@ -8,7 +8,7 @@ private:
     bool isPossible() override;
     bool isCorrect() override;
 public:
-    Knight();
+    Knight(color col_, Board* board_, Square* square_);
     ~Knight();
     bool move(char x_, char y_) override ;
 };
