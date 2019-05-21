@@ -7,7 +7,7 @@ class Square;
 #include "Enums.h"
 
 class Piece{
-private:
+protected:
 	color col;
 	Piece_type type;
 	Board* board;
