@@ -1,8 +1,10 @@
 #ifndef PAWN_H
 #define PAWN_H
 
-class Pawn : public Figure{
+#include "Piece.h"
 
-}
+class Pawn : public Piece{
+
+};
 
 #endif
