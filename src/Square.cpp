@@ -32,7 +32,7 @@ Piece* Square::getOccupator() {
 
 void Square::setOccupator(Piece* occupator_) {
     /**
-     * Set occupatro
+     * Set occupatr
      * @param pointer to occupator obj //TODO what about nullptr
      */
     this->occupator = occupator_;
