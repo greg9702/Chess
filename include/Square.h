@@ -9,10 +9,10 @@ private:
 	char y;
 	Piece* occupator;
 public:
-	Square(char x_, char y_, Piece& Piece_);
-	Square& getOccupator();
-	void setOccupator(Square& occupator_);
-
+	Square(char x_, char y_, Piece* Piece_);
+	~Square();
+	Piece* getOccupator();
+	void setOccupator(Piece* occupator_);
 };
 
 #endif
