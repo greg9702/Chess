@@ -1,7 +1,7 @@
 #include "Knight.h"
 
 
-Knight::Knight(color col_, std::shared_ptr<Board> board_, std::shared_ptr<Square> square_) : Piece(col_, board_, square_){
+Knight::Knight(color col_, Board* board_, Square* square_) : Piece(col_, board_, square_){
     this->type = KNIGHT;
 }
 
