@@ -1,13 +1,15 @@
 #ifndef SQUARE_H
 #define SQUARE_H
 
+#include "Piece.h"
+
 class Square {
 private:
 	char x;
 	char y;
-	Piece occupator;
+	Piece* occupator;
 public:
-	Square(Piece& Piece_, );
+	Square(char x_, char y_, Piece& Piece_);
 	Square& getOccupator();
 	void setOccupator(Square& occupator_);
 

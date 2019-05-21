@@ -1,5 +1,9 @@
-class App {
-// XDD
+#include <iostream>
 
-	// XDDD 2
+class App {
 };
+
+int main(){
+    std::cout << "Hello";
+    return 0;
+}

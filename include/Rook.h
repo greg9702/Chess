@@ -1,8 +1,10 @@
 #ifndef ROOK_H
 #define ROOK_H
 
-class Rook : public Figure{
+#include "Piece.h"
 
-}
+class Rook : public Piece{
+
+};
 
 #endif

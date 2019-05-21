@@ -1,8 +1,10 @@
 #ifndef QUEEN_H
 #define QUEEN_H
 
-class Queen : public Figure{
+#include "Piece.h"
 
-}
+class Queen : public Piece{
+
+};
 
 #endif
