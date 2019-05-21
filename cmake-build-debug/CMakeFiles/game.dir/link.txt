@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/game.dir/src/App.cpp.o CMakeFiles/game.dir/src/Board.cpp.o CMakeFiles/game.dir/src/Piece.cpp.o CMakeFiles/game.dir/src/Square.cpp.o  -o game 
