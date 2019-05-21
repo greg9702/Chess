@@ -1,4 +1,0 @@
-/home/greg9702/Documents/Programs/clion-2019.1.3/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" "/home/greg9702/Documents/Studia/Rok III/Semestr VI/PS/Project/Chess"
--- Configuring done
--- Generating done
--- Build files have been written to: /home/greg9702/Documents/Studia/Rok III/Semestr VI/PS/Project/Chess/cmake-build-debug

@@ -1,3 +1,0 @@
-/home/greg9702/Documents/Studia/Rok III/Semestr VI/PS/Project/Chess/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/greg9702/Documents/Studia/Rok III/Semestr VI/PS/Project/Chess/cmake-build-debug/CMakeFiles/game.dir
-/home/greg9702/Documents/Studia/Rok III/Semestr VI/PS/Project/Chess/cmake-build-debug/CMakeFiles/edit_cache.dir
