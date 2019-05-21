@@ -1,8 +1,10 @@
 #ifndef BISHOP_H
 #define BISHOP_H
 
-class Bishop : public Figure{
+#include "Piece.h"
 
-}
+class Bishop : public Piece{
+
+};
 
 #endif

@@ -1,11 +1,15 @@
 #include <Piece.h>
 
 Piece::Piece() {
-
+    /**
+     * Constructor
+     */
 }
 
 Piece::~Piece() {
-
+    /**
+    * Destructor
+    */
 }
 
 bool Piece::isCorrect() {
@@ -24,7 +28,7 @@ bool Piece::isPossible() {
 }
 
 bool Piece::move(char x_, char y_) {
-	/*
+	/**
 	Move Piece to new position
 	@param first cordinate of board
 	@param second cordinate of board
