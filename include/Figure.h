@@ -1,4 +1,3 @@
-
 enum figure_type {
 		PAWN,
 		ROOK,
@@ -19,5 +18,5 @@ private:
 public:
 	Figure();
 	~Figure();
-	virtual bool move() = 0;
+	virtual bool move(char x_, char y_) = 0;
 }
