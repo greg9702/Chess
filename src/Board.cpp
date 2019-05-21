@@ -44,3 +44,11 @@ std::map<std::pair<char, char>, Square> Board::getMatrix() {
      */
     return std::map<std::pair<char, char>, Square>();
 }
+
+color Board::getTurn() {
+    /**
+     * Getter of turn
+     * @return if black or white is about to move
+     */
+    return BLACK;
+}
