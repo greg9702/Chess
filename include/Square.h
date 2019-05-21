@@ -3,7 +3,7 @@
 
 #include "Piece.h"
 
-class Square {
+class Square { 
 private:
 	char x;
 	char y;
