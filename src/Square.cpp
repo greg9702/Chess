@@ -3,6 +3,7 @@
 //
 
 #include <Square.h>
+#include <assert.h>
 
 Square::Square(char x_, char y_, Piece* piece_) {
     /**
@@ -13,14 +14,13 @@ Square::Square(char x_, char y_, Piece* piece_) {
      */
 
     //TODO check crectness of x and y asserts
+    assert(x_ >= (int)'a' && x_ <= (int)'h');
+    assert(y_ >= (int)'1' && y_ <= (int)'8');
 
-    if (piece_ != nullptr) {
-        this->occupator = piece_;
-    }
+    this->occupator = piece_;
 
     this->x = x_;
     this->y = y_;
-
 }
 
 Piece* Square::getOccupator() {
@@ -29,10 +29,7 @@ Piece* Square::getOccupator() {
      * @return pointer to piece object if piece stand on this square nullptr otherwise
      */
 
-    if (this->occupator != nullptr) {
-        return this->occupator;
-    }
-    return nullptr;
+    return this->occupator;
 }
 
 void Square::setOccupator(Piece* occupator_) {
