@@ -4,6 +4,10 @@ Board::Board() {
     /**
      * Parameterless constructor, initializes table with all pieces
      */
+    char tmp_x = 'a';
+    char tmp_y = '1';
+
+
 }
 
 Board::~Board() {
