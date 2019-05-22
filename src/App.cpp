@@ -11,22 +11,30 @@ using namespace std;
 class App {
 };
 
-int main(){
-    /*
-     * Write moves, emty string ends
-     */
-    Board chessBoard;
-    auto mt = chessBoard.getMatrix();
+void showBoard(Board* chessBoard) {
+
+    auto mt = chessBoard->getMatrix();
     for (auto& x : mt){
         cout << x.first.first << ", " << x.first.second << ": ";
         if (x.second->getOccupator() != nullptr)
             cout << x.second->getOccupator()->getType();
         cout << endl;
     }
+}
+
+int main(){
+    /*
+     * Write moves, emty string ends
+     */
+
+    Board chessBoard;
     string instruction;
     cout << "White to move." << endl;
     getline(cin,instruction);
     while (!instruction.empty()){
+        if (instruction == "0") {
+            showBoard(&chessBoard);
+        }
         if (chessBoard.move(instruction)){
             cout << "History " << chessBoard.getHistory() << endl;
         } else{

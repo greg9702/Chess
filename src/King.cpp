@@ -8,6 +8,9 @@ bool King::isPossible(char x_, char y_) {
         return false;
     }
 
+    if (this->board->getMatrix().at(std::pair<char, char>(x_, y_))->getOccupator() == nullptr) {
+        return true;
+    }
     if (this->board->getMatrix().at(std::pair<char, char>(x_, y_))->getOccupator()->getColor() == this->col) {
         return false;
     }
@@ -19,7 +22,7 @@ bool King::isPossible(char x_, char y_) {
 bool King::isCorrect(char x_, char y_) {
     std::pair<char, char> current_pos = this->square->getCoords();
 
-    if (abs(current_pos.first - x_) > 1 || abs(current_pos.second - y_) > 1 ) {
+    if ((abs(current_pos.first - x_) > 1) || (abs(current_pos.second - y_) > 1) ) {
         return false;
     }
 
