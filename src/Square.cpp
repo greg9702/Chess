@@ -6,55 +6,55 @@
 #include <assert.h>
 
 Square::Square(char x_, char y_) {
-    /**
-     * Constructor
-     * @param x cordinate of board square
-     * @param y corinate of board square
-     * @param Piece object - if piece stand on square, nullptr otherwise
-     */
+  /**
+   * Constructor
+   * @param x cordinate of board square
+   * @param y corinate of board square
+   * @param Piece object - if piece stand on square, nullptr otherwise
+   */
 
-    //TODO check crectness of x and y asserts
-    assert((x_ >= (int)'a' && x_ <= (int)'h') || (x_ >= (int)'A' && x_ <= (int)'H'));
-    assert(y_ >= (int)'1' && y_ <= (int)'8');
+  // TODO check crectness of x and y asserts
+  assert((x_ >= (int)'a' && x_ <= (int)'h') ||
+         (x_ >= (int)'A' && x_ <= (int)'H'));
+  assert(y_ >= (int)'1' && y_ <= (int)'8');
 
-    this->occupator = nullptr;
+  this->occupator = nullptr;
 
-    this->x = x_;
-    this->y = y_;
+  this->x = x_;
+  this->y = y_;
 }
 
-Piece* Square::getOccupator() {
-    /**
-     * Return pointer to occupator Piece object
-     * @return pointer to piece object if piece stand on this square nullptr otherwise
-     */
+Piece *Square::getOccupator() {
+  /**
+   * Return pointer to occupator Piece object
+   * @return pointer to piece object if piece stand on this square nullptr
+   * otherwise
+   */
 
-    return this->occupator;
+  return this->occupator;
 }
 
-void Square::setOccupator(Piece* occupator_) {
-    /**
-     * Set occupatr
-     * @param pointer to occupator obj //TODO what about nullptr
-     */
-    if (this->occupator != nullptr && occupator_ != nullptr){
-        delete this->occupator;
-    }
-    this->occupator = occupator_;
+void Square::setOccupator(Piece *occupator_) {
+  /**
+   * Set occupatr
+   * @param pointer to occupator obj //TODO what about nullptr
+   */
+  if (this->occupator != nullptr && occupator_ != nullptr) {
+    delete this->occupator;
+  }
+  this->occupator = occupator_;
 }
 
 Square::~Square() {
-    /**
-     * Destructor
-     */
+  /**
+   * Destructor
+   */
 }
 
 std::pair<char, char> Square::getCoords() {
-    /**
-     * Return cords x and y of square as pair
-     * @return pair<char, char>
-     */
-    return std::pair<char, char>(this->x, this->y);
-
+  /**
+   * Return cords x and y of square as pair
+   * @return pair<char, char>
+   */
+  return std::pair<char, char>(this->x, this->y);
 }
-

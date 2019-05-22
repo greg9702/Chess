@@ -1,15 +1,31 @@
 #include <cmath>
 #include <iostream>
 #include "Knight.h"
-#include "Square.h"
 #include "Board.h"
+#include "Square.h"
 
-Knight::Knight(color col_, Board* board_, Square* square_) : Piece(col_, board_, square_){
-    this->type = KNIGHT;
+Knight::Knight(color col_, Board *board_, Square *square_)
+    : Piece(col_, board_, square_) {
+  this->type = KNIGHT;
 }
 
-Knight::~Knight() {
+Knight::~Knight() {}
 
+
+bool Knight::isPossible(char x_, char y_) {
+  if (!(isCorrect(x_, y_))) {
+    return false;
+  }
+  std::cout << "Is Correct() passed" << std::endl;
+  if ((this->board->getPieceByCoord(x_, y_) != nullptr) &&
+      (this->board->getMatrix()
+           .at(std::pair<char, char>(x_, y_))
+           ->getOccupator()
+           ->getColor() == this->col)) {
+    return false;
+  }
+
+  return true;
 }
 
 bool Knight::isCorrect(char x_, char y_) {
@@ -21,14 +37,5 @@ bool Knight::isCorrect(char x_, char y_) {
     if (abs(my_x - x_) == 1 && abs(my_y - y_) == 2)
         return true;
     return false;
-}
 
-bool Knight::isPossible(char x_, char y_) {
-    if (!isCorrect(x_, y_))
-        return false;
-    std::cout << "isCorrect() passed.\n";
-    if (this->board->getPieceByCoord(x_, y_) != nullptr &&
-        this->board->getPieceByCoord(x_, y_)->getColor() == this->col)
-        return false;
-    return true;
 }
