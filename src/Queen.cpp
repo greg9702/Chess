@@ -102,7 +102,7 @@ bool Queen::isCorrect(char x_, char y_) {
   std::pair<char, char> current_pos = this->square->getCoords();
 
   if ((x_ == current_pos.first) == (y_ == current_pos.second)) {
-    if (abs((y_ - current_pos.second) != abs(x_ - current_pos.first))) {
+    if (abs(y_ - current_pos.second) != abs(x_ - current_pos.first)) {
       return false;
     }
   }
