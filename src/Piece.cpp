@@ -58,4 +58,5 @@ bool Piece::move(char x_, char y_) {
   return true;
 }
 
-Square *Piece::getSquare() { return square; }
+Square *Piece::getSquare() { return this->square; }
+

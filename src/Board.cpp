@@ -21,46 +21,11 @@ Board::Board() {
     }
   }
   // create pieces
-  piecesOnBoard.push_back(
-      new Rook(WHITE, this, matrix.at(std::make_pair('a', '1'))));
-  piecesOnBoard.push_back(
-      new Knight(WHITE, this, matrix.at(std::make_pair('b', '1'))));
-  piecesOnBoard.push_back(
-      new Bishop(WHITE, this, matrix.at(std::make_pair('c', '1'))));
-  piecesOnBoard.push_back(
-      new Queen(WHITE, this, matrix.at(std::make_pair('d', '1'))));
-  piecesOnBoard.push_back(
-      new King(WHITE, this, matrix.at(std::make_pair('e', '1'))));
-  piecesOnBoard.push_back(
-      new Bishop(WHITE, this, matrix.at(std::make_pair('f', '1'))));
-  piecesOnBoard.push_back(
-      new Knight(WHITE, this, matrix.at(std::make_pair('g', '1'))));
-  piecesOnBoard.push_back(
-      new Rook(WHITE, this, matrix.at(std::make_pair('h', '1'))));
 
   piecesOnBoard.push_back(
-      new Rook(BLACK, this, matrix.at(std::make_pair('a', '8'))));
+      new Pawn(WHITE, this, matrix.at(std::make_pair('a', '5'))));
   piecesOnBoard.push_back(
-      new Knight(BLACK, this, matrix.at(std::make_pair('b', '8'))));
-  piecesOnBoard.push_back(
-      new Bishop(BLACK, this, matrix.at(std::make_pair('c', '8'))));
-  piecesOnBoard.push_back(
-      new Queen(BLACK, this, matrix.at(std::make_pair('d', '8'))));
-  piecesOnBoard.push_back(
-      new King(BLACK, this, matrix.at(std::make_pair('e', '8'))));
-  piecesOnBoard.push_back(
-      new Bishop(BLACK, this, matrix.at(std::make_pair('f', '8'))));
-  piecesOnBoard.push_back(
-      new Knight(BLACK, this, matrix.at(std::make_pair('g', '8'))));
-  piecesOnBoard.push_back(
-      new Rook(BLACK, this, matrix.at(std::make_pair('h', '8'))));
-
-  for (char i = 'a'; i <= 'h'; ++i) {
-    piecesOnBoard.push_back(
-        new Pawn(WHITE, this, matrix.at(std::make_pair(i, '2'))));
-    piecesOnBoard.push_back(
-        new Pawn(BLACK, this, matrix.at(std::make_pair(i, '7'))));
-  }
+      new Pawn(BLACK, this, matrix.at(std::make_pair('h', '5'))));
 }
 
 Board::~Board() {
@@ -69,6 +34,7 @@ Board::~Board() {
    */
   for (auto & it : piecesOnBoard)
     delete it;
+  std::cout << "Board destructor" << std::endl;
   for (auto &mp : matrix) {
     delete mp.second;
   }
@@ -83,67 +49,67 @@ bool Board::isCheck() {
 }
 
 bool Board::move(std::string instruction) {
-  /**
-   * Moves piece like said in the instruction
-   * @param instruction next move in chess notation
-   * @return true if the move was successfully performed, false otherwise
-   */
-  // TODO roszada
-  // TODO konfliktowe sytuacje gdy 2 figury mogą wykonać ten ruch <= done
+    /**
+     * Moves piece like said in the instruction
+     * @param instruction next move in chess notation
+     * @return true if the move was successfully performed, false otherwise
+     */
+    // TODO roszada
+    // TODO konfliktowe sytuacje gdy 2 figury mogą wykonać ten ruch <= done
 
-  if (instruction.size() < 2) {
+    if (instruction.size() < 2) {
+        return false;
+    }
+
+    char dest_x;
+    char dest_y;
+    Piece_type fig_to_move;
+    // figure move
+    if (isupper(instruction.at(0))) {
+        if (instruction.size() != 3)
+            return false;
+        dest_x = instruction.at(1);
+        dest_y = instruction.at(2);
+        switch (instruction.at(0)) {
+            case 'B':
+                fig_to_move = BISHOP;
+                break;
+            case 'K':
+                fig_to_move = KING;
+                break;
+            case 'N':
+                fig_to_move = KNIGHT;
+                break;
+            case 'Q':
+                fig_to_move = QUEEN;
+                break;
+            case 'R':
+                fig_to_move = ROOK;
+                break;
+            default:
+                return false;
+        }
+    } else {
+        if (instruction.size() != 2) {
+            return false;
+        }
+
+        dest_x = instruction.at(0);
+        dest_y = instruction.at(1);
+        fig_to_move = PAWN;
+    }
+    std::vector<Piece *> candidatesToMove = this->findPieces(turn, fig_to_move);
+    for (auto it = candidatesToMove.begin(); it != candidatesToMove.end();
+         ++it) { // auto = std::vector<Piece*>::iterator
+        if ((*it)->move(dest_x, dest_y)) {
+            std::cout << "Figure moved to: " << (*it)->getSquare()->getCoords().first
+                      << (*it)->getSquare()->getCoords().second << std::endl;
+            history.push_back(instruction);
+            turn = turn == WHITE ? BLACK : WHITE;
+            return true;
+        }
+    }
     return false;
-  }
-
-  char dest_x;
-  char dest_y;
-  Piece_type fig_to_move;
-  // figure move
-  if (isupper(instruction.at(0))) {
-    if (instruction.size() != 3)
-      return false;
-    dest_x = instruction.at(1);
-    dest_y = instruction.at(2);
-    switch (instruction.at(0)) {
-    case 'B':
-      fig_to_move = BISHOP;
-      break;
-    case 'K':
-      fig_to_move = KING;
-      break;
-    case 'N':
-      fig_to_move = KNIGHT;
-      break;
-    case 'Q':
-      fig_to_move = QUEEN;
-      break;
-    case 'R':
-      fig_to_move = ROOK;
-      break;
-    default:
-      return false;
-    }
-  } else {
-    if (instruction.size() != 2) {
-      return false;
-    }
-
-    dest_x = instruction.at(0);
-    dest_y = instruction.at(1);
-    fig_to_move = PAWN;
-  }
-  std::vector<Piece *> candidatesToMove = this->findPieces(turn, fig_to_move);
-  for (auto it = candidatesToMove.begin(); it != candidatesToMove.end();
-       ++it) { // auto = std::vector<Piece*>::iterator
-    if ((*it)->move(dest_x, dest_y)) {
-      std::cout << "Figure moved to: " << (*it)->getSquare()->getCoords().first
-                << (*it)->getSquare()->getCoords().second << std::endl;
-      history.push_back(instruction);
-      turn = turn == WHITE ? BLACK : WHITE;
-      return true;
-    }
-  }
-  return false;
 }
 
 std::string Board::getHistory() {
@@ -210,4 +176,8 @@ Piece *Board::getPieceByCoord(char x_, char y_) {
    * @return pointer to Piece on the Square of coordinated x_, y_
    */
   return (this->matrix.at(std::pair<char, char>(x_, y_)))->getOccupator();
+}
+
+void Board::addNewPiece(Piece *new_piece) {
+    this->piecesOnBoard.push_back(new_piece);
 }
