@@ -5,11 +5,11 @@ bool King::move(char x_, char y_) {
     return false;
 }
 
-bool King::isPossible() {
+bool King::isPossible(int x_, int y_) {
     return false;
 }
 
-bool King::isCorrect() {
+bool King::isCorrect(int x_, int y_) {
     return false;
 }
 
@@ -20,4 +20,3 @@ King::King(color col_, Board* board_, Square* square_) : Piece (col_, board_, sq
 King::~King() {
 
 }
-

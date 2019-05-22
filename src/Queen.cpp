@@ -13,10 +13,10 @@ bool Queen::move(char x_, char y_) {
     return false;
 }
 
-bool Queen::isPossible() {
+bool Queen::isPossible(int x_, int y_) {
     return false;
 }
 
-bool Queen::isCorrect() {
+bool Queen::isCorrect(int x_, int y_) {
     return false;
 }
