@@ -15,7 +15,14 @@ int main(){
     /*
      * Write moves, emty string ends
      */
-    /*
+    Board chessBoard;
+    auto mt = chessBoard.getMatrix();
+    for (auto& x : mt){
+        cout << x.first.first << ", " << x.first.second << ": ";
+        if (x.second.getOccupator()!= nullptr)
+            cout << x.second.getOccupator()->getType();
+        cout << endl;
+    }
     string instruction;
     cout << "White to move.\n";
     getline(cin,instruction);
@@ -31,6 +38,5 @@ int main(){
             cout << "Black to move.\n";
         getline(cin,instruction);
     }
-    */
     return 0;
 }

@@ -17,6 +17,8 @@ Square::Square(char x_, char y_) {
     assert((x_ >= (int)'a' && x_ <= (int)'h') || (x_ >= (int)'A' && x_ <= (int)'H'));
     assert(y_ >= (int)'1' && y_ <= (int)'8');
 
+    this->occupator = nullptr;
+
     this->x = x_;
     this->y = y_;
 }

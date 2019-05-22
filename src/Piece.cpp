@@ -18,6 +18,16 @@ Piece::~Piece() {
     */
 }
 
+
+color Piece::getColor() {
+    return this->col;
+}
+
+Piece_type Piece::getType() {
+    return this->type;
+}
+
+
 bool Piece::isCorrect(int x_, int y_) {
 	/**
 	* Ckeck if proposed move is correct for this type of Piece
@@ -41,3 +51,4 @@ bool Piece::move(char x_, char y_) {
 	* @return true if Piece was moved sucesfully false otherwise
 	*/
 }
+
