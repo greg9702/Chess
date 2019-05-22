@@ -126,7 +126,7 @@ std::string Board::getHistory() {
      * @return history of the chess game, using standard chess notation
      */
     std::string formattedHistory = "";
-    for (int i=0;i<history.size();++i){
+    for (int i = 0; i < history.size();++i){
         formattedHistory += history[i];
         formattedHistory += " ";
         if (i%2==1){

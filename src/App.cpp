@@ -13,12 +13,17 @@ class App {
 
 void showBoard(Board* chessBoard) {
 
-    auto mt = chessBoard->getMatrix();
-    for (auto& x : mt){
-        cout << x.first.first << ", " << x.first.second << ": ";
-        if (x.second->getOccupator() != nullptr)
-            cout << x.second->getOccupator()->getType();
-        cout << endl;
+    std::map<std::pair<char, char>, Square*> mt = chessBoard->getMatrix();
+
+    for (char a = '8'; a >= '1'; a--) {
+        for (char b = 'a'; b <= 'h'; b++) {
+            if (mt.at(std::pair<char, char>(b, a))->getOccupator() == nullptr) {
+                std::cout << "x" << " ";
+            } else {
+                std::cout << mt.at(std::pair<char, char>(b, a))->getOccupator()->getType() << " ";
+            }
+        }
+        std::cout << std::endl;
     }
 }
 
@@ -31,10 +36,10 @@ int main(){
     string instruction;
     cout << "White to move." << endl;
     getline(cin,instruction);
+    std::cout << "\033[2J";
+    showBoard(&chessBoard);
     while (!instruction.empty()){
-        if (instruction == "0") {
-            showBoard(&chessBoard);
-        }
+        std::cout << "\033[2J";
         if (chessBoard.move(instruction)){
             cout << "History " << chessBoard.getHistory() << endl;
         } else{
@@ -44,7 +49,11 @@ int main(){
             cout << "White to move." << endl;
         else
             cout << "Black to move." << endl;
+
+
+        showBoard(&chessBoard);
         getline(cin,instruction);
+
     }
     return 0;
 }

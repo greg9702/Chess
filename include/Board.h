@@ -14,7 +14,7 @@ class Board {
 private:
 	color turn;
 	game_state game_s;
-	std::map<std::pair<char, char>, Square *> matrix;
+	std::map<std::pair<char, char>, Square*> matrix;
 	std::vector<Piece *> piecesOnBoard;
 	std::vector<std::string> history;
 	std::vector<Piece *> findPieces(color col,Piece_type typ);
@@ -26,7 +26,7 @@ public:
     std::string getHistory();
     color getTurn();
     Piece* getPieceByCoord(char x_, char y_);
-    std::map<std::pair<char,char>,Square *> getMatrix();
+    std::map<std::pair<char,char>, Square*> getMatrix();
 };
 
 #endif
