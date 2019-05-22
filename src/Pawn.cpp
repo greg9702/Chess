@@ -13,27 +13,40 @@ Pawn::~Pawn() {
 }
 
 bool Pawn::isCorrect(char x_, char y_) {
-
     int my_x = this->square->getCoords().first;
     int my_y = this->square->getCoords().second;
 
     if (abs(x_ - my_x) <= 1){
-       if ((y_ - my_y) == 1)
-           return true;
-       if (((!(this->first_move_made)) && (x_ == my_x) && ((y_ - my_y) == 2)))
-           return true;
+        if (this->col == WHITE){
+           if ((y_ - my_y) == 1)
+               return true;
+           if (((!(this->first_move_made)) && (x_ == my_x) && ((y_ - my_y) == 2)))
+               return true;
+        } else{
+            if (-(y_ - my_y) == 1)
+                return true;
+            if (((!(this->first_move_made)) && (x_ == my_x) && (-(y_ - my_y) == 2)))
+                return true;
+        }
     }
 
     return false;
 }
 
 bool Pawn::isPossible(char x_, char y_) {
+    if (!isCorrect(x_,y_))
+        return false;
     int my_x = this->square->getCoords().first;
     int my_y = this->square->getCoords().second;
 
     //simple move, check if the road is empty
+    char offset;
+    if (this->col == WHITE)
+        offset = 1;
+    else
+        offset = -1;
     if (x_ == my_x){
-        if (this->board->getPieceByCoord(my_x+1,my_y+1))
+        if (my_x+offset >= 'a' && my_x+offset <= 'h' && my_y+offset>='1' && my_y+offset<='8' && this->board->getPieceByCoord(my_x+offset,my_y+offset))
             return false;
         if (this->board->getPieceByCoord(x_,y_) != nullptr)
             return false;
