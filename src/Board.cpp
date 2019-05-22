@@ -142,7 +142,7 @@ std::map<std::pair<char, char>, Square *> Board::getMatrix() {
      * Getter of matrix
      * @return map containing indexes of squares and object Square describing the square
      */
-    return matrix;
+    return this->matrix;
 }
 
 color Board::getTurn() {
@@ -150,7 +150,7 @@ color Board::getTurn() {
      * Getter of turn
      * @return if black or white is about to move
      */
-    return turn;
+    return this->turn;
 }
 
 std::vector<Piece *> Board::findPieces(color col, Piece_type typ) {

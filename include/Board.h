@@ -9,6 +9,7 @@
 #include "Square.h"
 #include "Enums.h"
 
+
 class Board {
 private:
 	color turn;
