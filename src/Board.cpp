@@ -67,6 +67,7 @@ Board::~Board() {
   /**
    * Destructor
    */
+  std::cout << "Board destructor" << std::endl;
   for (auto it = piecesOnBoard.begin(); it != piecesOnBoard.end(); ++it)
     delete *it;
   for (auto &mp : matrix) {
