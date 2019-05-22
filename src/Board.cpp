@@ -21,46 +21,12 @@ Board::Board() {
     }
   }
   // create pieces
-  piecesOnBoard.push_back(
-      new Rook(WHITE, this, matrix.at(std::make_pair('a', '1'))));
-  piecesOnBoard.push_back(
-      new Knight(WHITE, this, matrix.at(std::make_pair('b', '1'))));
-  piecesOnBoard.push_back(
-      new Bishop(WHITE, this, matrix.at(std::make_pair('c', '1'))));
-  piecesOnBoard.push_back(
-      new Queen(WHITE, this, matrix.at(std::make_pair('d', '1'))));
-  piecesOnBoard.push_back(
-      new King(WHITE, this, matrix.at(std::make_pair('e', '1'))));
-  piecesOnBoard.push_back(
-      new Bishop(WHITE, this, matrix.at(std::make_pair('f', '1'))));
-  piecesOnBoard.push_back(
-      new Knight(WHITE, this, matrix.at(std::make_pair('g', '1'))));
-  piecesOnBoard.push_back(
-      new Rook(WHITE, this, matrix.at(std::make_pair('h', '1'))));
 
-  piecesOnBoard.push_back(
-      new Rook(BLACK, this, matrix.at(std::make_pair('a', '8'))));
-  piecesOnBoard.push_back(
-      new Knight(BLACK, this, matrix.at(std::make_pair('b', '8'))));
-  piecesOnBoard.push_back(
-      new Bishop(BLACK, this, matrix.at(std::make_pair('c', '8'))));
-  piecesOnBoard.push_back(
-      new Queen(BLACK, this, matrix.at(std::make_pair('d', '8'))));
-  piecesOnBoard.push_back(
-      new King(BLACK, this, matrix.at(std::make_pair('e', '8'))));
-  piecesOnBoard.push_back(
-      new Bishop(BLACK, this, matrix.at(std::make_pair('f', '8'))));
-  piecesOnBoard.push_back(
-      new Knight(BLACK, this, matrix.at(std::make_pair('g', '8'))));
-  piecesOnBoard.push_back(
-      new Rook(BLACK, this, matrix.at(std::make_pair('h', '8'))));
+    piecesOnBoard.push_back(
+        new Pawn(WHITE, this, matrix.at(std::make_pair('a', '5'))));
+    piecesOnBoard.push_back(
+        new Pawn(BLACK, this, matrix.at(std::make_pair('h', '5'))));
 
-  for (char i = 'a'; i <= 'h'; ++i) {
-    piecesOnBoard.push_back(
-        new Pawn(WHITE, this, matrix.at(std::make_pair(i, '2'))));
-    piecesOnBoard.push_back(
-        new Pawn(BLACK, this, matrix.at(std::make_pair(i, '7'))));
-  }
 }
 
 Board::~Board() {
@@ -95,10 +61,11 @@ bool Board::move(std::string instruction) {
   if (instruction.size() < 2) {
     return false;
   }
-
+  bool castling_request = false;
   char dest_x;
   char dest_y;
   Piece_type fig_to_move;
+
   // figure move
   if (isupper(instruction.at(0))) {
     if (instruction.size() != 3)
@@ -125,14 +92,23 @@ bool Board::move(std::string instruction) {
       return false;
     }
   } else {
-    if (instruction.size() != 2) {
-      return false;
+    if (instruction.size() == 4 ) { // castling notation eg e8=Q
+        if (instruction.at(2) == '=') {
+            std::cout << "Castling" << std::endl;
+            castling_request = true;
+        } else {
+            return false;
+        }
+    } else if (instruction.size() != 2) {
+        std::cout << "XDDD" << std::endl;
+        return false;
     }
 
     dest_x = instruction.at(0);
     dest_y = instruction.at(1);
     fig_to_move = PAWN;
   }
+
   std::vector<Piece *> candidatesToMove = this->findPieces(turn, fig_to_move);
   for (auto it = candidatesToMove.begin(); it != candidatesToMove.end();
        ++it) { // auto = std::vector<Piece*>::iterator
@@ -140,6 +116,33 @@ bool Board::move(std::string instruction) {
       std::cout << "Figure moved to: " << (*it)->getSquare()->getCoords().first
                 << (*it)->getSquare()->getCoords().second << std::endl;
       history.push_back(instruction);
+
+      if (castling_request) {
+          castling_request = false;
+          Piece_type new_type;
+          switch (instruction.at(3)) {
+              case 'N':
+                  new_type = KNIGHT;
+                  break;
+              case 'Q':
+                  new_type = QUEEN;
+                  break;
+              case 'B':
+                  new_type = BISHOP;
+                  break;
+              case 'R':
+                  new_type = ROOK;
+                  break;
+              default:
+                  return false;
+          }
+          // if castling happened and pawn moved to last field, change its type
+          if ((turn == WHITE && (*it)->getSquare()->getCoords().second == '8') || (turn == BLACK && (*it)->getSquare()->getCoords().second == '1')) {
+              (*it)->setType(new_type);
+          }
+          std::cout << "TYPE AFTER CHANGE: " << (*it)->getType() << std::endl;
+      }
+
       turn = turn == WHITE ? BLACK : WHITE;
       return true;
     }
