@@ -13,13 +13,25 @@ class App {
 
 void showBoard(Board* chessBoard) {
 
-    auto mt = chessBoard->getMatrix();
-    for (auto& x : mt){
-        cout << x.first.first << ", " << x.first.second << ": ";
-        if (x.second->getOccupator() != nullptr)
-            cout << x.second->getOccupator()->getType();
-        cout << endl;
+    std::map<std::pair<char, char>, Square*> mt = chessBoard->getMatrix();
+    int i = 8;
+    for (char a = '8'; a >= '1'; a--) {
+        std::cout << i << "| ";
+        i--;
+        for (char b = 'a'; b <= 'h'; b++) {
+            if (mt.at(std::pair<char, char>(b, a))->getOccupator() == nullptr) {
+                std::cout << "-" << " ";
+            } else {
+                std::cout << mt.at(std::pair<char, char>(b, a))->getOccupator()->getType() << " ";
+            }
+        }
+        std::cout << std::endl;
     }
+    std::cout << "   ";
+    for (char a = 'a'; a <= 'h'; a++) {
+        std::cout << a << " ";
+    }
+    std::cout << std::endl;
 }
 
 int main(){
@@ -28,23 +40,26 @@ int main(){
      */
 
     Board chessBoard;
-    string instruction;
-    cout << "White to move." << endl;
-    getline(cin,instruction);
-    while (!instruction.empty()){
-        if (instruction == "0") {
-            showBoard(&chessBoard);
-        }
-        if (chessBoard.move(instruction)){
-            cout << "History " << chessBoard.getHistory() << endl;
-        } else{
-            cout << "Invalid move. Try again.";
-        }
+    string instruction = "";
+    showBoard(&chessBoard);
+
+    while (instruction != "0"){
+
         if (chessBoard.getTurn() == WHITE)
-            cout << "White to move." << endl;
+            cout << "White turn" << endl;
         else
-            cout << "Black to move." << endl;
-        getline(cin,instruction);
+            cout << "Black turn" << endl;
+
+        getline(cin, instruction);
+
+        if (chessBoard.move(instruction)){
+//            cout << "History " << chessBoard.getHistory() << endl;
+        } else{
+            cout << "Invalid move. Try again." << std::endl;
+        }
+
+        showBoard(&chessBoard);
+
     }
     return 0;
 }

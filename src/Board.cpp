@@ -69,12 +69,16 @@ bool Board::move(std::string instruction) {
      * @param instruction next move in chess notation
      * @return true if the move was successfully performed, false otherwise
      */
-    // TO DO roszada
-    // TO DO konfliktowe sytuacje gdy 2 figury mogą wykonać ten ruch
+    // TODO roszada
+    // TODO konfliktowe sytuacje gdy 2 figury mogą wykonać ten ruch <= done
+
     if (instruction.size() < 2){
         return false;
     }
-    char dest_x; char dest_y; Piece_type fig_to_move;
+
+    char dest_x;
+    char dest_y;
+    Piece_type fig_to_move;
     // figure move
     if (isupper(instruction.at(0))){
         if (instruction.size()!=3)
@@ -101,15 +105,17 @@ bool Board::move(std::string instruction) {
                 return false;
         }
      }
-    else{
-        if (instruction.size()!=2)
+    else {
+        if (instruction.size()!=2) {
             return false;
+        }
+
         dest_x = instruction.at(0);
         dest_y = instruction.at(1);
         fig_to_move = PAWN;
     }
-    std::vector<Piece *> candidatesToMove = this->findPieces(turn, fig_to_move );
-    for (auto it=candidatesToMove.begin();it!=candidatesToMove.end();++it){
+    std::vector<Piece*> candidatesToMove = this->findPieces(turn, fig_to_move );
+    for (auto it = candidatesToMove.begin(); it!=candidatesToMove.end() ; ++it){ // auto = std::vector<Piece*>::iterator
         if ((*it)->move(dest_x,dest_y)) {
             std::cout << "Figure moved to: " << (*it)->getSquare()->getCoords().first << (*it)->getSquare()->getCoords().second << std::endl;
             history.push_back(instruction);
@@ -126,7 +132,7 @@ std::string Board::getHistory() {
      * @return history of the chess game, using standard chess notation
      */
     std::string formattedHistory = "";
-    for (int i=0;i<history.size();++i){
+    for (int i = 0; i < history.size();++i){
         formattedHistory += history[i];
         formattedHistory += " ";
         if (i%2==1){
@@ -153,17 +159,23 @@ color Board::getTurn() {
     return this->turn;
 }
 
-std::vector<Piece *> Board::findPieces(color col, Piece_type typ) {
+std::vector<Piece*> Board::findPieces(color col, Piece_type typ) {
     /**
      * Searches for every possible type of piece on the whole board
      * @return vector of suitable pieces
      */
+
     std::vector<Piece *> matching_pieces;
     for (auto & sq : matrix){
         Piece * sq_occup = sq.second->getOccupator();
         if (sq_occup!=nullptr && sq_occup->getColor()==col && sq_occup->getType()==typ){
             matching_pieces.push_back(sq_occup);
         }
+
+    }
+    std::cout << "Candidates: " << std::endl;
+    for (auto &el : matching_pieces) {
+        std::cout << el->getSquare()->getCoords().first << el->getSquare()->getCoords().second << std::endl;
     }
     return matching_pieces;
 }
