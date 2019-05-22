@@ -51,6 +51,9 @@ bool Piece::move(char x_, char y_) {
 	* @param second cordinate of board
 	* @return true if Piece was moved sucesfully false otherwise
 	*/
+    if (x_ < 'a' || x_ > 'h' || y_ < '1' || y_ > '8')
+        return false;
+
     if (!isPossible(x_,y_))
         return false;
     this->square->setOccupator(nullptr);
