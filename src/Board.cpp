@@ -43,7 +43,6 @@ Board::Board() {
     for (char i='1';i<='8';++i)
         piecesOnBoard.push_back(new Pawn(BLACK, this, &matrix.at(std::make_pair('g', i))));
 
-
 }
 
 Board::~Board() {
@@ -69,11 +68,11 @@ bool Board::move(std::string instruction) {
      * @return true if the move was successfully performed, false otherwise
      */
     // TO DO roszada
-
+    // TO DO konfliktowe sytuacje gdy 2 figury mogą wykonać ten ruch
     if (instruction.size() < 2){
         return false;
     }
-    char dest_x; char dest_y;Piece_type figToMove;
+    char dest_x; char dest_y; Piece_type fig_to_move;
     // figure move
     if (isupper(instruction.at(0))){
         if (instruction.size()!=3)
@@ -82,19 +81,19 @@ bool Board::move(std::string instruction) {
         dest_y = instruction.at(2);
         switch(instruction.at(0)){
             case 'B':
-                figToMove = BISHOP;
+                fig_to_move = BISHOP;
                 break;
             case 'K':
-                figToMove = KING;
+                fig_to_move = KING;
                 break;
             case 'N':
-                figToMove = KNIGHT;
+                fig_to_move = KNIGHT;
                 break;
             case 'Q':
-                figToMove = QUEEN;
+                fig_to_move = QUEEN;
                 break;
             case 'R':
-                figToMove = ROOK;
+                fig_to_move = ROOK;
                 break;
             default:
                 return false;
@@ -105,9 +104,9 @@ bool Board::move(std::string instruction) {
             return false;
         dest_x = instruction.at(0);
         dest_y = instruction.at(1);
-        figToMove = PAWN;
+        fig_to_move = PAWN;
     }
-    std::vector<Piece *> candidatesToMove = this->findPieces(turn,figToMove);
+    std::vector<Piece *> candidatesToMove = this->findPieces(turn, fig_to_move );
     for (auto it=candidatesToMove.begin();it!=candidatesToMove.end();++it){
         std::cout << (*it)->getType();
         if ((*it)->move(dest_x,dest_y)) {
@@ -164,4 +163,14 @@ std::vector<Piece *> Board::findPieces(color col, Piece_type typ) {
         }
     }
     return matching_pieces;
+}
+
+Piece *Board::getPieceByCoord(char x_, char y_) {
+    /**
+     * Getter
+     * @param x_ x-coordinate
+     * @param y_ y-coordinate
+     * @return pointer to Piece on the Square of coordinated x_, y_
+     */
+    return (this->matrix.at(std::pair<char,char>(x_,y_))).getOccupator();
 }

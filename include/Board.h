@@ -24,6 +24,7 @@ public:
 	bool move(std::string instruction);
     std::string getHistory();
     color getTurn();
+    Piece* getPieceByCoord(char x_, char y_);
     std::map<std::pair<char,char>,Square> getMatrix();
 };
 

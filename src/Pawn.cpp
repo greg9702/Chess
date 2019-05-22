@@ -2,6 +2,7 @@
 
 Pawn::Pawn(color col_, Board* board_, Square* square_) : Piece (col_, board_, square_) {
     this->type = PAWN;
+    this->first_move_made = false;
 }
 
 Pawn::~Pawn() {
@@ -27,4 +28,11 @@ bool Pawn::move(char x_, char y_) {
     if (!(isCorrect(x_, y_))) {
         
     }
+}
+
+bool Pawn::isStarting() {
+    /**
+     *
+     */
+    return first_move_made;
 }
