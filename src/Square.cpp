@@ -47,6 +47,8 @@ Square::~Square() {
 }
 
 std::pair<char, char> Square::getCoords() {
-    return std::pair<char,char>(this->x,this->y);
+
+    return std::pair<char, char>(this->x, this->y);
+
 }
 

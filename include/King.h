@@ -2,6 +2,8 @@
 #define KING_H
 
 #include "Piece.h"
+#include "Square.h"
+#include "Board.h"
 
 class King : public Piece{
     bool isCorrect(char x_, char y_) override;
