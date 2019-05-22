@@ -67,8 +67,8 @@ Board::~Board() {
   /**
    * Destructor
    */
-  for (auto it = piecesOnBoard.begin(); it != piecesOnBoard.end(); ++it)
-    delete *it;
+  for (auto & it : piecesOnBoard)
+    delete it;
   for (auto &mp : matrix) {
     delete mp.second;
   }
