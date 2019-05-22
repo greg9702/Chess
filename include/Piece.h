@@ -12,12 +12,15 @@ protected:
 	Piece_type type;
 	Board* board;
 	Square* square;
-	virtual bool isCorrect(int x_, int y_) = 0;
-	virtual bool isPossible(int x_, int y_) = 0;
+	virtual bool isCorrect(char x_, char y_) = 0;
+	virtual bool isPossible(char x_, char y_) = 0;
 public:
 	Piece(color col_, Board* board_, Square* square_);
 	~Piece();
-	virtual bool move(char x_, char y_) = 0;
+	virtual bool move(char x_, char y_);
+	color getColor();
+	Piece_type getType();
+	Square * getSquare();
 };
 
 #endif

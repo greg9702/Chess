@@ -1,16 +1,32 @@
+#include "King.h"
+#include <cmath>
 
-#include <King.h>
 
-bool King::move(char x_, char y_) {
-    return false;
+bool King::isPossible(char x_, char y_) {
+
+    if (!isCorrect(x_, y_)) {
+        return false;
+    }
+
+    if (this->board->getMatrix().at(std::pair<char, char>(x_, y_))->getOccupator() == nullptr) {
+        return true;
+    }
+    if (this->board->getMatrix().at(std::pair<char, char>(x_, y_))->getOccupator()->getColor() == this->col) {
+        return false;
+    }
+
+    //TODO check if there is no check
+    return true;
 }
 
-bool King::isPossible() {
-    return false;
-}
+bool King::isCorrect(char x_, char y_) {
+    std::pair<char, char> current_pos = this->square->getCoords();
 
-bool King::isCorrect() {
-    return false;
+    if ((abs(current_pos.first - x_) > 1) || (abs(current_pos.second - y_) > 1) ) {
+        return false;
+    }
+
+    return true;
 }
 
 King::King(color col_, Board* board_, Square* square_) : Piece (col_, board_, square_) {
@@ -20,4 +36,3 @@ King::King(color col_, Board* board_, Square* square_) : Piece (col_, board_, sq
 King::~King() {
 
 }
-

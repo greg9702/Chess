@@ -5,12 +5,14 @@
 
 class Pawn : public Piece{
 private:
-    bool isCorrect(int x_, int y_) override;
-    bool isPossible(int x_, int y_) override;
+    bool isCorrect(char x_, char y_) override;
+    bool isPossible(char x_, char y_) override;
+    bool first_move_made;
 public:
     Pawn(color col_, Board* board_, Square* square_);
     ~Pawn();
     bool move(char x_, char y_) override ;
+    bool isStarting();
 };
 
 #endif

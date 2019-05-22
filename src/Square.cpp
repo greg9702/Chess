@@ -17,6 +17,8 @@ Square::Square(char x_, char y_) {
     assert((x_ >= (int)'a' && x_ <= (int)'h') || (x_ >= (int)'A' && x_ <= (int)'H'));
     assert(y_ >= (int)'1' && y_ <= (int)'8');
 
+    this->occupator = nullptr;
+
     this->x = x_;
     this->y = y_;
 }
@@ -35,6 +37,9 @@ void Square::setOccupator(Piece* occupator_) {
      * Set occupatr
      * @param pointer to occupator obj //TODO what about nullptr
      */
+    if (this->occupator != nullptr && occupator_ != nullptr){
+        delete this->occupator;
+    }
     this->occupator = occupator_;
 }
 
@@ -42,5 +47,11 @@ Square::~Square() {
     /**
      * Destructor
      */
+}
+
+std::pair<char, char> Square::getCoords() {
+
+    return std::pair<char, char>(this->x, this->y);
+
 }
 

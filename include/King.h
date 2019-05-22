@@ -2,15 +2,16 @@
 #define KING_H
 
 #include "Piece.h"
+#include "Square.h"
+#include "Board.h"
 
 class King : public Piece{
-    bool isCorrect() override;
-    bool isPossible() override;
+    bool isCorrect(char x_, char y_) override;
+    bool isPossible(char x_, char y_) override;
 
 public:
     King(color col_, Board* board_, Square* square_);
     ~King();
-    bool move(char x_, char y_) override ;
 
 };
 
