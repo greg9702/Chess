@@ -24,18 +24,18 @@ int main(){
         cout << endl;
     }
     string instruction;
-    cout << "White to move.\n";
+    cout << "White to move." << endl;
     getline(cin,instruction);
     while (!instruction.empty()){
         if (chessBoard.move(instruction)){
-            cout << chessBoard.getHistory();
+            cout << "History " << chessBoard.getHistory() << endl;
         } else{
             cout << "Invalid move. Try again.";
         }
         if (chessBoard.getTurn() == WHITE)
-            cout << "White to move.\n";
+            cout << "White to move." << endl;
         else
-            cout << "Black to move.\n";
+            cout << "Black to move." << endl;
         getline(cin,instruction);
     }
     return 0;

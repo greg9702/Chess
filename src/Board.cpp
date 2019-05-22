@@ -111,7 +111,7 @@ bool Board::move(std::string instruction) {
     std::vector<Piece *> candidatesToMove = this->findPieces(turn, fig_to_move );
     for (auto it=candidatesToMove.begin();it!=candidatesToMove.end();++it){
         if ((*it)->move(dest_x,dest_y)) {
-            std::cout << (*it)->getSquare()->getCoords().first << ", " << (*it)->getSquare()->getCoords().second << std::endl;
+            std::cout << "Figure moved to: " << (*it)->getSquare()->getCoords().first << (*it)->getSquare()->getCoords().second << std::endl;
             history.push_back(instruction);
             turn = turn == WHITE ? BLACK : WHITE;
             return true;
@@ -128,7 +128,7 @@ std::string Board::getHistory() {
     std::string formattedHistory = "";
     for (int i=0;i<history.size();++i){
         formattedHistory += history[i];
-        formattedHistory += "\t";
+        formattedHistory += " ";
         if (i%2==1){
             formattedHistory+="\n";
         }

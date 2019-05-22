@@ -56,7 +56,8 @@ bool Piece::move(char x_, char y_) {
 
     if (!isPossible(x_,y_))
         return false;
-    std::cout << this->getSquare()->getCoords().first << ", " << this->getSquare()->getCoords().second << std::endl;
+
+    std::cout << "Figure to move: " << this->getSquare()->getCoords().first << this->getSquare()->getCoords().second << std::endl;
     this->square->setOccupator(nullptr);
     this->square = board->getMatrix().at(std::pair<char,char>(x_,y_));
     this->square->setOccupator(this);
