@@ -19,8 +19,8 @@ int main(){
     auto mt = chessBoard.getMatrix();
     for (auto& x : mt){
         cout << x.first.first << ", " << x.first.second << ": ";
-        if (x.second.getOccupator()!= nullptr)
-            cout << x.second.getOccupator()->getType();
+        if (x.second->getOccupator() != nullptr)
+            cout << x.second->getOccupator()->getType();
         cout << endl;
     }
     string instruction;
