@@ -13,6 +13,7 @@ Pawn::~Pawn() {
 }
 
 bool Pawn::isCorrect(char x_, char y_) {
+
     int my_x = this->square->getCoords().first;
     int my_y = this->square->getCoords().second;
 
@@ -22,6 +23,7 @@ bool Pawn::isCorrect(char x_, char y_) {
        if (((!(this->first_move_made)) && (x_ == my_x) && ((y_ - my_y) == 2)))
            return true;
     }
+
     return false;
 }
 
