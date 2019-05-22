@@ -1,5 +1,6 @@
 #include "Piece.h"
 #include "Square.h"
+#include "Board.h"
 
 Piece::Piece(color col_, Board* board_, Square* square_) {
     /**
@@ -50,5 +51,11 @@ bool Piece::move(char x_, char y_) {
 	* @param second cordinate of board
 	* @return true if Piece was moved sucesfully false otherwise
 	*/
+    if (!isPossible(x_,y_))
+        return false;
+    this->square->setOccupator(nullptr);
+    this->square = board->getMatrix().at(std::pair<char,char>(x_,y_));
+    this->square->setOccupator(this);
+    return true;
 }
 

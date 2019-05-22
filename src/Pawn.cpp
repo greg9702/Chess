@@ -19,7 +19,7 @@ bool Pawn::isPossible(char x_, char y_) {
 }
 
 bool Pawn::move(char x_, char y_) {
-
+    return Piece::move(x_,y_);
     //TODO this is how it will be in final version
 //    if (!(isCorrect(x_, y_)) || !(isPossible(x_, y_))) {
 //        return false;

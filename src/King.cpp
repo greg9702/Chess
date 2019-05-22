@@ -1,11 +1,4 @@
-
 #include <King.h>
-
-bool King::move(char x_, char y_) {
-
-
-    return false;
-}
 
 bool King::isPossible(char x_, char y_) {
     return false;

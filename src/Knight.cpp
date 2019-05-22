@@ -16,7 +16,3 @@ bool Knight::isPossible(char x_, char y__) {
 bool Knight::isCorrect(char x_, char y_) {
     return false;
 }
-
-bool Knight::move(char x_, char y_) {
-    return false;
-}

@@ -9,7 +9,6 @@ class Queen : public Piece{
 public:
     Queen(color col_, Board* board_, Square* square_);
     ~Queen();
-    bool move(char x_, char y_) override;
 };
 
 #endif
