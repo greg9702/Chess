@@ -33,8 +33,8 @@ bool Rook::isPossible(char x_, char y_) {
     //vertical movement
     if (y_ == this->square->getCoords().second){
         char target = this->square->getCoords().first;
-        char beg = target > y_ ? y_+1 : target+1;
-        char fin = target > y_ ? target-1 : beg-1;
+        char beg = target > x_ ? x_+1 : target+1;
+        char fin = target > x_ ? target-1 : beg-1;
         for (char i = beg; i<fin; ++i){
             if (this->board->getPieceByCoord(i,y_) != nullptr)
                 return false;
