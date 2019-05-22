@@ -36,6 +36,7 @@ bool Pawn::isCorrect(char x_, char y_) {
 bool Pawn::isPossible(char x_, char y_) {
     if (!isCorrect(x_,y_))
         return false;
+    std::cout << "Correct passed.\n";
     int my_x = this->square->getCoords().first;
     int my_y = this->square->getCoords().second;
 
@@ -52,7 +53,7 @@ bool Pawn::isPossible(char x_, char y_) {
             return false;
     }
     else{
-        if (this->board->getPieceByCoord(x_,y_) == nullptr || this->board->getPieceByCoord(x_,y_)->getColor() == type)
+        if (this->board->getPieceByCoord(x_,y_) == nullptr || this->board->getPieceByCoord(x_,y_)->getColor() == col)
             return false;
     }
     return true;
