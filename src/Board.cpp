@@ -21,28 +21,27 @@ Board::Board() {
     }
     // create pieces
     piecesOnBoard.push_back(new Rook(WHITE, this, matrix.at(std::make_pair('a', '1'))));
-    piecesOnBoard.push_back(new Knight(WHITE, this, matrix.at(std::make_pair('a', '2'))));
-    piecesOnBoard.push_back(new Bishop(WHITE, this, matrix.at(std::make_pair('a', '3'))));
-    piecesOnBoard.push_back(new Queen(WHITE, this, matrix.at(std::make_pair('a', '4'))));
-    piecesOnBoard.push_back(new King(WHITE, this, matrix.at(std::make_pair('a', '5'))));
-    piecesOnBoard.push_back(new Bishop(WHITE, this, matrix.at(std::make_pair('a', '6'))));
-    piecesOnBoard.push_back(new Knight(WHITE, this, matrix.at(std::make_pair('a', '7'))));
-    piecesOnBoard.push_back(new Rook(WHITE, this, matrix.at(std::make_pair('a', '8'))));
+    piecesOnBoard.push_back(new Knight(WHITE, this, matrix.at(std::make_pair('b', '1'))));
+    piecesOnBoard.push_back(new Bishop(WHITE, this, matrix.at(std::make_pair('c', '1'))));
+    piecesOnBoard.push_back(new Queen(WHITE, this, matrix.at(std::make_pair('d', '1'))));
+    piecesOnBoard.push_back(new King(WHITE, this, matrix.at(std::make_pair('e', '1'))));
+    piecesOnBoard.push_back(new Bishop(WHITE, this, matrix.at(std::make_pair('f', '1'))));
+    piecesOnBoard.push_back(new Knight(WHITE, this, matrix.at(std::make_pair('g', '1'))));
+    piecesOnBoard.push_back(new Rook(WHITE, this, matrix.at(std::make_pair('h', '1'))));
 
-    piecesOnBoard.push_back(new Rook(BLACK, this, matrix.at(std::make_pair('h', '1'))));
-    piecesOnBoard.push_back(new Knight(BLACK, this, matrix.at(std::make_pair('h', '2'))));
-    piecesOnBoard.push_back(new Bishop(BLACK, this, matrix.at(std::make_pair('h', '3'))));
-    piecesOnBoard.push_back(new Queen(BLACK, this, matrix.at(std::make_pair('h', '4'))));
-    piecesOnBoard.push_back(new King(BLACK, this, matrix.at(std::make_pair('h', '5'))));
-    piecesOnBoard.push_back(new Bishop(BLACK, this, matrix.at(std::make_pair('h', '6'))));
-    piecesOnBoard.push_back(new Knight(BLACK, this, matrix.at(std::make_pair('h', '7'))));
+    piecesOnBoard.push_back(new Rook(BLACK, this, matrix.at(std::make_pair('a', '8'))));
+    piecesOnBoard.push_back(new Knight(BLACK, this, matrix.at(std::make_pair('b', '8'))));
+    piecesOnBoard.push_back(new Bishop(BLACK, this, matrix.at(std::make_pair('c', '8'))));
+    piecesOnBoard.push_back(new Queen(BLACK, this, matrix.at(std::make_pair('d', '8'))));
+    piecesOnBoard.push_back(new King(BLACK, this, matrix.at(std::make_pair('e', '8'))));
+    piecesOnBoard.push_back(new Bishop(BLACK, this, matrix.at(std::make_pair('f', '8'))));
+    piecesOnBoard.push_back(new Knight(BLACK, this, matrix.at(std::make_pair('g', '8'))));
     piecesOnBoard.push_back(new Rook(BLACK, this, matrix.at(std::make_pair('h', '8'))));
 
-    for (char i='1';i<='8';++i)
-        piecesOnBoard.push_back(new Pawn(WHITE, this, matrix.at(std::make_pair('b', i))));
-    for (char i='1';i<='8';++i)
-        piecesOnBoard.push_back(new Pawn(BLACK, this, matrix.at(std::make_pair('g', i))));
-
+    for (char i='a';i<='h';++i) {
+        piecesOnBoard.push_back(new Pawn(WHITE, this, matrix.at(std::make_pair(i, '2'))));
+        piecesOnBoard.push_back(new Pawn(BLACK, this, matrix.at(std::make_pair(i, '7'))));
+    }
 }
 
 Board::~Board() {
@@ -111,10 +110,10 @@ bool Board::move(std::string instruction) {
     }
     std::vector<Piece *> candidatesToMove = this->findPieces(turn, fig_to_move );
     for (auto it=candidatesToMove.begin();it!=candidatesToMove.end();++it){
-        std::cout << (*it)->getType();
         if ((*it)->move(dest_x,dest_y)) {
+            std::cout << (*it)->getSquare()->getCoords().first << ", " << (*it)->getSquare()->getCoords().second << std::endl;
             history.push_back(instruction);
-            turn = turn == WHITE ? BLACK : WHITE;
+            //turn = turn == WHITE ? BLACK : WHITE;
             return true;
         }
     }

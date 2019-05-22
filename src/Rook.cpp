@@ -21,7 +21,6 @@ bool Rook::isPossible(char x_, char y_) {
        return false;
     //horizontal movement
     if (x_ == this->square->getCoords().first){
-        std::cout << "XD";
         char target = this->square->getCoords().second;
         // beg, fin - range of squares to check if there is something
         char beg = target > y_ ? y_+1 : target+1;
