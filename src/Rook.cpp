@@ -23,7 +23,7 @@ bool Rook::isPossible(char x_, char y_) {
 
     if (this->board->getPieceByCoord(x_,y_) != nullptr && this->board->getPieceByCoord(x_,y_)->getColor() == this->col)
        return false;
-    //horizontal movement
+    //vertical movement
     if (x_ == this->square->getCoords().first){
         char target = this->square->getCoords().second;
         // beg, fin - range of squares to check if there is something
@@ -36,11 +36,11 @@ bool Rook::isPossible(char x_, char y_) {
         }
     }
   
-  // vertical movement
+  // horizontal movement
   if (y_ == this->square->getCoords().second) {
     char target = this->square->getCoords().first;
     char beg = target > x_ ? x_ + 1 : target + 1;
-    char fin = target > x_ ? target - 1 : x_ - 1;
+    char fin = target > x_ ? target : x_;
     for (char i = beg; i < fin; ++i) {
       if (this->board->getPieceByCoord(i, y_) != nullptr)
         return false;

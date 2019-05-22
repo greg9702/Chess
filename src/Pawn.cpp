@@ -46,9 +46,9 @@ bool Pawn::isPossible(char x_, char y_) {
   else
     offset = -1;
   if (x_ == my_x) {
-    if (my_x + offset >= 'a' && my_x + offset <= 'h' && my_y + offset >= '1' &&
+    if (my_y + offset >= '1' &&
         my_y + offset <= '8' &&
-        this->board->getPieceByCoord(my_x + offset, my_y + offset))
+        this->board->getPieceByCoord(my_x, my_y + offset))
       return false;
     if (this->board->getPieceByCoord(x_, y_) != nullptr)
       return false;
