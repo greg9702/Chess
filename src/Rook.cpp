@@ -16,6 +16,9 @@ bool Rook::isPossible(char x_, char y_) {
     return false;
 }
 
-bool Rook::move(char x, char y_) {
-    return false;
+bool Rook::move(char x_, char y_) {
+    if (!isPossible(x_,y_))
+        return false;
+    //board->
+    return true;
 }
