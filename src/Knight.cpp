@@ -9,11 +9,11 @@ Knight::~Knight() {
 
 }
 
-bool Knight::isPossible(int x_, int y_) {
+bool Knight::isPossible(char x_, char y__) {
     return false;
 }
 
-bool Knight::isCorrect(int x_, int y_) {
+bool Knight::isCorrect(char x_, char y_) {
     return false;
 }
 

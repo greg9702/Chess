@@ -2,14 +2,16 @@
 #include <King.h>
 
 bool King::move(char x_, char y_) {
+
+
     return false;
 }
 
-bool King::isPossible(int x_, int y_) {
+bool King::isPossible(char x_, char y_) {
     return false;
 }
 
-bool King::isCorrect(int x_, int y_) {
+bool King::isCorrect(char x_, char y_) {
     return false;
 }
 

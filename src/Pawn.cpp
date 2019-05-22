@@ -9,12 +9,12 @@ Pawn::~Pawn() {
 
 }
 
-bool Pawn::isCorrect(int x_, int y_) {
+bool Pawn::isCorrect(char x_, char y_) {
 
     return false;
 }
 
-bool Pawn::isPossible(int x_, int y_) {
+bool Pawn::isPossible(char x_, char y_) {
     return false;
 }
 

@@ -8,11 +8,11 @@ Rook::~Rook() {
 
 }
 
-bool Rook::isCorrect(int x_, int y_) {
+bool Rook::isCorrect(char x_, char y_) {
     return false;
 }
 
-bool Rook::isPossible(int x_, int y_) {
+bool Rook::isPossible(char x_, char y_) {
     return false;
 }
 

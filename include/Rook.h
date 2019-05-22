@@ -5,8 +5,8 @@
 
 class Rook : public Piece{
 private:
-    bool isCorrect(int x_, int y_) override;
-    bool isPossible(int x_, int y_) override;
+    bool isCorrect(char x_, char y_) override;
+    bool isPossible(char x_, char y_) override;
 public:
     Rook(color col_, Board* board_, Square* square_);
     ~Rook();

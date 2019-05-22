@@ -28,14 +28,14 @@ Piece_type Piece::getType() {
 }
 
 
-bool Piece::isCorrect(int x_, int y_) {
+bool Piece::isCorrect(char x_, char y_) {
 	/**
 	* Ckeck if proposed move is correct for this type of Piece
 	* @return true if is correct false otherwise
 	*/
 }
 
-bool Piece::isPossible(int x_, int y_) {
+bool Piece::isPossible(char x_, char y_) {
 	/**
 	* Ckeck if proposed move is correct
 	* @return true if is move is possible false otherwise

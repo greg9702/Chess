@@ -9,11 +9,11 @@ Bishop::~Bishop() {
 
 }
 
-bool Bishop::isCorrect(int x_, int y_) {
+bool Bishop::isCorrect(char x_, char y_) {
     return false;
 }
 
-bool Bishop::isPossible(int x_, int y_) {
+bool Bishop::isPossible(char x_, char y_) {
     return false;
 }
 

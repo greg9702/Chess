@@ -4,8 +4,8 @@
 #include "Piece.h"
 
 class King : public Piece{
-    bool isCorrect(int x_, int y_) override;
-    bool isPossible(int x_, int y_) override;
+    bool isCorrect(char x_, char y_) override;
+    bool isPossible(char x_, char y_) override;
 
 public:
     King(color col_, Board* board_, Square* square_);
