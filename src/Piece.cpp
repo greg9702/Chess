@@ -23,7 +23,6 @@ color Piece::getColor() { return this->col; }
 
 Piece_type Piece::getType() { return this->type; }
 
-
 bool Piece::isCorrect(char x_, char y_) {
   /**
    * Ckeck if proposed move is correct for this type of Piece
@@ -59,8 +58,5 @@ bool Piece::move(char x_, char y_) {
   return true;
 }
 
-Square* Piece::getSquare() { return this->square; }
+Square *Piece::getSquare() { return this->square; }
 
-void Piece::setType(Piece_type type) {
-    this->type = type;
-}
