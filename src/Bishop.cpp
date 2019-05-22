@@ -16,7 +16,3 @@ bool Bishop::isCorrect(char x_, char y_) {
 bool Bishop::isPossible(char x_, char y_) {
     return false;
 }
-
-bool Bishop::move(char x_, char y_) {
-    return false;
-}
