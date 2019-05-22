@@ -2,6 +2,7 @@
 #define QUEEN_H
 
 #include "Piece.h"
+#include <cmath>
 
 class Queen : public Piece{
     bool isPossible(char x_, char y_) override;

@@ -50,7 +50,10 @@ Square::~Square() {
 }
 
 std::pair<char, char> Square::getCoords() {
-
+    /**
+     * Return cords x and y of square as pair
+     * @return pair<char, char>
+     */
     return std::pair<char, char>(this->x, this->y);
 
 }

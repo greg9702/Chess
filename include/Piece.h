@@ -5,6 +5,7 @@ class Board;
 class Square;
 
 #include "Enums.h"
+#include <iostream>
 
 class Piece{
 protected:
