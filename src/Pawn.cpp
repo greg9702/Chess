@@ -11,6 +11,7 @@ Pawn::~Pawn() {
 
 bool Pawn::isCorrect(char x_, char y_) {
 
+
     return false;
 }
 

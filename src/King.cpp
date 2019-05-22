@@ -8,10 +8,8 @@ bool King::isPossible(char x_, char y_) {
         return false;
     }
 
-    if (board->getMatrix().at(std::pair<char, char>(x_, y_))->getOccupator()->getColor() == this->col) {
+    if (this->board->getMatrix().at(std::pair<char, char>(x_, y_))->getOccupator()->getColor() == this->col) {
         return false;
-    } else {
-        //TODO capture enemy figure
     }
 
     //TODO check if there is no check

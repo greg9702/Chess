@@ -2,6 +2,9 @@
 #define BISHOP_H
 
 #include "Piece.h"
+#include <iostream>
+#include "Square.h"
+#include "Board.h"
 
 class Bishop : public Piece {
 private:
