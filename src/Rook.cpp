@@ -25,7 +25,7 @@ bool Rook::isPossible(char x_, char y_) {
         // beg, fin - range of squares to check if there is something
 //        std::cout << "Target: " << target << " dest: " << y_ << std::endl;
         char beg = target > y_ ? y_+1 : target+1;
-        char fin = target > y_ ? target-1 : y_-1;
+        char fin = target > y_ ? target : y_;
         for (char i = beg; i < fin; ++i){
             if (this->board->getPieceByCoord(x_,i) != nullptr)
                 return false;
