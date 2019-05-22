@@ -113,7 +113,7 @@ bool Board::move(std::string instruction) {
         if ((*it)->move(dest_x,dest_y)) {
             std::cout << (*it)->getSquare()->getCoords().first << ", " << (*it)->getSquare()->getCoords().second << std::endl;
             history.push_back(instruction);
-            //turn = turn == WHITE ? BLACK : WHITE;
+            turn = turn == WHITE ? BLACK : WHITE;
             return true;
         }
     }
@@ -133,6 +133,7 @@ std::string Board::getHistory() {
             formattedHistory+="\n";
         }
     }
+    formattedHistory+= "\n";
     return formattedHistory;
 }
 
