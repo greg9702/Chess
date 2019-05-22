@@ -20,19 +20,22 @@ bool Rook::isPossible(char x_, char y_) {
   if (this->board->getPieceByCoord(x_, y_) != nullptr &&
       this->board->getPieceByCoord(x_, y_)->getColor() == this->col)
     return false;
-  // horizontal movement
-  if (x_ == this->square->getCoords().first) {
-    char target = this->square->getCoords().second;
-    // beg, fin - range of squares to check if there is something
-    std::cout << "Target: " << target << " dest: " << y_ << std::endl;
-    char beg = target > y_ ? y_ + 1 : target + 1;
-    char fin = target > y_ ? target - 1 : y_ - 1;
-    std::cout << "Beg: " << beg << " fin: " << fin << std::endl;
-    for (char i = beg; i < fin; ++i) {
-      if (this->board->getPieceByCoord(x_, i) != nullptr)
-        return false;
+
+    if (this->board->getPieceByCoord(x_,y_) != nullptr && this->board->getPieceByCoord(x_,y_)->getColor() == this->col)
+       return false;
+    //horizontal movement
+    if (x_ == this->square->getCoords().first){
+        char target = this->square->getCoords().second;
+        // beg, fin - range of squares to check if there is something
+//        std::cout << "Target: " << target << " dest: " << y_ << std::endl;
+        char beg = target > y_ ? y_+1 : target+1;
+        char fin = target > y_ ? target : y_;
+        for (char i = beg; i < fin; ++i){
+            if (this->board->getPieceByCoord(x_,i) != nullptr)
+                return false;
+        }
     }
-  }
+  
   // vertical movement
   if (y_ == this->square->getCoords().second) {
     char target = this->square->getCoords().first;
@@ -43,6 +46,5 @@ bool Rook::isPossible(char x_, char y_) {
         return false;
     }
   }
-  // vertical moving
   return true;
 }
