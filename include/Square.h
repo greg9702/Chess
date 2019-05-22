@@ -14,6 +14,7 @@ public:
 	~Square();
 	Piece* getOccupator();
 	void setOccupator(Piece* occupator_);
+    std::pair<char,char> getCoords();
 };
 
 #endif
