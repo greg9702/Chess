@@ -20,6 +20,7 @@ public:
 	virtual bool move(char x_, char y_);
 	color getColor();
 	Piece_type getType();
+	Square * getSquare();
 };
 
 #endif
