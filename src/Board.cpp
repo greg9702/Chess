@@ -64,8 +64,10 @@ bool Board::move(std::string instruction) {
     char dest_x;
     char dest_y;
     Piece_type fig_to_move;
+    special_args add_opt = NONE;
     // figure move
-    if (isupper(instruction.at(0))) {
+    if (isupper(instruction.at(0))) { // SET UP ALL FIGURES MOVE EXCEPT PAWN
+
         if (instruction.size() != 3)
             return false;
         dest_x = instruction.at(1);
@@ -89,8 +91,29 @@ bool Board::move(std::string instruction) {
             default:
                 return false;
         }
-    } else {
-        if (instruction.size() != 2) {
+    } else { // SET UP PAWN MOVE
+
+        if (instruction.size() == 4 && instruction.at(2) == '=') {
+            // PROCESS promotion
+            std::cout << "promotion!" << std::endl;
+            switch (instruction.at(3)) {
+                case 'B':
+                    add_opt = PROM_B;
+                    break;
+                case 'N':
+                    add_opt = PROM_N;
+                    break;
+                case 'Q':
+                    add_opt = PROM_Q;
+                    break;
+                case 'R':
+                    add_opt = PROM_R;
+                    break;
+                default:
+                    return false;
+            }
+        } else if (instruction.size() != 2) {
+            std::cout << "INVALID SIZE OF INSTR" << std::endl;
             return false;
         }
 
@@ -98,10 +121,12 @@ bool Board::move(std::string instruction) {
         dest_y = instruction.at(1);
         fig_to_move = PAWN;
     }
+
+
     std::vector<Piece *> candidatesToMove = this->findPieces(turn, fig_to_move);
     for (auto it = candidatesToMove.begin(); it != candidatesToMove.end();
          ++it) { // auto = std::vector<Piece*>::iterator
-        if ((*it)->move(dest_x, dest_y)) {
+        if ((*it)->move(dest_x, dest_y,add_opt)) {
             std::cout << "Figure moved to: " << (*it)->getSquare()->getCoords().first
                       << (*it)->getSquare()->getCoords().second << std::endl;
             history.push_back(instruction);
