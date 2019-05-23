@@ -21,4 +21,12 @@ enum color {
     WHITE
 };
 
+enum special_args {
+    NONE,
+    PROM_N,
+    PROM_B,
+    PROM_R,
+    PROM_Q
+};
+
 #endif //CHESS_ENUMS_H

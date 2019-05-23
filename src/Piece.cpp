@@ -37,7 +37,7 @@ bool Piece::isPossible(char x_, char y_) {
    */
 }
 
-bool Piece::move(char x_, char y_) {
+bool Piece::move(char x_, char y_,special_args add_opt) {
   /**
    * Move Piece to new position
    * @param first cordinate of board
