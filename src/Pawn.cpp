@@ -9,7 +9,11 @@ Pawn::Pawn(color col_, Board *board_, Square *square_)
   this->first_move_made = false;
 }
 
-Pawn::~Pawn() {}
+Pawn::~Pawn() {
+  std::cout << "Deleted PAWN OF POSITION: "
+            << this->getSquare()->getCoords().first
+            << this->getSquare()->getCoords().second << std::endl;
+}
 
 bool Pawn::isCorrect(char x_, char y_) {
   int my_x = this->square->getCoords().first;
@@ -60,11 +64,11 @@ bool Pawn::isPossible(char x_, char y_) {
 }
 
 bool Pawn::move(char x_, char y_) {
-    if (Piece::move(x_,y_)){
-        this->first_move_made = true;
-        return true;
-    }
-    return false;
+  if (Piece::move(x_, y_)) {
+    this->first_move_made = true;
+    return true;
+  }
+  return false;
   // TODO this is how it will be in final version
   //    if (!(isCorrect(x_, y_)) || !(isPossible(x_, y_))) {
   //        return false;

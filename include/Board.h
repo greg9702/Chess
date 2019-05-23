@@ -8,7 +8,7 @@
 #include <vector>
 #include "Square.h"
 #include "Enums.h"
-
+#include <algorithm>
 
 class Board {
 private:
