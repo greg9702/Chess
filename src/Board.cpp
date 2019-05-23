@@ -24,14 +24,15 @@ Board::Board() {
   // create pieces
 
     piecesOnBoard.push_back(
-            new Rook(WHITE, this, matrix.at(std::make_pair('a', '1'))));
+            new Knight(WHITE, this, matrix.at(std::make_pair('f', '6'))));
     piecesOnBoard.push_back(
             new King(WHITE, this, matrix.at(std::make_pair('e', '1'))));
     piecesOnBoard.push_back(
-            new Rook(WHITE, this, matrix.at(std::make_pair('h', '1'))));
-    piecesOnBoard.push_back(
-            new Rook(BLACK, this, matrix.at(std::make_pair('f', '8'))));
+            new Rook(WHITE, this, matrix.at(std::make_pair('a', '7'))));
 
+
+    piecesOnBoard.push_back(
+            new King(BLACK, this, matrix.at(std::make_pair('h', '8'))));
 
     backup = nullptr;
 
@@ -69,6 +70,46 @@ bool Board::isCheck(color col,std::pair<char,char>king_pos) {
    if (col == BLACK)
         return this->game_s == BLACK_IN_CHECK || this->game_s == BLACK_IN_CHECK_MATE;
 
+}
+
+game_state Board::getGameState(color col) {
+    this->checkState(col,std::pair<char,char>('0','0'));
+    bool stale_mate_flag = true;
+    // low performance, highly recommended to change
+    // NOT WORKING PROPERLY
+    std::vector<Piece *> my_pieces = this->findPieces(col);
+    for (auto& mover : my_pieces){
+        for (char tmp_y = '1'; tmp_y <= '8'; ++tmp_y) {
+            for (char tmp_x = 'a'; tmp_x <= 'h'; ++tmp_x) {
+                if (mover->isPossible(tmp_x,tmp_y)){
+                    std::cout << mover->getType() << " " <<  tmp_x << tmp_y;
+                    stale_mate_flag = false;
+                    goto out;
+                }
+            }
+        }
+    }
+    out:
+    std::cout << "Stale mate flag." << stale_mate_flag << std::endl;
+    if (game_s != BLACK_IN_CHECK && game_s != WHITE_IN_CHECK){
+        if (stale_mate_flag)
+            this->game_s = STALE_MATE;
+        else
+            this->game_s = NORMAL;
+    } else {
+        if (stale_mate_flag == false) {
+            if (col == WHITE)
+                this->game_s = WHITE_IN_CHECK;
+            else
+                this->game_s = BLACK_IN_CHECK;
+        } else {
+            if (col == WHITE)
+                this->game_s = WHITE_IN_CHECK_MATE;
+            else
+                this->game_s = BLACK_IN_CHECK_MATE;
+        }
+    }
+    return this->game_s;
 }
 
 bool Board::move(std::string instruction) {

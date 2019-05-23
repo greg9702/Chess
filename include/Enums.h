@@ -18,7 +18,8 @@ enum game_state {
     WHITE_IN_STALEMATE,
     BLACK_IN_STALEMATE,
     WHITE_IN_CHECK_MATE,
-    BLACK_IN_CHECK_MATE
+    BLACK_IN_CHECK_MATE,
+    STALE_MATE
 };
 
 enum color {

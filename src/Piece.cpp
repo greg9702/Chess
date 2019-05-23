@@ -47,6 +47,19 @@ bool Piece::move(char x_, char y_,special_args add_opt) {
    * @param second cordinate of board
    * @return true if Piece was moved sucesfully false otherwise
    */
+  game_state gs = this->board->getGameState(this->col);
+  if (gs == STALE_MATE)
+      std::cout << "IT'S STALEMATE!\n";
+  if (this->col == WHITE){
+      if (gs == WHITE_IN_CHECK_MATE){
+          std::cout << "IT'S CHECK MATE! BLACK WINS.";
+      }
+  }
+  if (this->col == BLACK){
+      if (gs == BLACK_IN_CHECK_MATE){
+          std::cout << "IT'S CHECK MATE! WHITE WINS.";
+      }
+  }
 
   if (x_ < 'a' || x_ > 'h' || y_ < '1' || y_ > '8')
     return false;
@@ -66,6 +79,7 @@ bool Piece::move(char x_, char y_,special_args add_opt) {
       this->board->setUndoFlag();
       return false;
   }
+
   return true;
 }
 

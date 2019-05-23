@@ -70,12 +70,14 @@ bool King::move(char x_, char y_, special_args add_opt) {
                         return false;
                     if (this->col == WHITE){
                         if (this->board->isCheck(WHITE,std::pair<char,char>('f','1')) ||
-                            this->board->isCheck(WHITE,std::pair<char,char>('g','1')))
+                            this->board->isCheck(WHITE,std::pair<char,char>('g','1')) ||
+                            this->board->isCheck(WHITE,std::pair<char,char>('e','1')))
                             return false;
                     }
                     if (this->col == BLACK){
                         if (this->board->isCheck(BLACK,std::pair<char,char>('f','8')) ||
-                            this->board->isCheck(BLACK,std::pair<char,char>('g','8')))
+                            this->board->isCheck(BLACK,std::pair<char,char>('g','8')) ||
+                            this->board->isCheck(BLACK,std::pair<char,char>('e','8')))
                             return false;
                     }
                     ok_rook = test_rook;
@@ -106,12 +108,14 @@ bool King::move(char x_, char y_, special_args add_opt) {
                         return false;
                     if (this->col == WHITE){
                         if (this->board->isCheck(WHITE,std::pair<char,char>('c','1')) ||
-                            this->board->isCheck(WHITE,std::pair<char,char>('d','1')))
+                            this->board->isCheck(WHITE,std::pair<char,char>('d','1')) ||
+                            this->board->isCheck(WHITE,std::pair<char,char>('e','1')))
                             return false;
                     }
                     if (this->col == BLACK){
                         if (this->board->isCheck(BLACK,std::pair<char,char>('c','8')) ||
-                            this->board->isCheck(BLACK,std::pair<char,char>('d','8')))
+                            this->board->isCheck(BLACK,std::pair<char,char>('d','8')) ||
+                            this->board->isCheck(BLACK,std::pair<char,char>('e','8')))
                             return false;
                     }
                     ok_rook = test_rook;

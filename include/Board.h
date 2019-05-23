@@ -25,6 +25,7 @@ public:
 	Board(Board &);
 	~Board();
 	bool isCheck(color col,std::pair<char,char>king_pos=std::pair<char,char>('0','0'));
+	game_state getGameState(color col);
 	bool move(std::string instruction);
 	bool unDo();
 	std::string getHistory();
