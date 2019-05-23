@@ -29,10 +29,26 @@ Board::Board() {
     piecesOnBoard.push_back(
             new Rook(WHITE, this, matrix.at(std::make_pair('h', '1'))));
     piecesOnBoard.push_back(
-            new Rook(BLACK, this, matrix.at(std::make_pair('h', '8'))));
+            new Rook(BLACK, this, matrix.at(std::make_pair('a', '1'))));
 
 
 
+}
+
+Board::Board(Board & brd) {
+    this->turn = brd.turn;
+    this->game_s = brd.game_s;
+    // create matrix
+    for (char tmp_y = '1'; tmp_y <= '8'; ++tmp_y) {
+        for (char tmp_x = 'a'; tmp_x <= 'h'; ++tmp_x) {
+            matrix.insert(std::pair<std::pair<char, char>, Square *>(
+                    std::make_pair(tmp_x, tmp_y), new Square(tmp_x, tmp_y)));
+        }
+    }
+    // create pieces
+    auto white = brd.findPieces(WHITE);
+    auto black = brd.findPieces(BLACK);
+    //for(auto )
 }
 
 Board::~Board() {
@@ -52,7 +68,7 @@ bool Board::isCheck() {
    * Checks if there was check.
    * @return true if there was check, false otherwise
    */
-  return game_s == CHECK || game_s == CHECK_MATE;
+  return game_s == WHITE_IN_CHECK || game_s == WHITE_IN_CHECK_MATE || game_s == BLACK_IN_CHECK || game_s == BLACK_IN_CHECK_MATE;
 }
 
 bool Board::move(std::string instruction) {
@@ -63,6 +79,10 @@ bool Board::move(std::string instruction) {
    */
   // TODO roszada
   // TODO konfliktowe sytuacje gdy 2 figury mogą wykonać ten ruch <= done
+
+  //Remember the state before the move
+
+
 
 
     if (instruction.size() < 2 || instruction.size() > 5) {
@@ -223,7 +243,7 @@ std::vector<Piece *> Board::findPieces(color col, Piece_type typ) {
   for (auto &sq : this->matrix) {
     Piece *sq_occup = sq.second->getOccupator();
     if (sq_occup != nullptr && sq_occup->getColor() == col &&
-        sq_occup->getType() == typ) {
+            (typ == ANY || sq_occup->getType() == typ)) {
       matching_pieces.push_back(sq_occup);
     }
   }
@@ -248,3 +268,45 @@ Piece *Board::getPieceByCoord(char x_, char y_) {
 void Board::addNewPiece(Piece *new_piece) {
   this->piecesOnBoard.push_back(new_piece);
 }
+
+
+std::vector<Piece *> Board::loadCheck(color col) {
+    /**
+     * Method that checks if the king of color col is in check
+     * @param col color of the checked king
+     * @return vector of pointers to the pieces that are checking the king
+     */
+    std::vector<Piece *> king = this->findPieces(col,KING);
+    char king_x = king.at(0)->getSquare()->getCoords().first;
+    char king_y = king.at(0)->getSquare()->getCoords().second;
+
+    std::vector<Piece *> checkingPieces = std::vector<Piece *>();
+    color sec_col;
+    if (col == WHITE)
+        sec_col = BLACK;
+    else
+        sec_col = WHITE;
+    std::vector<Piece *> candidates = this->findPieces(sec_col);
+
+    for (auto & cand : candidates){
+        if (cand->isPossible(king_x,king_y)){
+            checkingPieces.push_back(cand);
+        }
+    }
+
+    if (checkingPieces.size() > 0) {
+        if (col == WHITE)
+            this->game_s = WHITE_IN_CHECK;
+        else
+            this->game_s = BLACK_IN_CHECK;
+    }
+
+    return checkingPieces;
+}
+
+bool Board::unDo() {
+    return false;
+}
+
+
+

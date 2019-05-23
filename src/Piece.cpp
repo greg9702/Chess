@@ -53,8 +53,12 @@ bool Piece::move(char x_, char y_,special_args add_opt) {
   if (!isPossible(x_, y_))
     return false;
 
+  auto checkingPieces = this->board->loadCheck(this->col);
+  std::cout << checkingPieces.at(0)->getType() << std::endl;
+
   std::cout << "Figure to move: " << this->getSquare()->getCoords().first
             << this->getSquare()->getCoords().second << std::endl;
+
   this->square->setOccupator(nullptr);
   this->square = board->getMatrix().at(std::pair<char, char>(x_, y_));
   this->square->setOccupator(this);

@@ -17,17 +17,21 @@ private:
 	std::map<std::pair<char, char>, Square*> matrix;
 	std::vector<Piece*> piecesOnBoard;
 	std::vector<std::string> history;
+	Board * backup;
 public:
 	Board();
+	Board(Board &);
 	~Board();
 	bool isCheck();
 	bool move(std::string instruction);
-    std::string getHistory();
+	bool unDo();
+	std::string getHistory();
     color getTurn();
     Piece* getPieceByCoord(char x_, char y_);
     std::map<std::pair<char,char>, Square*> getMatrix();
     void addNewPiece(Piece* new_piece);
-    std::vector<Piece *> findPieces(color col,Piece_type typ);
+    std::vector<Piece *> findPieces(color col,Piece_type typ = ANY);
+    std::vector<Piece *> loadCheck(color col);
 };
 
 #endif
