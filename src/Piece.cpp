@@ -28,6 +28,7 @@ bool Piece::isCorrect(char x_, char y_) {
    * Ckeck if proposed move is correct for this type of Piece
    * @return true if is correct false otherwise
    */
+	return true;
 }
 
 bool Piece::isPossible(char x_, char y_) {
@@ -35,6 +36,7 @@ bool Piece::isPossible(char x_, char y_) {
    * Ckeck if proposed move is correct
    * @return true if is move is possible false otherwise
    */
+	return true;
 }
 
 bool Piece::move(char x_, char y_,special_args add_opt) {
