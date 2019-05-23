@@ -2,6 +2,10 @@
 #include "Board.h"
 #include "Square.h"
 #include <cmath>
+#include <Knight.h>
+#include <Bishop.h>
+#include <Rook.h>
+#include <Queen.h>
 
 Pawn::Pawn(color col_, Board *board_, Square *square_)
     : Piece(col_, board_, square_) {
@@ -63,19 +67,37 @@ bool Pawn::isPossible(char x_, char y_) {
   return true;
 }
 
-bool Pawn::move(char x_, char y_) {
-  if (Piece::move(x_, y_)) {
-    this->first_move_made = true;
-    return true;
-  }
-  return false;
-  // TODO this is how it will be in final version
-  //    if (!(isCorrect(x_, y_)) || !(isPossible(x_, y_))) {
-  //        return false;
-  //    }
-  // now to test only isCorrect()
-  if (!(isCorrect(x_, y_))) {
-  }
+bool Pawn::move(char x_, char y_,special_args add_opt) {
+    if (add_opt == NONE && !((this->col == WHITE && y_ == '8') || (this->col == BLACK && y_ == '1'))) {
+        if (Piece::move(x_, y_)) {
+            this->first_move_made = true;
+            return true;
+            }
+    }
+
+    else if (add_opt != NONE && ((this->col == WHITE && this->getSquare()->getCoords().second == '7') || (this->col == BLACK && this->getSquare()->getCoords().second == '2'))){
+        if (Piece::move(x_,y_)){
+            std::cout << "CORDS " << this->getSquare()->getCoords().first
+                      << this->getSquare()->getCoords().second << std::endl;
+            switch (add_opt){
+                case PROM_N:
+                    this->board->addNewPiece(new Knight(this->col, this->board, this->getSquare()));
+                    break;
+                case PROM_B:
+                    this->board->addNewPiece(new Bishop(this->col, this->board, this->getSquare()));
+                    break;
+                case PROM_R:
+                    this->board->addNewPiece(new Rook(this->col, this->board, this->getSquare()));
+                    break;
+                case PROM_Q:
+                    this->board->addNewPiece(new Queen(this->col, this->board, this->getSquare()));
+                    break;
+            }
+            return true;
+        }
+    }
+    return false;
+
 }
 
 bool Pawn::isStarting() {
