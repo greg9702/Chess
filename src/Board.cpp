@@ -23,11 +23,11 @@ Board::Board() {
   // create pieces
 
   piecesOnBoard.push_back(
-      new Pawn(WHITE, this, matrix.at(std::make_pair('a', '5'))));
+      new Pawn(WHITE, this, matrix.at(std::make_pair('a', '6'))));
   piecesOnBoard.push_back(
       new Pawn(BLACK, this, matrix.at(std::make_pair('h', '5'))));
   piecesOnBoard.push_back(
-      new Queen(BLACK, this, matrix.at(std::make_pair('d', '8'))));
+      new Queen(BLACK, this, matrix.at(std::make_pair('b', '7'))));
   piecesOnBoard.push_back(
       new Queen(WHITE, this, matrix.at(std::make_pair('d', '1'))));
 }
@@ -68,7 +68,7 @@ bool Board::move(std::string instruction) {
   char dest_x;
   char dest_y;
   Piece_type fig_to_move;
-  bool castling_req = false;
+  bool promotion_req = false;
   // figure move
   if (isupper(instruction.at(0))) { // SET UP ALL FIGURES MOVE EXCEPT PAWN
 
@@ -98,9 +98,9 @@ bool Board::move(std::string instruction) {
   } else { // SET UP PAWN MOVE
 
     if (instruction.size() == 4 && instruction.at(2) == '=') {
-      // PROCESS CASTLING
-      std::cout << "CASTLING?" << std::endl;
-      castling_req = true;
+      // PROCESS promotion
+      std::cout << "promotion?" << std::endl;
+      promotion_req = true;
     } else if (instruction.size() != 2) {
       std::cout << "INVALID SIZE OF INSTR" << std::endl;
       return false;
@@ -129,14 +129,14 @@ bool Board::move(std::string instruction) {
 
   if (fig_to_move == PAWN) { // PROCESS MOVE OF PAWN
 
-    if (castling_req) { // castling is always only when fig_to_move == PAWN
+    if (promotion_req) { // promotion is always only when fig_to_move == PAWN
 
       std::vector<Piece *> candidatesToMove =
           this->findPieces(turn, fig_to_move);
       for (auto it = candidatesToMove.begin(); it != candidatesToMove.end();
            ++it) { // auto = std::vector<Piece*>::iterator
 
-        // castling when PAWN is not on pre-last field on board is invalid
+        // promotion when PAWN is not on pre-last field on board is invalid
         // action
         if ((*it)->getSquare()->getCoords().second != '2' && turn == BLACK) {
           std::cout << "SKIP CANDIDATE" << std::endl;
@@ -163,10 +163,7 @@ bool Board::move(std::string instruction) {
           case 'N':
             std::cout << "CORDS " << (*it)->getSquare()->getCoords().first
                       << (*it)->getSquare()->getCoords().second << std::endl;
-            (*it)->getSquare()->setOccupator(nullptr);
-            (*it)->getSquare()->setOccupator(
-                new Knight(turn, this, (*it)->getSquare()));
-            delete (*it);
+            this->piecesOnBoard.push_back(new Knight(turn, this, (*it)->getSquare()));
             break;
 
           case 'Q':
@@ -182,20 +179,14 @@ bool Board::move(std::string instruction) {
             // new_type = BISHOP;
             std::cout << "CORDS " << (*it)->getSquare()->getCoords().first
                       << (*it)->getSquare()->getCoords().second << std::endl;
-            (*it)->getSquare()->setOccupator(nullptr);
-            (*it)->getSquare()->setOccupator(
-                new Bishop(turn, this, (*it)->getSquare()));
-            delete (*it);
+            this->piecesOnBoard.push_back(new Bishop(turn, this, (*it)->getSquare()));
             break;
 
           case 'R':
             // new_type = ROOK;
             std::cout << "CORDS " << (*it)->getSquare()->getCoords().first
                       << (*it)->getSquare()->getCoords().second << std::endl;
-            (*it)->getSquare()->setOccupator(nullptr);
-            (*it)->getSquare()->setOccupator(
-                new Rook(turn, this, (*it)->getSquare()));
-            delete (*it);
+            this->piecesOnBoard.push_back(new Rook(turn, this, (*it)->getSquare()));
             break;
           default:
             return false;
@@ -207,13 +198,13 @@ bool Board::move(std::string instruction) {
       }
     }
 
-    if (!castling_req) {
+    if (!promotion_req) {
       std::vector<Piece *> candidatesToMove =
           this->findPieces(turn, fig_to_move);
       for (auto it = candidatesToMove.begin(); it != candidatesToMove.end();
            ++it) { // auto = std::vector<Piece*>::iterator
 
-        // if pawn is in pre-last field and got instruction without castling it
+        // if pawn is in pre-last field and got instruction without promotion it
         // is invalid move
         if ((*it)->getSquare()->getCoords().second == '2' && turn == BLACK) {
           std::cout << "SKIP CANDIDATE" << std::endl;
@@ -234,7 +225,7 @@ bool Board::move(std::string instruction) {
         }
       }
     }
-    castling_req = false;
+    promotion_req = false;
   }
 
   return false;

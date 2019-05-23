@@ -40,7 +40,8 @@ void Square::setOccupator(Piece *occupator_) {
    * @param pointer to occupator obj //TODO what about nullptr
    */
   if (this->occupator != nullptr && occupator_ != nullptr) {
-    delete this->occupator;
+      std::cout << "Deleting old figure\n";
+      //delete this->occupator;
   }
   this->occupator = occupator_;
 }
