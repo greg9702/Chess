@@ -49,9 +49,13 @@ bool King::move(char x_, char y_, special_args add_opt) {
         }
     }
     //castling
-    else{
+    else if (add_opt == SHORT_CASTLE || add_opt == LONG_CASTLE){
         char my_x = this->getSquare()->getCoords().first;
         char my_y = this->getSquare()->getCoords().second;
+        if (this->col == WHITE && !(my_x == 'e' && my_y == '1'))
+            return false;
+        if (this->col == BLACK && !(my_x == 'e' && my_y == '8'))
+            return false;
         if (this->first_move_made)
             return false;
         auto my_rooks = this->board->findPieces(this->col,ROOK);
@@ -94,13 +98,14 @@ bool King::move(char x_, char y_, special_args add_opt) {
                     ok_rook = test_rook;
                 }
             }
+            if (ok_rook == nullptr)
+                return false;
+
             this->square->setOccupator(nullptr);
             this->square = board->getMatrix().at(std::pair<char, char>('c', my_y));
             this->square->setOccupator(this);
             this->first_move_made = true;
 
-            if (ok_rook == nullptr)
-                return false;
 
             ok_rook->square->setOccupator(nullptr);
             ok_rook->square = board->getMatrix().at(std::pair<char, char>('d', my_y));
