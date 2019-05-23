@@ -68,7 +68,7 @@ bool Board::move(std::string instruction) {
   // TODO konfliktowe sytuacje gdy 2 figury mogą wykonać ten ruch <= done
 
 
-    if (instruction.size() < 2) {
+    if (instruction.size() < 2 || instruction.size() > 5) {
         return false;
     }
 
@@ -79,16 +79,24 @@ bool Board::move(std::string instruction) {
     // figure move
     if (isupper(instruction.at(0))) { // SET UP ALL FIGURES MOVE EXCEPT PAWN
 
-        if (instruction.size() != 3)
+        if (instruction.size() < 3)
             return false;
-        dest_x = instruction.at(1);
-        dest_y = instruction.at(2);
+
         switch (instruction.at(0)) {
             case 'B':
                 fig_to_move = BISHOP;
                 break;
             case 'K':
                 fig_to_move = KING;
+                break;
+            case 'O':
+                fig_to_move = KING;
+                if (instruction == "O-O")
+                    add_opt = SHORT_CASTLE;
+                else if (instruction == "O-O-O")
+                    add_opt = LONG_CASTLE;
+                else
+                    return false;
                 break;
             case 'N':
                 fig_to_move = KNIGHT;
@@ -102,34 +110,60 @@ bool Board::move(std::string instruction) {
             default:
                 return false;
         }
-    } else { // SET UP PAWN MOVE
-
-        if (instruction.size() == 4 && instruction.at(2) == '=') {
-            // PROCESS promotion
-            std::cout << "promotion!" << std::endl;
-            switch (instruction.at(3)) {
-                case 'B':
-                    add_opt = PROM_B;
+        if (instruction.at(0) != 'O') {
+            switch (instruction.size()) {
+                case 3:
+                    dest_x = instruction.at(1);
+                    dest_y = instruction.at(2);
                     break;
-                case 'N':
-                    add_opt = PROM_N;
-                    break;
-                case 'Q':
-                    add_opt = PROM_Q;
-                    break;
-                case 'R':
-                    add_opt = PROM_R;
+                case 4:
+                    dest_x = instruction.at(2);
+                    dest_y = instruction.at(3);
+                    add_opt = STARTING_POINT_KNOWN;
                     break;
                 default:
-                    return false;
+                    break;
             }
-        } else if (instruction.size() != 2) {
-            std::cout << "INVALID SIZE OF INSTR" << std::endl;
-            return false;
+        } else{
+            dest_x = '1';   //trash values for castling
+            dest_y = 'a';
         }
-
-        dest_x = instruction.at(0);
-        dest_y = instruction.at(1);
+    } else { // SET UP PAWN MOVE
+        switch (instruction.size()){
+            case 2:
+                dest_x = instruction.at(0);
+                dest_y = instruction.at(1);
+                break;
+            case 3:
+                dest_x = instruction.at(1);
+                dest_y = instruction.at(2);
+                add_opt = STARTING_POINT_KNOWN;
+                break;
+            case 4:
+            case 5:
+                if ((instruction.at(instruction.size()-2) != '='))
+                    return false;
+                std::cout << "promotion!" << std::endl;
+                dest_x = instruction.at(instruction.size()-4);
+                dest_y = instruction.at(instruction.size()-3);
+                switch (instruction.at((instruction.size()-1))) {
+                    case 'B':
+                        add_opt = PROM_B;
+                        break;
+                    case 'N':
+                        add_opt = PROM_N;
+                        break;
+                    case 'Q':
+                        add_opt = PROM_Q;
+                        break;
+                    case 'R':
+                        add_opt = PROM_R;
+                        break;
+                    default:
+                        return false;
+                }
+                break;
+        }
         fig_to_move = PAWN;
     }
 
