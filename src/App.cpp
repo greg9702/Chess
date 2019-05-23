@@ -20,18 +20,26 @@ void showBoard(Board *chessBoard) {
     for (char b = 'a'; b <= 'h'; b++) {
       if (mt.at(std::pair<char, char>(b, a))->getOccupator() == nullptr) {
         std::cout << "-"
-                  << " ";
+                  << "  ";
       } else {
-        std::cout
-            << mt.at(std::pair<char, char>(b, a))->getOccupator()->getType()
-            << " ";
+		  if (mt.at(std::pair<char, char>(b, a))->getOccupator()->getColor() == WHITE)
+		  {
+			  std::cout
+				  << mt.at(std::pair<char, char>(b, a))->getOccupator()->getType()
+				  << "  ";
+		  }
+		  else {
+			  std::cout
+				  << mt.at(std::pair<char, char>(b, a))->getOccupator()->getType()
+				  << "* ";
+		  }
       }
     }
     std::cout << std::endl;
   }
   std::cout << "   ";
   for (char a = 'a'; a <= 'h'; a++) {
-    std::cout << a << " ";
+    std::cout << a << "  ";
   }
   std::cout << std::endl;
 }
