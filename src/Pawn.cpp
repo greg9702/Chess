@@ -70,7 +70,6 @@ bool Pawn::isPossible(char x_, char y_) {
 bool Pawn::move(char x_, char y_,special_args add_opt) {
     if (add_opt == NONE && !((this->col == WHITE && y_ == '8') || (this->col == BLACK && y_ == '1'))) {
         if (Piece::move(x_, y_)) {
-            this->first_move_made = true;
             return true;
             }
     }
@@ -98,11 +97,4 @@ bool Pawn::move(char x_, char y_,special_args add_opt) {
     }
     return false;
 
-}
-
-bool Pawn::isStarting() {
-  /**
-   *
-   */
-  return first_move_made;
 }

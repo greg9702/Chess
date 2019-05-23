@@ -22,17 +22,12 @@ Board::Board() {
   }
   // create pieces
 
-  piecesOnBoard.push_back(
-	  new Knight(WHITE, this, matrix.at(std::make_pair('f', '6'))));
-  piecesOnBoard.push_back(
-	  new King(WHITE, this, matrix.at(std::make_pair('e', '1'))));
-  piecesOnBoard.push_back(
-	  new Rook(WHITE, this, matrix.at(std::make_pair('a', '7'))));
-
-
-  piecesOnBoard.push_back(
-	  new King(BLACK, this, matrix.at(std::make_pair('h', '8'))));
-
+    piecesOnBoard.push_back(
+            new Rook(WHITE, this, matrix.at(std::make_pair('a', '1'))));
+    piecesOnBoard.push_back(
+            new King(WHITE, this, matrix.at(std::make_pair('e', '1'))));
+    piecesOnBoard.push_back(
+            new Rook(WHITE, this, matrix.at(std::make_pair('h', '1'))));
 
 
 
