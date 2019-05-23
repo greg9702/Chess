@@ -68,7 +68,6 @@ bool King::move(char x_, char y_, special_args add_opt) {
                     if (this->board->getPieceByCoord('f',my_y) != nullptr ||
                             this->board->getPieceByCoord('g',my_y) != nullptr)
                         return false;
-                    //std::cout << "Rook found!\n";
                     ok_rook = test_rook;
                 }
             }
@@ -112,6 +111,7 @@ bool King::move(char x_, char y_, special_args add_opt) {
             ok_rook->square->setOccupator(ok_rook);
             ok_rook->first_move_made = true;
         }
+        return true;
     }
-    return true;
+    return false;
 }

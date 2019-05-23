@@ -19,6 +19,7 @@ private:
 	std::vector<std::string> history;
 	Board * backup;
 	bool undo_flag;
+	void deepCopy(Board* src);
 public:
 	Board();
 	Board(Board &);
@@ -32,7 +33,7 @@ public:
     std::map<std::pair<char,char>, Square*> getMatrix();
     void addNewPiece(Piece* new_piece);
     std::vector<Piece *> findPieces(color col,Piece_type typ = ANY);
-    std::vector<Piece *> loadCheck(color col);
+    std::vector<Piece *> checkState(color col);
     void setUndoFlag();
 };
 
