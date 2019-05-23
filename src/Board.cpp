@@ -32,9 +32,9 @@ Board::~Board() {
   /**
    * Destructor
    */
+  for (auto & it : piecesOnBoard)
+    delete it;
   std::cout << "Board destructor" << std::endl;
-  for (auto it = piecesOnBoard.begin(); it != piecesOnBoard.end(); ++it)
-    delete *it;
   for (auto &mp : matrix) {
     delete mp.second;
   }
