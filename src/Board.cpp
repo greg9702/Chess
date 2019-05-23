@@ -29,6 +29,9 @@ Board::Board() {
             new King(WHITE, this, matrix.at(std::make_pair('e', '1'))));
     piecesOnBoard.push_back(
             new Rook(WHITE, this, matrix.at(std::make_pair('h', '1'))));
+    piecesOnBoard.push_back(
+            new Rook(BLACK, this, matrix.at(std::make_pair('f', '8'))));
+
 
     backup = nullptr;
 
@@ -55,12 +58,12 @@ Board::~Board() {
   }
 }
 
-bool Board::isCheck(color col) {
+bool Board::isCheck(color col,std::pair<char,char>king_pos) {
   /**
    * Checks if there was check.
    * @return true if there was check, false otherwise
    */
-   this->checkState(col);
+   this->checkState(col,king_pos);
    if (col == WHITE)
        return this->game_s == WHITE_IN_CHECK || this->game_s == WHITE_IN_CHECK_MATE;
    if (col == BLACK)
@@ -268,21 +271,27 @@ void Board::addNewPiece(Piece *new_piece) {
   this->piecesOnBoard.push_back(new_piece);
 }
 
-std::vector<Piece *> Board::checkState(color col) {
+std::vector<Piece *> Board::checkState(color col,std::pair<char,char>king_pos) {
     /**
      * Method that checks if the king of color col is in check
      * Method sets the value of member game_s
      * @param col color of the checked king
      * @return vector of pointers to the pieces that are checking the king
      */
-    std::vector<Piece *> king = this->findPieces(col,KING);
-    //if there is no King at the board
-    if (king.empty()) {
-        return std::vector<Piece *>();
+    char king_x,king_y;
+    // if there is no special position to check, use current king position
+    if (king_pos == std::pair<char,char>('0','0')) {
+        std::vector<Piece *> king = this->findPieces(col, KING);
+        //if there is no King at the board
+        if (king.empty()) {
+            return std::vector<Piece *>();
+        }
+        king_x = king.at(0)->getSquare()->getCoords().first;
+        king_y = king.at(0)->getSquare()->getCoords().second;
+    }else{
+        king_x = king_pos.first;
+        king_y = king_pos.second;
     }
-    char king_x = king.at(0)->getSquare()->getCoords().first;
-    char king_y = king.at(0)->getSquare()->getCoords().second;
-
     std::vector<Piece *> checkingPieces = std::vector<Piece *>();
 
     color sec_col = col == WHITE ? BLACK : WHITE;

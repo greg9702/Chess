@@ -24,7 +24,7 @@ public:
 	Board();
 	Board(Board &);
 	~Board();
-	bool isCheck(color col);
+	bool isCheck(color col,std::pair<char,char>king_pos=std::pair<char,char>('0','0'));
 	bool move(std::string instruction);
 	bool unDo();
 	std::string getHistory();
@@ -33,7 +33,7 @@ public:
     std::map<std::pair<char,char>, Square*> getMatrix();
     void addNewPiece(Piece* new_piece);
     std::vector<Piece *> findPieces(color col,Piece_type typ = ANY);
-    std::vector<Piece *> checkState(color col);
+    std::vector<Piece *> checkState(color col,std::pair<char,char>king_pos);
     void setUndoFlag();
 };
 
