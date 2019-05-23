@@ -98,7 +98,6 @@ bool Pawn::move(char x_, char y_,special_args add_opt) {
     }
     return false;
 
->>>>>>> myBranch
 }
 
 bool Pawn::isStarting() {
