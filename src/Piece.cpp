@@ -11,6 +11,7 @@ Piece::Piece(color col_, Board *board_, Square *square_) {
   this->square = square_;
   this->col = col_;
   this->square->setOccupator(this);
+  this->first_move_made = false;
 }
 
 Piece::~Piece() {
@@ -57,7 +58,12 @@ bool Piece::move(char x_, char y_,special_args add_opt) {
   this->square->setOccupator(nullptr);
   this->square = board->getMatrix().at(std::pair<char, char>(x_, y_));
   this->square->setOccupator(this);
+  this->first_move_made = true;
   return true;
 }
 
-Square *Piece::getSquare() { return this->square; }
+Square * Piece::getSquare() { return this->square; }
+
+bool Piece::isStarting() {
+    return !first_move_made;
+}

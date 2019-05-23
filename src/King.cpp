@@ -36,6 +36,77 @@ bool King::isCorrect(char x_, char y_) {
 King::King(color col_, Board *board_, Square *square_)
     : Piece(col_, board_, square_) {
   this->type = KING;
+  first_move_made = false;
 }
 
 King::~King() {}
+
+bool King::move(char x_, char y_, special_args add_opt) {
+    if (add_opt == NONE){
+        if (Piece::move(x_,y_)){
+            first_move_made = true;
+            return true;
+        }
+    }
+    //castling
+    else{
+        char my_x = this->getSquare()->getCoords().first;
+        char my_y = this->getSquare()->getCoords().second;
+        if (this->first_move_made)
+            return false;
+        auto my_rooks = this->board->findPieces(this->col,ROOK);
+        if (add_opt == SHORT_CASTLE){
+            Piece* ok_rook = nullptr;
+            for (auto & test_rook : my_rooks) {
+                if (this->board->getPieceByCoord('h', my_y) == test_rook) {
+                    if (!(test_rook->isStarting()))
+                        return false;
+                    if (this->board->getPieceByCoord('f',my_y) != nullptr ||
+                            this->board->getPieceByCoord('g',my_y) != nullptr)
+                        return false;
+                    //std::cout << "Rook found!\n";
+                    ok_rook = test_rook;
+                }
+            }
+            if (ok_rook == nullptr)
+                return false;
+            this->square->setOccupator(nullptr);
+            this->square = board->getMatrix().at(std::pair<char, char>('g', my_y));
+            this->square->setOccupator(this);
+            this->first_move_made = true;
+
+            ok_rook->square->setOccupator(nullptr);
+            ok_rook->square = board->getMatrix().at(std::pair<char, char>('f', my_y));
+            ok_rook->square->setOccupator(ok_rook);
+            ok_rook->first_move_made = true;
+
+        }
+        else if (add_opt == LONG_CASTLE){
+            Piece* ok_rook = nullptr;
+            for (auto& test_rook : my_rooks) {
+                if (this->board->getPieceByCoord('a', my_y) == test_rook) {
+                    if (!test_rook->isStarting())
+                        return false;
+                    if (this->board->getPieceByCoord('b',my_y) != nullptr ||
+                        this->board->getPieceByCoord('c',my_y) != nullptr ||
+                        this->board->getPieceByCoord('d',my_y) != nullptr)
+                        return false;
+                    ok_rook = test_rook;
+                }
+            }
+            this->square->setOccupator(nullptr);
+            this->square = board->getMatrix().at(std::pair<char, char>('c', my_y));
+            this->square->setOccupator(this);
+            this->first_move_made = true;
+
+            if (ok_rook == nullptr)
+                return false;
+
+            ok_rook->square->setOccupator(nullptr);
+            ok_rook->square = board->getMatrix().at(std::pair<char, char>('d', my_y));
+            ok_rook->square->setOccupator(ok_rook);
+            ok_rook->first_move_made = true;
+        }
+    }
+    return true;
+}

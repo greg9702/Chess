@@ -2,6 +2,7 @@
 #define ROOK_H
 
 #include "Piece.h"
+#include "King.h"
 
 class Rook : public Piece{
 private:

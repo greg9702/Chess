@@ -8,11 +8,13 @@ class Square;
 #include <iostream>
 
 class Piece{
+    friend class King;
 protected:
 	color col;
 	Piece_type type;
 	Board* board;
 	Square* square;
+    bool first_move_made;
 	virtual bool isCorrect(char x_, char y_) = 0;
 	virtual bool isPossible(char x_, char y_) = 0;
 public:
@@ -22,6 +24,7 @@ public:
 	color getColor();
 	Piece_type getType();
 	Square * getSquare();
+	bool isStarting();
 };
 
 #endif
