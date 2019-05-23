@@ -1,5 +1,13 @@
 ////////// COMPLETE BOARD //////////
 
+
+PAWN, ----------- 0
+ROOK, ----------- 1
+KNIGHT, --------- 2
+BISHOP, --------- 3
+QUEEN, ---------- 4
+KING ------------ 5
+
   piecesOnBoard.push_back(
       new Rook(WHITE, this, matrix.at(std::make_pair('a', '1'))));
   piecesOnBoard.push_back(
@@ -41,4 +49,121 @@
         new Pawn(BLACK, this, matrix.at(std::make_pair(i, '7'))));
   }
 
-///////////////////////////
+///////////////     CHECK-MATE vol.1     ///////////////////////////
+
+
+
+
+piecesOnBoard.push_back(
+      new Pawn(BLACK, this, matrix.at(std::make_pair('f', '7'))));
+piecesOnBoard.push_back(
+      new Pawn(BLACK, this, matrix.at(std::make_pair('g', '7'))));
+piecesOnBoard.push_back(
+      new Pawn(BLACK, this, matrix.at(std::make_pair('h', '7'))));
+piecesOnBoard.push_back(
+      new Pawn(BLACK, this, matrix.at(std::make_pair('a', '6'))));
+piecesOnBoard.push_back(
+      new Pawn(BLACK, this, matrix.at(std::make_pair('b', '5'))));      
+            
+piecesOnBoard.push_back(
+      new King(BLACK, this, matrix.at(std::make_pair('g', '8'))));
+      
+piecesOnBoard.push_back(
+      new King(WHITE, this, matrix.at(std::make_pair('g', '2'))));
+piecesOnBoard.push_back(
+      new Rook(WHITE, this, matrix.at(std::make_pair('e', '2'))));
+      
+      
+      
+ ///////////////     CHECK-MATE vol. 2 OR CHECK ///////////////////////////   
+      
+piecesOnBoard.push_back(
+      new King(BLACK, this, matrix.at(std::make_pair('g', '8'))));
+      
+piecesOnBoard.push_back(
+      new King(WHITE, this, matrix.at(std::make_pair('g', '2'))));
+piecesOnBoard.push_back(
+      new Rook(WHITE, this, matrix.at(std::make_pair('e', '2')))); 
+piecesOnBoard.push_back(
+      new Rook(WHITE, this, matrix.at(std::make_pair('a', '7')))); 
+      
+      
+      
+///////////////     CHECK-MATE vol. 3 (szewski)    ///////////////////////////   
+      
+      
+  piecesOnBoard.push_back(
+      new Queen(WHITE, this, matrix.at(std::make_pair('f', '3'))));
+  piecesOnBoard.push_back(
+      new King(WHITE, this, matrix.at(std::make_pair('e', '1'))));
+  piecesOnBoard.push_back(
+      new Bishop(WHITE, this, matrix.at(std::make_pair('c', '4'))));
+
+  piecesOnBoard.push_back(
+      new Rook(BLACK, this, matrix.at(std::make_pair('a', '8'))));
+  piecesOnBoard.push_back(
+      new Knight(BLACK, this, matrix.at(std::make_pair('b', '8'))));
+  piecesOnBoard.push_back(
+      new Bishop(BLACK, this, matrix.at(std::make_pair('c', '8'))));
+  piecesOnBoard.push_back(
+      new Queen(BLACK, this, matrix.at(std::make_pair('d', '8'))));
+  piecesOnBoard.push_back(
+      new King(BLACK, this, matrix.at(std::make_pair('e', '8'))));
+  piecesOnBoard.push_back(
+      new Bishop(BLACK, this, matrix.at(std::make_pair('f', '8'))));
+  piecesOnBoard.push_back(
+      new Knight(BLACK, this, matrix.at(std::make_pair('g', '8'))));
+  piecesOnBoard.push_back(
+      new Rook(BLACK, this, matrix.at(std::make_pair('h', '8'))));
+
+  for (char i = 'a'; i <= 'h'; ++i) {
+    piecesOnBoard.push_back(
+        new Pawn(BLACK, this, matrix.at(std::make_pair(i, '7'))));
+  }
+  
+  ///////////////     PAT    ///////////////////////////   
+      
+  piecesOnBoard.push_back(
+      new Knigth(WHITE, this, matrix.at(std::make_pair('f', '6'))));
+  piecesOnBoard.push_back(
+      new King(WHITE, this, matrix.at(std::make_pair('e', '1'))));
+  piecesOnBoard.push_back(
+      new Rook(WHITE, this, matrix.at(std::make_pair('a', '7'))));
+
+  
+  piecesOnBoard.push_back(
+      new King(BLACK, this, matrix.at(std::make_pair('h', '8'))));
+
+
+  
+  ///////////////     Castlings    /////////////////////////// 
+
+
+  piecesOnBoard.push_back(
+      new Rook(WHITE, this, matrix.at(std::make_pair('a', '1'))));
+  piecesOnBoard.push_back(
+      new King(WHITE, this, matrix.at(std::make_pair('e', '1'))));
+  piecesOnBoard.push_back(
+      new Rook(WHITE, this, matrix.at(std::make_pair('h', '1'))));
+
+  
+  piecesOnBoard.push_back(
+      new King(BLACK, this, matrix.at(std::make_pair('e', '8'))));
+
+
+///////////////     Promotion and Check    /////////////////////////// 
+
+
+  piecesOnBoard.push_back(
+      new Pawn(WHITE, this, matrix.at(std::make_pair('a', '7'))));
+  piecesOnBoard.push_back(
+      new King(WHITE, this, matrix.at(std::make_pair('e', '1'))));
+  piecesOnBoard.push_back(
+      new Pawn(WHITE, this, matrix.at(std::make_pair('h', '7'))));
+
+  
+  piecesOnBoard.push_back(
+      new King(BLACK, this, matrix.at(std::make_pair('a', '5'))));
+      
+      
+      

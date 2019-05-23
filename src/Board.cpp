@@ -23,13 +23,19 @@ Board::Board() {
   // create pieces
 
   piecesOnBoard.push_back(
-      new Pawn(WHITE, this, matrix.at(std::make_pair('a', '6'))));
+	  new Knight(WHITE, this, matrix.at(std::make_pair('f', '6'))));
   piecesOnBoard.push_back(
-      new Pawn(BLACK, this, matrix.at(std::make_pair('h', '5'))));
+	  new King(WHITE, this, matrix.at(std::make_pair('e', '1'))));
   piecesOnBoard.push_back(
-      new Queen(BLACK, this, matrix.at(std::make_pair('b', '7'))));
+	  new Rook(WHITE, this, matrix.at(std::make_pair('a', '7'))));
+
+
   piecesOnBoard.push_back(
-      new Queen(WHITE, this, matrix.at(std::make_pair('d', '1'))));
+	  new King(BLACK, this, matrix.at(std::make_pair('h', '8'))));
+
+
+
+
 }
 
 Board::~Board() {
