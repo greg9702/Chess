@@ -18,7 +18,7 @@ protected:
 public:
 	Piece(color col_, Board* board_, Square* square_);
 	virtual ~Piece();
-	virtual bool move(char x_, char y_);
+	virtual bool move(char x_, char y_,special_args add_opt=NONE);
 	color getColor();
 	Piece_type getType();
 	Square * getSquare();
