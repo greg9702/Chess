@@ -13,6 +13,7 @@ Board::Board() {
    */
   turn = WHITE;
   game_s = NORMAL;
+  this->undo_flag = false;
   // create matrix
   for (char tmp_y = '1'; tmp_y <= '8'; ++tmp_y) {
     for (char tmp_x = 'a'; tmp_x <= 'h'; ++tmp_x) {
@@ -23,7 +24,7 @@ Board::Board() {
   // create pieces
 
     piecesOnBoard.push_back(
-            new Rook(WHITE, this, matrix.at(std::make_pair('f', '1'))));
+            new Rook(WHITE, this, matrix.at(std::make_pair('g', '1'))));
     piecesOnBoard.push_back(
             new King(WHITE, this, matrix.at(std::make_pair('e', '1'))));
     piecesOnBoard.push_back(
@@ -31,7 +32,7 @@ Board::Board() {
     piecesOnBoard.push_back(
             new Rook(BLACK, this, matrix.at(std::make_pair('a', '1'))));
 
-
+    backup = nullptr;
 
 }
 
@@ -48,7 +49,58 @@ Board::Board(Board & brd) {
     // create pieces
     auto white = brd.findPieces(WHITE);
     auto black = brd.findPieces(BLACK);
-    //for(auto )
+    for(auto &white_piece : white){
+        Square * my_square = this->matrix.at((white_piece->getSquare()->getCoords()));
+        std::cout << "BACKUP: " << white_piece->getSquare()->getCoords().first << ", " << white_piece->getSquare()->getCoords().second << std::endl;
+        switch (white_piece->getType()){
+            case ROOK:
+                this->piecesOnBoard.push_back(new Rook(WHITE,this,my_square));
+                break;
+            case KNIGHT:
+                this->piecesOnBoard.push_back(new Knight(WHITE,this,my_square));
+                break;
+            case BISHOP:
+                this->piecesOnBoard.push_back(new Bishop(WHITE,this,my_square));
+                break;
+            case QUEEN:
+                this->piecesOnBoard.push_back(new Queen(WHITE,this,my_square));
+                break;
+            case KING:
+                this->piecesOnBoard.push_back(new King(WHITE,this,my_square));
+                break;
+            case PAWN:
+                this->piecesOnBoard.push_back(new Pawn(WHITE,this,my_square));
+                break;
+            default:
+                break;
+        }
+    }
+    for(auto &black_piece : black){
+        Square * my_square = this->matrix.at((black_piece->getSquare()->getCoords()));
+        switch (black_piece->getType()){
+            case ROOK:
+                this->piecesOnBoard.push_back(new Rook(BLACK,this,my_square));
+                break;
+            case KNIGHT:
+                this->piecesOnBoard.push_back(new Knight(BLACK,this,my_square));
+                break;
+            case BISHOP:
+                this->piecesOnBoard.push_back(new Bishop(BLACK,this,my_square));
+                break;
+            case QUEEN:
+                this->piecesOnBoard.push_back(new Queen(BLACK,this,my_square));
+                break;
+            case KING:
+                this->piecesOnBoard.push_back(new King(BLACK,this,my_square));
+                break;
+            case PAWN:
+                this->piecesOnBoard.push_back(new Pawn(BLACK,this,my_square));
+                break;
+            default:
+                break;
+        }
+    }
+
 }
 
 Board::~Board() {
@@ -63,12 +115,18 @@ Board::~Board() {
   }
 }
 
-bool Board::isCheck() {
+bool Board::isCheck(color col) {
   /**
    * Checks if there was check.
    * @return true if there was check, false otherwise
    */
-  return game_s == WHITE_IN_CHECK || game_s == WHITE_IN_CHECK_MATE || game_s == BLACK_IN_CHECK || game_s == BLACK_IN_CHECK_MATE;
+   if (col == WHITE){
+       return this->game_s == WHITE_IN_CHECK || this->game_s == WHITE_IN_CHECK_MATE;
+
+   }
+   if (col == BLACK)
+        return this->game_s == BLACK_IN_CHECK || this->game_s == BLACK_IN_CHECK_MATE;
+
 }
 
 bool Board::move(std::string instruction) {
@@ -77,12 +135,12 @@ bool Board::move(std::string instruction) {
    * @param instruction next move in chess notation
    * @return true if the move was successfully performed, false otherwise
    */
-  // TODO roszada
   // TODO konfliktowe sytuacje gdy 2 figury mogą wykonać ten ruch <= done
 
   //Remember the state before the move
 
-
+    delete backup;
+    backup = new Board(*this);
 
 
     if (instruction.size() < 2 || instruction.size() > 5) {
@@ -189,6 +247,9 @@ bool Board::move(std::string instruction) {
     for (auto it = candidatesToMove.begin(); it != candidatesToMove.end();
          ++it) { // auto = std::vector<Piece*>::iterator
         if ((*it)->move(dest_x, dest_y,add_opt)) {
+            if (undo_flag == true){
+                break;
+            }
             std::cout << "Figure moved to: " << (*it)->getSquare()->getCoords().first
                       << (*it)->getSquare()->getCoords().second << std::endl;
             history.push_back(instruction);
@@ -196,6 +257,8 @@ bool Board::move(std::string instruction) {
             return true;
         }
     }
+    if (undo_flag)
+        unDo();
     return false;
 }
 
@@ -277,6 +340,11 @@ std::vector<Piece *> Board::loadCheck(color col) {
      * @return vector of pointers to the pieces that are checking the king
      */
     std::vector<Piece *> king = this->findPieces(col,KING);
+    //if there is no King at the board
+    if (king.size() == 0) {
+        std::cout << "No king!" << std::endl;
+        return std::vector<Piece *>();
+    }
     char king_x = king.at(0)->getSquare()->getCoords().first;
     char king_y = king.at(0)->getSquare()->getCoords().second;
 
@@ -300,12 +368,92 @@ std::vector<Piece *> Board::loadCheck(color col) {
         else
             this->game_s = BLACK_IN_CHECK;
     }
+    else {
+        this->game_s = NORMAL;
+    }
 
     return checkingPieces;
 }
 
 bool Board::unDo() {
-    return false;
+    for (auto &it : piecesOnBoard)
+        delete it;
+    for (auto &mp : matrix) {
+        delete mp.second;
+    }
+    this->piecesOnBoard.clear();
+    this->matrix.clear();
+    this->turn = backup->turn;
+    this->game_s = backup->game_s;
+    // create matrix
+    for (char tmp_y = '1'; tmp_y <= '8'; ++tmp_y) {
+        for (char tmp_x = 'a'; tmp_x <= 'h'; ++tmp_x) {
+            matrix.insert(std::pair<std::pair<char, char>, Square *>(
+                    std::make_pair(tmp_x, tmp_y), new Square(tmp_x, tmp_y)));
+        }
+    }
+
+    // create pieces
+    auto white = backup->findPieces(WHITE);
+    auto black = backup->findPieces(BLACK);
+    for(auto &white_piece : white){
+        Square * my_square = this->matrix.at((white_piece->getSquare()->getCoords()));
+        std::cout << "UNDO: " << white_piece->getSquare()->getCoords().first << ", " << white_piece->getSquare()->getCoords().second << std::endl;
+
+        switch (white_piece->getType()){
+            case ROOK:
+                this->piecesOnBoard.push_back(new Rook(WHITE,this,my_square));
+                break;
+            case KNIGHT:
+                this->piecesOnBoard.push_back(new Knight(WHITE,this,my_square));
+                break;
+            case BISHOP:
+                this->piecesOnBoard.push_back(new Bishop(WHITE,this,my_square));
+                break;
+            case QUEEN:
+                this->piecesOnBoard.push_back(new Queen(WHITE,this,my_square));
+                break;
+            case KING:
+                this->piecesOnBoard.push_back(new King(WHITE,this,my_square));
+                break;
+            case PAWN:
+                this->piecesOnBoard.push_back(new Pawn(WHITE,this,my_square));
+                break;
+            default:
+                break;
+        }
+    }
+    for(auto &black_piece : black){
+        Square * my_square = this->matrix.at((black_piece->getSquare()->getCoords()));
+        switch (black_piece->getType()){
+            case ROOK:
+                this->piecesOnBoard.push_back(new Rook(BLACK,this,my_square));
+                break;
+            case KNIGHT:
+                this->piecesOnBoard.push_back(new Knight(BLACK,this,my_square));
+                break;
+            case BISHOP:
+                this->piecesOnBoard.push_back(new Bishop(BLACK,this,my_square));
+                break;
+            case QUEEN:
+                this->piecesOnBoard.push_back(new Queen(BLACK,this,my_square));
+                break;
+            case KING:
+                this->piecesOnBoard.push_back(new King(BLACK,this,my_square));
+                break;
+            case PAWN:
+                this->piecesOnBoard.push_back(new Pawn(BLACK,this,my_square));
+                break;
+            default:
+                break;
+        }
+    }
+    undo_flag = false;
+    return true;
+}
+
+void Board::setUndoFlag() {
+    this->undo_flag = true;
 }
 
 

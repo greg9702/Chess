@@ -18,11 +18,12 @@ private:
 	std::vector<Piece*> piecesOnBoard;
 	std::vector<std::string> history;
 	Board * backup;
+	bool undo_flag;
 public:
 	Board();
 	Board(Board &);
 	~Board();
-	bool isCheck();
+	bool isCheck(color col);
 	bool move(std::string instruction);
 	bool unDo();
 	std::string getHistory();
@@ -32,6 +33,7 @@ public:
     void addNewPiece(Piece* new_piece);
     std::vector<Piece *> findPieces(color col,Piece_type typ = ANY);
     std::vector<Piece *> loadCheck(color col);
+    void setUndoFlag();
 };
 
 #endif
