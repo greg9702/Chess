@@ -8,14 +8,14 @@
 #include <vector>
 #include "Square.h"
 #include "Enums.h"
-
+#include <algorithm>
 
 class Board {
 private:
 	color turn;
 	game_state game_s;
 	std::map<std::pair<char, char>, Square*> matrix;
-	std::vector<Piece *> piecesOnBoard;
+	std::vector<Piece*> piecesOnBoard;
 	std::vector<std::string> history;
 	std::vector<Piece *> findPieces(color col,Piece_type typ);
 public:
@@ -27,6 +27,7 @@ public:
     color getTurn();
     Piece* getPieceByCoord(char x_, char y_);
     std::map<std::pair<char,char>, Square*> getMatrix();
+    void addNewPiece(Piece* new_piece);
 };
 
 #endif
