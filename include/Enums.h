@@ -7,13 +7,18 @@ enum Piece_type {
     KNIGHT,
     BISHOP,
     QUEEN,
-    KING
+    KING,
+    ANY
 };
 
 enum game_state {
     NORMAL,
-    CHECK,
-    CHECK_MATE
+    WHITE_IN_CHECK,
+    BLACK_IN_CHECK,
+    WHITE_IN_STALEMATE,
+    BLACK_IN_STALEMATE,
+    WHITE_IN_CHECK_MATE,
+    BLACK_IN_CHECK_MATE
 };
 
 enum color {

@@ -5,9 +5,9 @@
 #include <cmath>
 
 class Queen : public Piece{
-    bool isPossible(char x_, char y_) override;
     bool isCorrect(char x_, char y_) override;
 public:
+    bool isPossible(char x_, char y_) override;
     Queen(color col_, Board* board_, Square* square_);
     ~Queen();
 };

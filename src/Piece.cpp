@@ -47,18 +47,33 @@ bool Piece::move(char x_, char y_,special_args add_opt) {
    * @param second cordinate of board
    * @return true if Piece was moved sucesfully false otherwise
    */
+
   if (x_ < 'a' || x_ > 'h' || y_ < '1' || y_ > '8')
     return false;
 
   if (!isPossible(x_, y_))
     return false;
 
+  this->board->loadCheck(this->col);
+  if (this->board->isCheck(this->col))
+      std::cout << "Before move: YOU'RE IN CHECK!\n";
+
   std::cout << "Figure to move: " << this->getSquare()->getCoords().first
             << this->getSquare()->getCoords().second << std::endl;
+
   this->square->setOccupator(nullptr);
   this->square = board->getMatrix().at(std::pair<char, char>(x_, y_));
   this->square->setOccupator(this);
   this->first_move_made = true;
+
+  auto lst = this->board->loadCheck(this->col);
+  if (this->board->isCheck(this->col)) {
+      std::cout << "After move: YOU'RE IN CHECK!\n";
+      this->board->setUndoFlag();
+      return true;
+  }
+
+
   return true;
 }
 
