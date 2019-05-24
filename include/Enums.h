@@ -13,12 +13,8 @@ enum Piece_type {
 
 enum game_state {
     NORMAL,
-    WHITE_IN_CHECK,
-    BLACK_IN_CHECK,
-    WHITE_IN_STALEMATE,
-    BLACK_IN_STALEMATE,
-    WHITE_IN_CHECK_MATE,
-    BLACK_IN_CHECK_MATE,
+    CHECK,
+    CHECK_MATE,
     STALE_MATE
 };
 

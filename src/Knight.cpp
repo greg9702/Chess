@@ -15,7 +15,6 @@ bool Knight::isPossible(char x_, char y_) {
   if (!(isCorrect(x_, y_))) {
     return false;
   }
-  std::cout << "Is Correct() passed" << std::endl;
   if ((this->board->getPieceByCoord(x_, y_) != nullptr) &&
       (this->board->getMatrix()
            .at(std::pair<char, char>(x_, y_))

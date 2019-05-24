@@ -23,16 +23,36 @@ Board::Board() {
   }
   // create pieces
 
+
     piecesOnBoard.push_back(
-            new Knight(WHITE, this, matrix.at(std::make_pair('f', '6'))));
+            new Queen(WHITE, this, matrix.at(std::make_pair('f', '3'))));
     piecesOnBoard.push_back(
             new King(WHITE, this, matrix.at(std::make_pair('e', '1'))));
     piecesOnBoard.push_back(
-            new Rook(WHITE, this, matrix.at(std::make_pair('a', '7'))));
-
+            new Bishop(WHITE, this, matrix.at(std::make_pair('c', '4'))));
 
     piecesOnBoard.push_back(
-            new King(BLACK, this, matrix.at(std::make_pair('h', '8'))));
+            new Rook(BLACK, this, matrix.at(std::make_pair('a', '8'))));
+    piecesOnBoard.push_back(
+            new Knight(BLACK, this, matrix.at(std::make_pair('b', '8'))));
+    piecesOnBoard.push_back(
+            new Bishop(BLACK, this, matrix.at(std::make_pair('c', '8'))));
+    piecesOnBoard.push_back(
+            new Queen(BLACK, this, matrix.at(std::make_pair('d', '8'))));
+    piecesOnBoard.push_back(
+            new King(BLACK, this, matrix.at(std::make_pair('e', '8'))));
+    piecesOnBoard.push_back(
+            new Bishop(BLACK, this, matrix.at(std::make_pair('f', '8'))));
+    piecesOnBoard.push_back(
+            new Knight(BLACK, this, matrix.at(std::make_pair('g', '8'))));
+    piecesOnBoard.push_back(
+            new Rook(BLACK, this, matrix.at(std::make_pair('h', '8'))));
+
+    for (char i = 'a'; i <= 'h'; ++i) {
+        piecesOnBoard.push_back(
+                new Pawn(BLACK, this, matrix.at(std::make_pair(i, '7'))));
+    }
+
 
     backup = nullptr;
 
@@ -65,10 +85,7 @@ bool Board::isCheck(color col,std::pair<char,char>king_pos) {
    * @return true if there was check, false otherwise
    */
    this->checkState(col,king_pos);
-   if (col == WHITE)
-       return this->game_s == WHITE_IN_CHECK || this->game_s == WHITE_IN_CHECK_MATE;
-   if (col == BLACK)
-        return this->game_s == BLACK_IN_CHECK || this->game_s == BLACK_IN_CHECK_MATE;
+   return this->game_s == CHECK || this->game_s == CHECK_MATE;
 
 }
 
@@ -82,31 +99,40 @@ game_state Board::getGameState(color col) {
         for (char tmp_y = '1'; tmp_y <= '8'; ++tmp_y) {
             for (char tmp_x = 'a'; tmp_x <= 'h'; ++tmp_x) {
                 if (mover->isPossible(tmp_x,tmp_y)){
-                    std::cout << mover->getType() << " " <<  tmp_x << tmp_y;
-                    stale_mate_flag = false;
-                    goto out;
+                    char src_x = mover->getSquare()->getCoords().first;
+                    char src_y = mover->getSquare()->getCoords().second;
+
+                    mover->square->setOccupator(nullptr);
+                    mover->square = this->getMatrix().at(std::pair<char, char>(tmp_x, tmp_y));
+                    Piece * was_captured = mover->square->getOccupator();
+                    mover->square->setOccupator(mover);
+
+                    if (!isCheck(col,std::pair<char,char>('0','0'))) {
+                        stale_mate_flag = false;
+                        mover->square->setOccupator(nullptr);
+                        mover->square = this->getMatrix().at(std::pair<char, char>(src_x, src_y));
+                        mover->square->setOccupator(mover);
+                        goto out;
+                    }
+                    mover->square->setOccupator(was_captured);
+                    mover->square = this->getMatrix().at(std::pair<char, char>(src_x, src_y));
+                    mover->square->setOccupator(mover);
                 }
             }
         }
     }
     out:
-    std::cout << "Stale mate flag." << stale_mate_flag << std::endl;
-    if (game_s != BLACK_IN_CHECK && game_s != WHITE_IN_CHECK){
+    isCheck(col,std::pair<char,char>('0','0'));
+    if (game_s != CHECK){
         if (stale_mate_flag)
             this->game_s = STALE_MATE;
         else
             this->game_s = NORMAL;
     } else {
-        if (stale_mate_flag == false) {
-            if (col == WHITE)
-                this->game_s = WHITE_IN_CHECK;
-            else
-                this->game_s = BLACK_IN_CHECK;
+        if (!stale_mate_flag) {
+            this->game_s = CHECK;
         } else {
-            if (col == WHITE)
-                this->game_s = WHITE_IN_CHECK_MATE;
-            else
-                this->game_s = BLACK_IN_CHECK_MATE;
+            this->game_s = CHECK_MATE;
         }
     }
     return this->game_s;
@@ -121,6 +147,7 @@ bool Board::move(std::string instruction) {
   // TODO konfliktowe sytuacje gdy 2 figury mogą wykonać ten ruch <= done
 
   //Remember the state before the move
+
     delete backup;
     backup = new Board(*this);
 
@@ -344,10 +371,7 @@ std::vector<Piece *> Board::checkState(color col,std::pair<char,char>king_pos) {
     }
 
     if (!checkingPieces.empty()) {
-        if (col == WHITE)
-            this->game_s = WHITE_IN_CHECK;
-        else
-            this->game_s = BLACK_IN_CHECK;
+        this->game_s = CHECK;
     }
     else {
         this->game_s = NORMAL;
