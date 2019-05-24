@@ -51,9 +51,26 @@ int main() {
 
   Board chessBoard;
   string instruction = "";
-  showBoard(&chessBoard);
 
   while (instruction != "0") {
+      showBoard(&chessBoard);
+      game_state gs = chessBoard.getGameState(chessBoard.getTurn());
+      if (gs == STALE_MATE) {
+          std::cout << "IT'S STALEMATE! DRAW\n";
+          break;
+      }
+      if (chessBoard.getTurn() == WHITE){
+          if (gs == CHECK_MATE){
+              std::cout << "IT'S CHECK MATE! BLACK WINS.";
+              break;
+          }
+      }
+      if (chessBoard.getTurn() == BLACK){
+          if (gs == CHECK_MATE){
+              std::cout << "IT'S CHECK MATE! WHITE WINS.";
+              break;
+          }
+      }
 
     if (chessBoard.getTurn() == WHITE)
       cout << "White turn" << endl;
@@ -68,7 +85,6 @@ int main() {
       cout << "Invalid move. Try again." << std::endl;
     }
 
-    showBoard(&chessBoard);
   }
   return 0;
 }

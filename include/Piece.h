@@ -10,6 +10,7 @@ class Square;
 
 class Piece{
     friend class King;
+    friend class Board;
 protected:
 	color col;
 	Piece_type type;

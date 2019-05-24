@@ -14,9 +14,11 @@ Pawn::Pawn(color col_, Board *board_, Square *square_)
 }
 
 Pawn::~Pawn() {
+    /*
   std::cout << "Deleted PAWN OF POSITION: "
             << this->getSquare()->getCoords().first
             << this->getSquare()->getCoords().second << std::endl;
+    */
 }
 
 bool Pawn::isCorrect(char x_, char y_) {
@@ -43,7 +45,6 @@ bool Pawn::isCorrect(char x_, char y_) {
 bool Pawn::isPossible(char x_, char y_) {
   if (!isCorrect(x_, y_))
     return false;
-  std::cout << "Correct passed.\n";
   int my_x = this->square->getCoords().first;
   int my_y = this->square->getCoords().second;
 
@@ -76,8 +77,6 @@ bool Pawn::move(char x_, char y_,special_args add_opt) {
 
     else if (add_opt != NONE && ((this->col == WHITE && this->getSquare()->getCoords().second == '7') || (this->col == BLACK && this->getSquare()->getCoords().second == '2'))){
         if (Piece::move(x_,y_)){
-            std::cout << "CORDS " << this->getSquare()->getCoords().first
-                      << this->getSquare()->getCoords().second << std::endl;
             switch (add_opt){
                 case PROM_N:
                     this->board->addNewPiece(new Knight(this->col, this->board, this->getSquare()));
