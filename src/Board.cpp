@@ -23,34 +23,19 @@ Board::Board() {
   }
 
   // create pieces
+
     piecesOnBoard.push_back(
-            new Queen(WHITE, this, matrix.at(std::make_pair('f', '3'))));
+            new Pawn(WHITE, this, matrix.at(std::make_pair('a', '7'))));
     piecesOnBoard.push_back(
             new King(WHITE, this, matrix.at(std::make_pair('e', '1'))));
     piecesOnBoard.push_back(
-            new Bishop(WHITE, this, matrix.at(std::make_pair('c', '4'))));
+            new Pawn(WHITE, this, matrix.at(std::make_pair('h', '7'))));
+
 
     piecesOnBoard.push_back(
-            new Rook(BLACK, this, matrix.at(std::make_pair('a', '8'))));
-    piecesOnBoard.push_back(
-            new Knight(BLACK, this, matrix.at(std::make_pair('b', '8'))));
-    piecesOnBoard.push_back(
-            new Bishop(BLACK, this, matrix.at(std::make_pair('c', '8'))));
-    piecesOnBoard.push_back(
-            new Queen(BLACK, this, matrix.at(std::make_pair('d', '8'))));
-    piecesOnBoard.push_back(
-            new King(BLACK, this, matrix.at(std::make_pair('e', '8'))));
-    piecesOnBoard.push_back(
-            new Bishop(BLACK, this, matrix.at(std::make_pair('f', '8'))));
-    piecesOnBoard.push_back(
-            new Knight(BLACK, this, matrix.at(std::make_pair('g', '8'))));
-    piecesOnBoard.push_back(
-            new Rook(BLACK, this, matrix.at(std::make_pair('h', '8'))));
+            new King(BLACK, this, matrix.at(std::make_pair('a', '5'))));
 
-    for (char i = 'a'; i <= 'h'; ++i) {
-        piecesOnBoard.push_back(
-                new Pawn(BLACK, this, matrix.at(std::make_pair(i, '7'))));
-    }
+
 
     backup = nullptr;
 
@@ -77,18 +62,14 @@ Board::~Board() {
   }
 }
 
-bool Board::isCheck(color col,std::pair<char,char>king_pos) {
-  /**
-   * Checks if there was check.
-   * @return true if there was check, false otherwise
-   */
-   this->checkState(col,king_pos);
-   return this->game_s == CHECK || this->game_s == CHECK_MATE;
-
-}
 
 game_state Board::getGameState(color col) {
-    this->checkState(col,std::pair<char,char>('0','0'));
+    /**
+     * Method that sets and returns the particular game state
+     * It more precise than Board::isCheck() method
+     * @param col - color to check the state
+     * @return current game_state
+     */
     bool stale_mate_flag = true;
     // low performance, highly recommended to change
     std::vector<Piece *> my_pieces = this->findPieces(col);
@@ -104,21 +85,24 @@ game_state Board::getGameState(color col) {
                     Piece * was_captured = mover->square->getOccupator();
                     mover->square->setOccupator(mover);
 
+                    // if there is a move possible
                     if (!isCheck(col,std::pair<char,char>('0','0'))) {
                         stale_mate_flag = false;
                         mover->square->setOccupator(nullptr);
                         mover->square = this->getMatrix().at(std::pair<char, char>(src_x, src_y));
                         mover->square->setOccupator(mover);
-                        goto out;
+                        break;
                     }
                     mover->square->setOccupator(was_captured);
                     mover->square = this->getMatrix().at(std::pair<char, char>(src_x, src_y));
                     mover->square->setOccupator(mover);
                 }
             }
+            // if we've fount a possible move
+            if (!stale_mate_flag)
+                break;
         }
     }
-    out:
     isCheck(col,std::pair<char,char>('0','0'));
     if (game_s != CHECK){
         if (stale_mate_flag)
@@ -155,7 +139,6 @@ bool Board::move(std::string instruction) {
     special_args add_opt = NONE;
     // figure move
     if (isupper(instruction.at(0))) { // SET UP ALL FIGURES MOVE EXCEPT PAWN
-
         if (instruction.size() > 5)
             return false;
         switch (instruction.at(0)) {
@@ -201,9 +184,9 @@ bool Board::move(std::string instruction) {
             if (this->findPieces(this->turn,KING).empty())
                 return false;
             Piece * king = this->findPieces(this->turn,KING).at(0);
-            src_x  = king->getSquare()->getCoords().first;//trash values for castling
+            src_x  = king->getSquare()->getCoords().first;
             src_y  = king->getSquare()->getCoords().second;
-            dest_x = '1';
+            dest_x = '1';//trash values for castling
             dest_y = 'a';
         }
     } else { // SET UP PAWN MOVE
@@ -255,7 +238,7 @@ bool Board::move(std::string instruction) {
 
     // if there is still check after the "possible" move (Piece::move() returned false, but it changed the board)
     if (undo_flag)
-        unDo();
+        undo();
     return false;
 }
 
@@ -331,11 +314,12 @@ void Board::addNewPiece(Piece *new_piece) {
   this->piecesOnBoard.push_back(new_piece);
 }
 
-std::vector<Piece *> Board::checkState(color col,std::pair<char,char>king_pos) {
+bool Board::isCheck(color col,std::pair<char,char>king_pos) {
     /**
      * Method that checks if the king of color col is in check
-     * Method sets the value of member game_s
+     * Method sets the value of member game_s (CHECK / NORMAL)
      * @param col color of the checked king
+     * @param king_pos particular position of king to check (useful f.e. while checking if castling is possible)
      * @return vector of pointers to the pieces that are checking the king
      */
     char king_x,king_y;
@@ -344,7 +328,7 @@ std::vector<Piece *> Board::checkState(color col,std::pair<char,char>king_pos) {
         std::vector<Piece *> king = this->findPieces(col, KING);
         //if there is no King at the board
         if (king.empty()) {
-            return std::vector<Piece *>();
+            return false;
         }
         king_x = king.at(0)->getSquare()->getCoords().first;
         king_y = king.at(0)->getSquare()->getCoords().second;
@@ -352,27 +336,20 @@ std::vector<Piece *> Board::checkState(color col,std::pair<char,char>king_pos) {
         king_x = king_pos.first;
         king_y = king_pos.second;
     }
-    std::vector<Piece *> checkingPieces = std::vector<Piece *>();
 
     color sec_col = col == WHITE ? BLACK : WHITE;
     std::vector<Piece *> candidates = this->findPieces(sec_col);
     for (auto & cand : candidates){
         if (cand->isPossible(king_x,king_y)){
-            checkingPieces.push_back(cand);
+            this->game_s = CHECK;
+            return true;
         }
     }
-
-    if (!checkingPieces.empty()) {
-        this->game_s = CHECK;
-    }
-    else {
-        this->game_s = NORMAL;
-    }
-
-    return checkingPieces;
+    this->game_s = NORMAL;
+    return false;
 }
 
-bool Board::unDo() {
+bool Board::undo() {
     /**
      * Method that changes the content of the board to the state stored in backup
      */

@@ -24,18 +24,17 @@ public:
 	Board();
 	Board(Board &);
 	~Board();
-	bool isCheck(color col,std::pair<char,char>king_pos=std::pair<char,char>('0','0'));
-	game_state getGameState(color col);
 	bool move(std::string instruction);
-	bool unDo();
-	std::string getHistory();
+	bool undo();
+	void setUndoFlag();
+    void addNewPiece(Piece* new_piece);
+    std::vector<Piece *> findPieces(color col,Piece_type typ = ANY);
+    bool isCheck(color col,std::pair<char,char>king_pos=std::pair<char,char>('0','0'));
+    game_state getGameState(color col);
     color getTurn();
     Piece* getPieceByCoord(char x_, char y_);
     std::map<std::pair<char,char>, Square*> getMatrix();
-    void addNewPiece(Piece* new_piece);
-    std::vector<Piece *> findPieces(color col,Piece_type typ = ANY);
-    std::vector<Piece *> checkState(color col,std::pair<char,char>king_pos);
-    void setUndoFlag();
+    std::string getHistory();
 };
 
 #endif
