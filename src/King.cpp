@@ -68,7 +68,18 @@ bool King::move(char x_, char y_, special_args add_opt) {
                     if (this->board->getPieceByCoord('f',my_y) != nullptr ||
                             this->board->getPieceByCoord('g',my_y) != nullptr)
                         return false;
-                    //std::cout << "Rook found!\n";
+                    if (this->col == WHITE){
+                        if (this->board->isCheck(WHITE,std::pair<char,char>('f','1')) ||
+                            this->board->isCheck(WHITE,std::pair<char,char>('g','1')) ||
+                            this->board->isCheck(WHITE,std::pair<char,char>('e','1')))
+                            return false;
+                    }
+                    if (this->col == BLACK){
+                        if (this->board->isCheck(BLACK,std::pair<char,char>('f','8')) ||
+                            this->board->isCheck(BLACK,std::pair<char,char>('g','8')) ||
+                            this->board->isCheck(BLACK,std::pair<char,char>('e','8')))
+                            return false;
+                    }
                     ok_rook = test_rook;
                 }
             }
@@ -95,6 +106,18 @@ bool King::move(char x_, char y_, special_args add_opt) {
                         this->board->getPieceByCoord('c',my_y) != nullptr ||
                         this->board->getPieceByCoord('d',my_y) != nullptr)
                         return false;
+                    if (this->col == WHITE){
+                        if (this->board->isCheck(WHITE,std::pair<char,char>('c','1')) ||
+                            this->board->isCheck(WHITE,std::pair<char,char>('d','1')) ||
+                            this->board->isCheck(WHITE,std::pair<char,char>('e','1')))
+                            return false;
+                    }
+                    if (this->col == BLACK){
+                        if (this->board->isCheck(BLACK,std::pair<char,char>('c','8')) ||
+                            this->board->isCheck(BLACK,std::pair<char,char>('d','8')) ||
+                            this->board->isCheck(BLACK,std::pair<char,char>('e','8')))
+                            return false;
+                    }
                     ok_rook = test_rook;
                 }
             }
@@ -112,6 +135,7 @@ bool King::move(char x_, char y_, special_args add_opt) {
             ok_rook->square->setOccupator(ok_rook);
             ok_rook->first_move_made = true;
         }
+        return true;
     }
-    return true;
+    return false;
 }
