@@ -30,8 +30,7 @@ enum special_args {
     PROM_R,
     PROM_Q,
     SHORT_CASTLE,
-    LONG_CASTLE,
-    STARTING_POINT_KNOWN    //for conflict situations
+    LONG_CASTLE
 };
 
 #endif //CHESS_ENUMS_H

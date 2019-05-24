@@ -21,9 +21,8 @@ Board::Board() {
           std::make_pair(tmp_x, tmp_y), new Square(tmp_x, tmp_y)));
     }
   }
+
   // create pieces
-
-
     piecesOnBoard.push_back(
             new Queen(WHITE, this, matrix.at(std::make_pair('f', '3'))));
     piecesOnBoard.push_back(
@@ -52,7 +51,6 @@ Board::Board() {
         piecesOnBoard.push_back(
                 new Pawn(BLACK, this, matrix.at(std::make_pair(i, '7'))));
     }
-
 
     backup = nullptr;
 
@@ -93,7 +91,6 @@ game_state Board::getGameState(color col) {
     this->checkState(col,std::pair<char,char>('0','0'));
     bool stale_mate_flag = true;
     // low performance, highly recommended to change
-    // NOT WORKING PROPERLY
     std::vector<Piece *> my_pieces = this->findPieces(col);
     for (auto& mover : my_pieces){
         for (char tmp_y = '1'; tmp_y <= '8'; ++tmp_y) {
@@ -144,27 +141,23 @@ bool Board::move(std::string instruction) {
    * @param instruction next move in chess notation
    * @return true if the move was successfully performed, false otherwise
    */
-  // TODO konfliktowe sytuacje gdy 2 figury mogą wykonać ten ruch <= done
 
   //Remember the state before the move
-
     delete backup;
     backup = new Board(*this);
 
-    if (instruction.size() < 2 || instruction.size() > 5) {
+    if (instruction.size() < 3 || instruction.size() > 6) {
         return false;
     }
 
-    char dest_x;
-    char dest_y;
+    char src_x,src_y,dest_x,dest_y;
     Piece_type fig_to_move;
     special_args add_opt = NONE;
     // figure move
     if (isupper(instruction.at(0))) { // SET UP ALL FIGURES MOVE EXCEPT PAWN
 
-        if (instruction.size() < 3)
+        if (instruction.size() > 5)
             return false;
-
         switch (instruction.at(0)) {
             case 'B':
                 fig_to_move = BISHOP;
@@ -195,40 +188,30 @@ bool Board::move(std::string instruction) {
         }
         if (instruction.at(0) != 'O') {
             switch (instruction.size()) {
-                case 3:
-                    dest_x = instruction.at(1);
-                    dest_y = instruction.at(2);
-                    break;
-                case 4:
-                    dest_x = instruction.at(2);
-                    dest_y = instruction.at(3);
-                    add_opt = STARTING_POINT_KNOWN;
+                case 5:
+                    src_x  = instruction.at(1);
+                    src_y  = instruction.at(2);
+                    dest_x = instruction.at(3);
+                    dest_y = instruction.at(4);
                     break;
                 default:
-                    break;
+                    return false;
             }
         } else{
-            dest_x = '1';   //trash values for castling
+            if (this->findPieces(this->turn,KING).empty())
+                return false;
+            Piece * king = this->findPieces(this->turn,KING).at(0);
+            src_x  = king->getSquare()->getCoords().first;//trash values for castling
+            src_y  = king->getSquare()->getCoords().second;
+            dest_x = '1';
             dest_y = 'a';
         }
     } else { // SET UP PAWN MOVE
         switch (instruction.size()){
-            case 2:
-                dest_x = instruction.at(0);
-                dest_y = instruction.at(1);
-                break;
-            case 3:
-                dest_x = instruction.at(1);
-                dest_y = instruction.at(2);
-                add_opt = STARTING_POINT_KNOWN;
-                break;
-            case 4:
-            case 5:
+            case 6:
                 if ((instruction.at(instruction.size()-2) != '='))
                     return false;
                 std::cout << "promotion!" << std::endl;
-                dest_x = instruction.at(instruction.size()-4);
-                dest_y = instruction.at(instruction.size()-3);
                 switch (instruction.at((instruction.size()-1))) {
                     case 'B':
                         add_opt = PROM_B;
@@ -245,23 +228,32 @@ bool Board::move(std::string instruction) {
                     default:
                         return false;
                 }
+            case 4:
+                src_x  = instruction.at(0);
+                src_y  = instruction.at(1);
+                dest_x = instruction.at(2);
+                dest_y = instruction.at(3);
+                break;
+            default:
                 break;
         }
         fig_to_move = PAWN;
     }
+    Piece * candidate_to_move = this->getPieceByCoord(src_x,src_y);
+    if (candidate_to_move == nullptr ||
+        fig_to_move != candidate_to_move->getType() ||
+        this->turn != candidate_to_move->getColor())
+        return false;
 
-    std::vector<Piece *> candidatesToMove = this->findPieces(turn, fig_to_move);
-    for (auto it = candidatesToMove.begin(); it != candidatesToMove.end();
-         ++it) { // auto = std::vector<Piece*>::iterator
-        if ((*it)->move(dest_x, dest_y,add_opt)) {
-            std::cout << "Figure moved to: " << (*it)->getSquare()->getCoords().first
-                      << (*it)->getSquare()->getCoords().second << std::endl;
-            history.push_back(instruction);
-            turn = turn == WHITE ? BLACK : WHITE;
-            return true;
-        }
+    if (candidate_to_move->move(dest_x, dest_y,add_opt)) {
+        std::cout << "Figure moved to: " << candidate_to_move->getSquare()->getCoords().first
+                  << candidate_to_move->getSquare()->getCoords().second << std::endl;
+        history.push_back(instruction);
+        turn = turn == WHITE ? BLACK : WHITE;
+        return true;
     }
-    // if there is still check after the "possible" move
+
+    // if there is still check after the "possible" move (Piece::move() returned false, but it changed the board)
     if (undo_flag)
         unDo();
     return false;
