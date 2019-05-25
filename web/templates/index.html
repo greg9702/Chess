@@ -7,7 +7,7 @@
 			.chess-board th { padding: .5em; }
 			.chess-board td { border: 1px solid; width: 40px; height: 40px; font-size: 30px; text-align: center;}
 			.chess-board .white { background: #eee; }
-			.chess-board .black { background: #d6d6c2; }
+			.chess-board .black { background: #a40f08; }
 		</style>
 	</head>
 	<body>
@@ -27,7 +27,7 @@
 					{% for i in range (0, len) %}
 					{% if i%8 == 0 %}
 					<tr>
-					<th> {{ 8 - i/8 }}</th>
+					<th> {{ (8 - i/8)|int }}</th>
 					{% endif %}
 							{% if board[i].figure != 'None' %}
 						    <td class={{board[i].square_color}} id={{board[i].position}}>&{{board[i].code}};</td>

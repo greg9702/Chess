@@ -401,56 +401,56 @@ board = [
 		'code': '#9817'
 	},
 	{
-		'square_color' : 'white',
+		'square_color' : 'black',
 		'color': 'white',
 		'figure': 'Rook',
 		'position': 'a1',
 		'code': '#9814'
 	},
 	{
-		'square_color' : 'black',
+		'square_color' : 'white',
 		'color': 'white',
 		'figure': 'Knight',
 		'position': 'b1',
 		'code': '#9816'
 	},
 	{
-		'square_color' : 'white',
+		'square_color' : 'black',
 		'color': 'white',
 		'figure': 'Bishop',
 		'position': 'c1',
 		'code': '#9815'
 	},
 	{
-		'square_color' : 'black',
+		'square_color' : 'white',
 		'color': 'white',
 		'figure': 'Queen',
 		'position': 'd1',
 		'code': '#9813'
 	},
 	{
-		'square_color' : 'white',
+		'square_color' : 'black',
 		'color': 'white',
 		'figure': 'King',
 		'position': 'e1',
 		'code': '#9812'
 	},
 	{
-		'square_color' : 'black',
+		'square_color' : 'white',
 		'color': 'white',
 		'figure': 'Bishop',
 		'position': 'f1',
 		'code': '#9815'
 	},
 	{
-		'square_color' : 'white',
+		'square_color' : 'black',
 		'color': 'white',
 		'figure': 'Knight',
 		'position': 'g1',
 		'code': '#9816'
 	},
 	{
-		'square_color' : 'black',
+		'square_color' : 'white',
 		'color': 'white',
 		'figure': 'Rook',
 		'position': 'h1',

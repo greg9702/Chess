@@ -4,6 +4,7 @@ import sys
 
 argc = len(sys.argv)
 
+
 if argc > 2:
     #HOST = 'localhost'    # The remote host
     HOST = sys.argv[2]
