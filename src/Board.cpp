@@ -161,11 +161,13 @@ bool Board::move(std::string instruction) {
     delete backup;
     backup = new Board(*this);
 
+
+    cas_type = NONE;
+
     if (instruction.size() < 4 || instruction.size() > 6) {
         return false;
     }
 
-    cas_type = NONE;
     char src_x,src_y,dest_x,dest_y;
     Piece_type fig_to_move;
     special_args add_opt = NONE;

@@ -112,61 +112,73 @@ main(int argc, char **argv)
         // Simulation of moveBoard() function
 
 
+
         std::string info_to_front = "";
-        //  correct move
-        if (chess_board.move(recived_move)) {
-            info_to_front += "1";
-        } else {
-            info_to_front += "0";
-        }
 
-        //  castling
-        if (chess_board.getCastlingType() == SHORT_CASTLE) {
-            if (chess_board.getTurn() == WHITE)
-                info_to_front += "3";
-            else
-                info_to_front += "1";
-        }
-        else if (chess_board.getCastlingType() == LONG_CASTLE){
-            if (chess_board.getTurn() == WHITE)
-                info_to_front += "4";
-            else
-                info_to_front += "2";
+        if (recived_move.size() == 4 || recived_move.size() == 5){
+            for (int i=0;i<2;++i) {
+                if (recived_move.at(i) < 'a' || recived_move.at(i) > 'h' ||
+                    recived_move.at(i) < '1' || recived_move.at(i) > '8')
+                info_to_front = "wrong";
+            }
         }
         else{
-            info_to_front += "0";
+            info_to_front = "wrong";
         }
-
-        // GAMESTATE
-        game_state gs = chess_board.getGameState(chess_board.getTurn());
-        switch (gs){
-            case NORMAL:
+        if (info_to_front != "wrong") {
+            //  correct move
+            if (chess_board.move(recived_move)) {
+                info_to_front += "1";
+            } else {
                 info_to_front += "0";
-                break;
-            case CHECK:
+            }
+
+            //  castling
+            if (chess_board.getCastlingType() == SHORT_CASTLE) {
                 if (chess_board.getTurn() == WHITE)
-                    info_to_front += "1";
-                else
                     info_to_front += "3";
-                break;
-            case CHECK_MATE:
-                if (chess_board.getTurn() == WHITE)
-                    info_to_front += "2";
                 else
+                    info_to_front += "1";
+            } else if (chess_board.getCastlingType() == LONG_CASTLE) {
+                if (chess_board.getTurn() == WHITE)
                     info_to_front += "4";
-                break;
-            case STALE_MATE:
-                info_to_front += "5";
-        }
-
-        //COLOR TO MOVE
-        if (gs == CHECK_MATE || gs == STALE_MATE)
-            info_to_front += "2";
-        else{
-            if (chess_board.getTurn() == WHITE)
+                else
+                    info_to_front += "2";
+            } else {
                 info_to_front += "0";
-            else
-                info_to_front += "1";
+            }
+
+            // GAMESTATE
+            game_state gs = chess_board.getGameState(chess_board.getTurn());
+            switch (gs) {
+                case NORMAL:
+                    info_to_front += "0";
+                    break;
+                case CHECK:
+                    if (chess_board.getTurn() == WHITE)
+                        info_to_front += "1";
+                    else
+                        info_to_front += "3";
+                    break;
+                case CHECK_MATE:
+                    if (chess_board.getTurn() == WHITE)
+                        info_to_front += "2";
+                    else
+                        info_to_front += "4";
+                    break;
+                case STALE_MATE:
+                    info_to_front += "5";
+            }
+
+            //COLOR TO MOVE
+            if (gs == CHECK_MATE || gs == STALE_MATE)
+                info_to_front += "2";
+            else {
+                if (chess_board.getTurn() == WHITE)
+                    info_to_front += "0";
+                else
+                    info_to_front += "1";
+            }
         }
 
 
