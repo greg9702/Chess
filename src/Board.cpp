@@ -1,11 +1,12 @@
 #include "Board.h"
-#include <Bishop.h>
-#include <King.h>
-#include <Knight.h>
-#include <Pawn.h>
-#include <Queen.h>
-#include <Rook.h>
+#include "Bishop.h"
+#include "King.h"
+#include "Knight.h"
+#include "Pawn.h"
+#include "Queen.h"
+#include "Rook.h"
 #include <assert.h>
+#include <cmath>
 
 Board::Board() {
   /**
@@ -27,13 +28,43 @@ Board::Board() {
     piecesOnBoard.push_back(
             new Rook(WHITE, this, matrix.at(std::make_pair('a', '1'))));
     piecesOnBoard.push_back(
+            new Knight(WHITE, this, matrix.at(std::make_pair('b', '1'))));
+    piecesOnBoard.push_back(
+            new Bishop(WHITE, this, matrix.at(std::make_pair('c', '1'))));
+    piecesOnBoard.push_back(
+            new Queen(WHITE, this, matrix.at(std::make_pair('d', '1'))));
+    piecesOnBoard.push_back(
             new King(WHITE, this, matrix.at(std::make_pair('e', '1'))));
+    piecesOnBoard.push_back(
+            new Bishop(WHITE, this, matrix.at(std::make_pair('f', '1'))));
+    piecesOnBoard.push_back(
+            new Knight(WHITE, this, matrix.at(std::make_pair('g', '1'))));
     piecesOnBoard.push_back(
             new Rook(WHITE, this, matrix.at(std::make_pair('h', '1'))));
 
-
+    piecesOnBoard.push_back(
+            new Rook(BLACK, this, matrix.at(std::make_pair('a', '8'))));
+    piecesOnBoard.push_back(
+            new Knight(BLACK, this, matrix.at(std::make_pair('b', '8'))));
+    piecesOnBoard.push_back(
+            new Bishop(BLACK, this, matrix.at(std::make_pair('c', '8'))));
+    piecesOnBoard.push_back(
+            new Queen(BLACK, this, matrix.at(std::make_pair('d', '8'))));
     piecesOnBoard.push_back(
             new King(BLACK, this, matrix.at(std::make_pair('e', '8'))));
+    piecesOnBoard.push_back(
+            new Bishop(BLACK, this, matrix.at(std::make_pair('f', '8'))));
+    piecesOnBoard.push_back(
+            new Knight(BLACK, this, matrix.at(std::make_pair('g', '8'))));
+    piecesOnBoard.push_back(
+            new Rook(BLACK, this, matrix.at(std::make_pair('h', '8'))));
+
+    for (char i = 'a'; i <= 'h'; ++i) {
+        piecesOnBoard.push_back(
+                new Pawn(WHITE, this, matrix.at(std::make_pair(i, '2'))));
+        piecesOnBoard.push_back(
+                new Pawn(BLACK, this, matrix.at(std::make_pair(i, '7'))));
+    }
 
 
 
@@ -130,101 +161,53 @@ bool Board::move(std::string instruction) {
     delete backup;
     backup = new Board(*this);
 
-    if (instruction.size() < 3 || instruction.size() > 6) {
+    if (instruction.size() < 4 || instruction.size() > 6) {
         return false;
     }
 
     char src_x,src_y,dest_x,dest_y;
     Piece_type fig_to_move;
     special_args add_opt = NONE;
-    // figure move
-    if (isupper(instruction.at(0))) { // SET UP ALL FIGURES MOVE EXCEPT PAWN
-        if (instruction.size() > 5)
-            return false;
-        switch (instruction.at(0)) {
+
+    src_x  = instruction.at(0);
+    src_y  = instruction.at(1);
+    dest_x = instruction.at(2);
+    dest_y = instruction.at(3);
+
+    if (getPieceByCoord(src_x,src_y) == nullptr)
+        return false;
+    fig_to_move = this->getPieceByCoord(src_x,src_y)->getType();
+
+    // ONLY CASTLINGS POSSIBLE
+    if (fig_to_move == KING && (src_x-dest_x == 2))
+        add_opt = LONG_CASTLE;
+    else if (fig_to_move == KING && (dest_x-src_x) == 2)
+        add_opt = SHORT_CASTLE;
+
+    // ONLY PROMOTION POSSIBLE
+    if (instruction.size() == 5) {
+        switch (instruction.at(4)) {
             case 'B':
-                fig_to_move = BISHOP;
-                break;
-            case 'K':
-                fig_to_move = KING;
-                break;
-            case 'O':
-                fig_to_move = KING;
-                if (instruction == "O-O")
-                    add_opt = SHORT_CASTLE;
-                else if (instruction == "O-O-O")
-                    add_opt = LONG_CASTLE;
-                else
-                    return false;
+                add_opt = PROM_B;
                 break;
             case 'N':
-                fig_to_move = KNIGHT;
+                add_opt = PROM_N;
                 break;
             case 'Q':
-                fig_to_move = QUEEN;
+                add_opt = PROM_Q;
                 break;
             case 'R':
-                fig_to_move = ROOK;
+                add_opt = PROM_R;
                 break;
             default:
                 return false;
-        }
-        if (instruction.at(0) != 'O') {
-            switch (instruction.size()) {
-                case 5:
-                    src_x  = instruction.at(1);
-                    src_y  = instruction.at(2);
-                    dest_x = instruction.at(3);
-                    dest_y = instruction.at(4);
-                    break;
-                default:
-                    return false;
-            }
-        } else{
-            if (this->findPieces(this->turn,KING).empty())
-                return false;
-            Piece * king = this->findPieces(this->turn,KING).at(0);
-            src_x  = king->getSquare()->getCoords().first;
-            src_y  = king->getSquare()->getCoords().second;
-            dest_x = '1';//trash values for castling
-            dest_y = 'a';
-        }
-    } else { // SET UP PAWN MOVE
-        switch (instruction.size()){
-            case 6:
-                if ((instruction.at(instruction.size()-2) != '='))
-                    return false;
-                std::cout << "promotion!" << std::endl;
-                switch (instruction.at((instruction.size()-1))) {
-                    case 'B':
-                        add_opt = PROM_B;
-                        break;
-                    case 'N':
-                        add_opt = PROM_N;
-                        break;
-                    case 'Q':
-                        add_opt = PROM_Q;
-                        break;
-                    case 'R':
-                        add_opt = PROM_R;
-                        break;
-                    default:
-                        return false;
-                }
-            case 4:
-                src_x  = instruction.at(0);
-                src_y  = instruction.at(1);
-                dest_x = instruction.at(2);
-                dest_y = instruction.at(3);
-                break;
-            default:
-                break;
         }
         fig_to_move = PAWN;
     }
+
     Piece * candidate_to_move = this->getPieceByCoord(src_x,src_y);
-    if (candidate_to_move == nullptr ||
-        fig_to_move != candidate_to_move->getType() ||
+
+    if (fig_to_move != candidate_to_move->getType() ||
         this->turn != candidate_to_move->getColor())
         return false;
 
