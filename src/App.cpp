@@ -114,18 +114,16 @@ main(int argc, char **argv)
 
 
         std::string info_to_front = "";
+        game_state gs;
 
         if (recived_move.size() == 4 || recived_move.size() == 5){
-            for (int i=0;i<2;++i) {
+            for (int i=0;i<3;i+=2) {
                 if (recived_move.at(i) < 'a' || recived_move.at(i) > 'h' ||
-                    recived_move.at(i) < '1' || recived_move.at(i) > '8')
-                info_to_front = "wrong";
+                    recived_move.at(i+1) < '1' || recived_move.at(i+1) > '8')
+                info_to_front = "000";
             }
         }
-        else{
-            info_to_front = "wrong";
-        }
-        if (info_to_front != "wrong") {
+        if (info_to_front != "000") {
             //  correct move
             if (chess_board.move(recived_move)) {
                 info_to_front += "1";
@@ -149,7 +147,7 @@ main(int argc, char **argv)
             }
 
             // GAMESTATE
-            game_state gs = chess_board.getGameState(chess_board.getTurn());
+            gs = chess_board.getGameState(chess_board.getTurn());
             switch (gs) {
                 case NORMAL:
                     info_to_front += "0";
@@ -169,16 +167,15 @@ main(int argc, char **argv)
                 case STALE_MATE:
                     info_to_front += "5";
             }
-
-            //COLOR TO MOVE
-            if (gs == CHECK_MATE || gs == STALE_MATE)
-                info_to_front += "2";
-            else {
-                if (chess_board.getTurn() == WHITE)
-                    info_to_front += "0";
-                else
-                    info_to_front += "1";
-            }
+        }
+        //COLOR TO MOVE
+        if (gs == CHECK_MATE || gs == STALE_MATE)
+            info_to_front += "2";
+        else {
+            if (chess_board.getTurn() == WHITE)
+                info_to_front += "0";
+            else
+                info_to_front += "1";
         }
 
 
