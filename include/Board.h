@@ -12,6 +12,7 @@
 
 class Board {
 private:
+    special_args cas_type;
 	color turn;
 	game_state game_s;
 	std::map<std::pair<char, char>, Square*> matrix;
@@ -35,6 +36,7 @@ public:
     Piece* getPieceByCoord(char x_, char y_);
     std::map<std::pair<char,char>, Square*> getMatrix();
     std::string getHistory();
+    special_args getCastlingType();
 };
 
 #endif

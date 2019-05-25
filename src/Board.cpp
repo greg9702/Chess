@@ -165,6 +165,7 @@ bool Board::move(std::string instruction) {
         return false;
     }
 
+    cas_type = NONE;
     char src_x,src_y,dest_x,dest_y;
     Piece_type fig_to_move;
     special_args add_opt = NONE;
@@ -215,6 +216,8 @@ bool Board::move(std::string instruction) {
         std::cout << "Figure moved to: " << candidate_to_move->getSquare()->getCoords().first
                   << candidate_to_move->getSquare()->getCoords().second << std::endl;
         history.push_back(instruction);
+        if (add_opt == SHORT_CASTLE || add_opt == LONG_CASTLE)
+            cas_type = add_opt;
         turn = turn == WHITE ? BLACK : WHITE;
         return true;
     }
@@ -428,6 +431,10 @@ void Board::deepCopy(Board *src) {
     }
     this->turn = src->turn;
     this->game_s = src->game_s;
+}
+
+special_args Board::getCastlingType() {
+    return this->cas_type;
 }
 
 

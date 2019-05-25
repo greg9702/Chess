@@ -33,4 +33,5 @@ enum special_args {
     LONG_CASTLE
 };
 
+
 #endif //CHESS_ENUMS_H
