@@ -457,18 +457,81 @@ board = [
 		'code': '#9814'
 	},
 ]
+white_turn = True;
+message = ""
 
-def udpdate_data():
-	# update board
-	# TODO
+def setMesssage(info):
+	# set message to display
+	return
+
+def moveFigure(move):
+	move = str(move, 'utf-8')
+	print ('who move', move[0:2])
+	print ('type move inside', type(move))
+	print ('move at 0', move[0])
+	for el in board:
+		figure = ""
+		code = ""
+		color = ""
+		if el['position'] == move[0:2]:
+			figure = el['figure']
+			code = el['code']
+			color = el['color']
+			print ('XDDD', figure, code, color)
+			el['figure'] = 'None'
+			el['code'] = 'None'
+			el['color'] = 'None'
+			break
+
+	for el in board:
+		if el['position'] == move[2:4]:
+			el['figure'] = figure
+			el['code'] = code
+			el['color'] = color
 
 	return
+
+def updateData(move, server_resp):
+	# update board
+	# @param 4 long string
+	if len(server_resp) != 4:
+		raise "Invalid size of passed string"
+
+	if server_resp[0] == '0': # wrong move
+		return False
+
+	if server_resp[0] == '1': # correct move
+		setMesssage(server_resp[2:4])
+		if server_resp[1] == '0':
+			moveFigure(move)		#normal move, no castling
+			return True
+
+		elif server_resp[1] == '1':
+			print ('white short castling')
+			return True
+
+		elif server_resp[1] == 2:
+			print ('white short castling')
+			return True
+
+		elif server_resp[1] == 3:
+			print ('white short castling')
+			return True
+
+		elif server_resp[1] == 4:
+			print ('white short castling')
+			return True
+	else:
+		raise "Illegal value at position 0"
+
+
+	return false
 
 def send_data(move):
 	# send data to cpp socket
 	argc = len(sys.argv)
 	HOST = '0::1'    # The remote host
-	PORT = 8001              # The same port as used by the server
+	PORT = 8001      # The same port as used by the server
 	try:
 		s = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
 		s.connect((HOST, PORT))
@@ -477,15 +540,11 @@ def send_data(move):
 		else:
 			return False
 		s.send(move)
-		data = s.recv(1024)			# Return data from server
+		data = s.recv(1024)			# Return data from server in binary stream
 		print('Received from server:', data)
 		server_resp = str(data, 'utf-8')
-		print ("recived", server_resp)
-		if server_resp == 'true':
-			# upadate_data()
-			print ('Update board')
-		elif server_resp == 'false':
-			print ('Do not update board')
+		print ("recived", server_resp) # in string form
+		updateData(move, server_resp)
 		s.close()
 
 	except socket.error as e:
@@ -495,14 +554,20 @@ def send_data(move):
 	    raise
 	return
 
+def printer():
+	for el in board:
+		print (el)
+
 @app.route("/", methods = ['GET', 'POST'])
 def function():
 	if request.method == 'POST':
 		move = request.form.get('move')
 		print ("move:" , move)
+		print ('type move before function', type(move))
 		if move != "":
 			if send_data(move) == False:
 				print ('Could not send string')
+		printer()
 		return render_template("index.html", board = board, len = len(board))
 	else:
 		return render_template("index.html", board = board, len = len(board))
