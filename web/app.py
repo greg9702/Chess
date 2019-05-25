@@ -457,11 +457,18 @@ board = [
 		'code': '#9814'
 	},
 ]
-white_turn = True;
-message = ""
+message = "White turn!"
 
 def setMesssage(info):
 	# set message to display
+	print ('info', info)
+	global message
+	message = ""
+	if info[1] == '1':
+		message += "Black turn!"
+	elif info[0] == '0':
+		message += "White turn!"
+
 	return
 
 def moveFigure(move):
@@ -494,10 +501,13 @@ def moveFigure(move):
 def updateData(move, server_resp):
 	# update board
 	# @param 4 long string
+	
+	global message
 	if len(server_resp) != 4:
 		raise "Invalid size of passed string"
 
 	if server_resp[0] == '0': # wrong move
+		message += " Wrong move!"
 		return False
 
 	if server_resp[0] == '1': # correct move
@@ -568,9 +578,9 @@ def function():
 			if send_data(move) == False:
 				print ('Could not send string')
 		printer()
-		return render_template("index.html", board = board, len = len(board))
+		return render_template("index.html", board = board, len = len(board), message = message)
 	else:
-		return render_template("index.html", board = board, len = len(board))
+		return render_template("index.html", board = board, len = len(board), message = message)
 
 
 if __name__ == "__main__":
