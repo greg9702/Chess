@@ -3,11 +3,11 @@
 		<title></title>
 		<meta charset="UTF-8">
 		<style>
-			.chess-board { border-spacing: 0; border-collapse: collapse; }
+			.chess-board { border-spacing: 0; border-collapse: collapse;}
 			.chess-board th { padding: .5em; }
-			.chess-board td { border: 1px solid; width: 4em; height: 4em; }
-			.chess-board .light { background: #eee; }
-			.chess-board .dark { background: #000; }
+			.chess-board td { border: 1px solid; width: 40px; height: 40px; font-size: 30px; text-align: center;}
+			.chess-board .white { background: #eee; }
+			.chess-board .black { background: #d6d6c2; }
 		</style>
 	</head>
 	<body>
@@ -24,107 +24,33 @@
 					<th>g</th>
 					<th>h</th>
 				</tr>
-				<tr>
-					<th>8</th>
-					<td class="light" column="a" row=""></td>
-					<td class="dark"></td>
-					<td class="light"></td>
-					<td class="dark"></td>
-					<td class="light"></td>
-					<td class="dark"></td>
-					<td class="light"></td>
-					<td class="dark"></td>
-				</tr>
-				<tr>
-					<th>7</th>
-					<td class="dark"></td>
-					<td class="light"></td>
-					<td class="dark"></td>
-					<td class="light"></td>
-					<td class="dark"></td>
-					<td class="light"></td>
-					<td class="dark"></td>
-					<td class="light"></td>
-				</tr>
-				<tr>
-					<th>6</th>
-					<td class="light"></td>
-					<td class="dark"></td>
-					<td class="light"></td>
-					<td class="dark"></td>
-					<td class="light"></td>
-					<td class="dark"></td>
-					<td class="light"></td>
-					<td class="dark"></td>
-				</tr>
-				<tr>
-					<th>5</th>
-					<td class="dark"></td>
-					<td class="light"></td>
-					<td class="dark"></td>
-					<td class="light"></td>
-					<td class="dark"></td>
-					<td class="light"></td>
-					<td class="dark"></td>
-					<td class="light"></td>
-				</tr>
-				<tr>
-					<th>4</th>
-					<td class="light"></td>
-					<td class="dark"></td>
-					<td class="light"></td>
-					<td class="dark"></td>
-					<td class="light"></td>
-					<td class="dark"></td>
-					<td class="light"></td>
-					<td class="dark"></td>
-				</tr>
-				<tr>
-					<th>3</th>
-					<td class="dark"></td>
-					<td class="light"></td>
-					<td class="dark"></td>
-					<td class="light"></td>
-					<td class="dark"></td>
-					<td class="light"></td>
-					<td class="dark"></td>
-					<td class="light"></td>
-				</tr>
-				<tr>
-					<th>2</th>
-					<td class="light"></td>
-					<td class="dark"></td>
-					<td class="light"></td>
-					<td class="dark"></td>
-					<td class="light"></td>
-					<td class="dark"></td>
-					<td class="light"></td>
-					<td class="dark"></td>
-				</tr>
-				<tr>
-					<th>1</th>
-					<td class="dark"></td>
-					<td class="light"></td>
-					<td class="dark"></td>
-					<td class="light"></td>
-					<td class="dark"></td>
-					<td class="light"></td>
-					<td class="dark"></td>
-					<td class="light"></td>
-				</tr>
+					{% for i in range (0, len) %}
+					{% if i%8 == 0 %}
+					<tr>
+					<th> {{ 8 - i/8 }}</th>
+					{% endif %}
+							{% if board[i].figure != 'None' %}
+						    <td class={{board[i].square_color}} id={{board[i].position}}>&{{board[i].code}};</td>
+							{% endif %}
+							{% if board[i].figure == 'None' %}
+						    <td class={{board[i].square_color}} id={{board[i].position}}></td>
+							{% endif %}
+					{% if (i+1)%8 == 0 %}
+					</tr>
+					{% endif %}
+					{% endfor %}
 			</tbody>
 		</table>
-
 </div>
 </br>
 <script type="text/javascript" src="{{ url_for('static', filename='chess.js') }}"></script>
 
-	<div>
 	<div>
 		<form action="" method="POST">
 			Your move: <input type="text" name="move"><br>
 			<input type="submit" value="Submit">
 		</form>
 	</div>
+	<br>
 </body>
 </html>
