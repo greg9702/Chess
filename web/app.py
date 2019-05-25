@@ -504,7 +504,9 @@ def updateData(move, server_resp):
 	
 	global message
 	if len(server_resp) != 4:
-		raise "Invalid size of passed string"
+		raise ValueError("Invalid size of passed string")
+	if server_resp == 'wron':
+		return False
 
 	if server_resp[0] == '0': # wrong move
 		message += " Wrong move!"
@@ -532,10 +534,10 @@ def updateData(move, server_resp):
 			print ('white short castling')
 			return True
 	else:
-		raise "Illegal value at position 0"
+		raise ValueError("Illegal value at position 0")
 
 
-	return false
+	return False
 
 def send_data(move):
 	# send data to cpp socket
