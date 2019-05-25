@@ -44,7 +44,7 @@
 int
 main(int argc, char **argv)
 {
-    Board * chess_board = new Board();
+    Board chess_board = Board();
     int				listenfd, connfd;
     socklen_t			len;
     char				buff[MAXLINE], str[INET6_ADDRSTRLEN+1];
@@ -112,19 +112,70 @@ main(int argc, char **argv)
         // Simulation of moveBoard() function
 
 
-        if (chess_board->move(recived_move)) {
-            snprintf(buff, sizeof(buff), "%s", "true");						// there we would send response from
-            if( write(connfd, buff, strlen(buff))< 0 )
-                fprintf(stderr,"write error : %s\n", strerror(errno));
+        std::string info_to_front = "";
+        //  correct move
+        if (chess_board.move(recived_move)) {
+            info_to_front += "1";
         } else {
-            snprintf(buff, sizeof(buff), "%s", "false");						// there we would send response from
-            if( write(connfd, buff, strlen(buff))< 0 )
-                fprintf(stderr,"write error : %s\n", strerror(errno));
+            info_to_front += "0";
         }
+
+        //  castling
+        if (chess_board.getCastlingType() == SHORT_CASTLE) {
+            if (chess_board.getTurn() == WHITE)
+                info_to_front += "3";
+            else
+                info_to_front += "1";
+        }
+        else if (chess_board.getCastlingType() == LONG_CASTLE){
+            if (chess_board.getTurn() == WHITE)
+                info_to_front += "4";
+            else
+                info_to_front += "2";
+        }
+        else{
+            info_to_front += "0";
+        }
+
+        // GAMESTATE
+        game_state gs = chess_board.getGameState(chess_board.getTurn());
+        switch (gs){
+            case NORMAL:
+                info_to_front += "0";
+                break;
+            case CHECK:
+                if (chess_board.getTurn() == WHITE)
+                    info_to_front += "1";
+                else
+                    info_to_front += "3";
+                break;
+            case CHECK_MATE:
+                if (chess_board.getTurn() == WHITE)
+                    info_to_front += "2";
+                else
+                    info_to_front += "4";
+                break;
+            case STALE_MATE:
+                info_to_front += "5";
+        }
+
+        //COLOR TO MOVE
+        if (gs == CHECK_MATE || gs == STALE_MATE)
+            info_to_front += "2";
+        else{
+            if (chess_board.getTurn() == WHITE)
+                info_to_front += "0";
+            else
+                info_to_front += "1";
+        }
+
+
+        snprintf(buff, sizeof(buff), "%s", info_to_front.c_str());						// there we would send response from
+        if( write(connfd, buff, strlen(buff))< 0 )
+            fprintf(stderr,"write error : %s\n", strerror(errno));
 
         close(connfd);
     }
-    delete chess_board;
 }
 
 
