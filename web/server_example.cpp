@@ -49,6 +49,10 @@ main(int argc, char **argv)
     servaddr.sin6_addr   = in6addr_any;
     servaddr.sin6_port   = htons(8001);	/* daytime server */
 
+	if (setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &buff, sizeof(buff)) < 0){
+		fprintf(stderr,"SO_REUSEADDR setsockopt error : %s\n", strerror(errno));
+	}
+
     if ( bind( listenfd, (struct sockaddr *) &servaddr, sizeof(servaddr)) < 0){
         fprintf(stderr,"bind error : %s\n", strerror(errno));
         return 1;
@@ -71,13 +75,16 @@ main(int argc, char **argv)
         printf("Connection from %s\n", str);
 
 		int ret;
+		std::string recived_move = "";
 		if ((ret = read(connfd, buff, sizeof(buff)-1)) > 0) {
       		buff[ret] = 0x00;
       		printf("block read: \n%s\n", buff);
+			std::cout << "BUFFER" << std::endl;
+			for (int i = 0; i < ret; i++) {
+				recived_move += buff[i];
+			}
     	}
-
-        ticks = time(NULL);
-
+		std::cout << "recived move string: " << recived_move << std::endl;
 
 		// std::string response = "";
 		// // if (moveBoard(buff) == false) { // in final version
@@ -86,9 +93,18 @@ main(int argc, char **argv)
 		// } else {
 		// 	response = "true";
 		// }
-        snprintf(buff, sizeof(buff), "%s", "true");						// there we would send response from
-        if( write(connfd, buff, strlen(buff))< 0 )
-       	    fprintf(stderr,"write error : %s\n", strerror(errno));
+
+		// Simulation of moveBoard() function
+		if (recived_move == "b4") {
+			snprintf(buff, sizeof(buff), "%s", "true");						// there we would send response from
+	        if( write(connfd, buff, strlen(buff))< 0 )
+	       	    fprintf(stderr,"write error : %s\n", strerror(errno));
+		} else {
+			snprintf(buff, sizeof(buff), "%s", "false");						// there we would send response from
+	        if( write(connfd, buff, strlen(buff))< 0 )
+	       	    fprintf(stderr,"write error : %s\n", strerror(errno));
+		}
+
         close(connfd);
 	}
 }

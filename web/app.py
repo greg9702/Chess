@@ -2,9 +2,6 @@ from flask import Flask, render_template, request
 import socket
 import sys
 
-
-
-
 app = Flask(__name__)
 
 def send_data(move):
@@ -24,9 +21,9 @@ def send_data(move):
 		print('Received from server:', data)
 		server_resp = str(data, 'utf-8')
 		print ("recived", server_resp)
-		if server_resp == "true":
+		if server_resp == 'true':
 			print ('Update board')
-		elif server_resp == "false":
+		elif server_resp == 'false':
 			print ('Do not update board')
 		s.close()
 
@@ -35,7 +32,6 @@ def send_data(move):
 	except:
 	    print ("Unexpected error:", sys.exc_info()[0])
 	    raise
-
 	return
 
 @app.route("/", methods = ['GET', 'POST'])
@@ -43,8 +39,9 @@ def function():
 	if request.method == 'POST':
 		move = request.form.get('move')
 		print ("move:" , move)
-		if send_data(move) == False:
-			print ('Could not send string')
+		if move != "":
+			if send_data(move) == False:
+				print ('Could not send string')
 		# upadate board()
 		# return render_template("board, index.html")
 		return render_template("index.html")
