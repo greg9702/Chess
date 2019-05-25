@@ -84,10 +84,13 @@ main(int argc, char **argv)
 				recived_move += buff[i];
 			}
     	}
+		// buff is 1024 size array and keep trash elements when data is shorter
+
+		// recived_move keeps only valuable data and is std::string
 		std::cout << "recived move string: " << recived_move << std::endl;
 
 		// std::string response = "";
-		// // if (moveBoard(buff) == false) { // in final version
+		// // if (moveBoard(recived_move) == false) { // in final version
 		// if (buff == "b4") {				// for debug purpose
 		// 	response = "wrong";
 		// } else {
