@@ -501,7 +501,7 @@ def moveFigure(move):
 def updateData(move, server_resp):
 	# update board
 	# @param 4 long string
-	
+
 	global message
 	if len(server_resp) != 4:
 		raise "Invalid size of passed string"
@@ -516,30 +516,162 @@ def updateData(move, server_resp):
 			moveFigure(move)		#normal move, no castling
 			return True
 
-		elif server_resp[1] == '1':
-			print ('white short castling')
+		elif server_resp[1] == '1': # white short castling
+			figure = "" 	# old position
+			code = ""
+			color = ""
+			for el in board:  # move king
+				if el['position'] == 'e1':
+					figure = el['figure']
+					code = el['code']
+					color = el['color']
+					el['figure'] = 'None'
+					el['code'] = 'None'
+					el['color'] = 'None'
+					break
+			for el in board:
+				if el['position'] == 'g1':
+					el['figure'] = figure
+					el['code'] = code
+					el['color'] = color
+					break
+
+			for el in board:  # move rook
+				if el['position'] == 'h1':
+					figure = el['figure']
+					code = el['code']
+					color = el['color']
+					el['figure'] = 'None'
+					el['code'] = 'None'
+					el['color'] = 'None'
+					break
+			for el in board:
+				if el['position'] == 'f1':
+					el['figure'] = figure
+					el['code'] = code
+					el['color'] = color
+					break
 			return True
 
-		elif server_resp[1] == 2:
-			print ('white short castling')
+		elif server_resp[1] == '2':	#white long castling
+			figure = "" 	# old position
+			code = ""
+			color = ""
+			for el in board:  # move king
+				if el['position'] == 'e1':
+					figure = el['figure']
+					code = el['code']
+					color = el['color']
+					el['figure'] = 'None'
+					el['code'] = 'None'
+					el['color'] = 'None'
+					break
+			for el in board:
+				if el['position'] == 'c1':
+					el['figure'] = figure
+					el['code'] = code
+					el['color'] = color
+					break
+
+			for el in board:  # move rook
+				if el['position'] == 'a1':
+					figure = el['figure']
+					code = el['code']
+					color = el['color']
+					el['figure'] = 'None'
+					el['code'] = 'None'
+					el['color'] = 'None'
+					break
+			for el in board:
+				if el['position'] == 'd1':
+					el['figure'] = figure
+					el['code'] = code
+					el['color'] = color
+					break
 			return True
 
-		elif server_resp[1] == 3:
-			print ('white short castling')
+		elif server_resp[1] == '3':  # black short castling
+			figure = "" 	# old position
+			code = ""
+			color = ""
+			for el in board:  # move king
+				if el['position'] == 'e1':
+					figure = el['figure']
+					code = el['code']
+					color = el['color']
+					el['figure'] = 'None'
+					el['code'] = 'None'
+					el['color'] = 'None'
+					break
+			for el in board:
+				if el['position'] == 'g1':
+					el['figure'] = figure
+					el['code'] = code
+					el['color'] = color
+					break
+
+			for el in board:  # move rook
+				if el['position'] == 'h8':
+					figure = el['figure']
+					code = el['code']
+					color = el['color']
+					el['figure'] = 'None'
+					el['code'] = 'None'
+					el['color'] = 'None'
+					break
+			for el in board:
+				if el['position'] == 'f8':
+					el['figure'] = figure
+					el['code'] = code
+					el['color'] = color
+					break
 			return True
 
-		elif server_resp[1] == 4:
-			print ('white short castling')
+		elif server_resp[1] == '4':	# long black castling
+			figure = "" 	# old position
+			code = ""
+			color = ""
+			for el in board:  # move king
+				if el['position'] == 'e1':
+					el['figure'] = figure
+					el['code'] = code
+					el['color'] = color
+					el['figure'] = 'None'
+					el['code'] = 'None'
+					el['color'] = 'None'
+					break
+			for el in board:
+				if el['position'] == 'c8':
+					el['figure'] = figure
+					el['code'] = code
+					el['color'] = color
+					break
+
+			for el in board:  # move rook
+				if el['position'] == 'a8':
+					el['figure'] = figure
+					el['code'] = code
+					el['color'] = color
+					el['figure'] = 'None'
+					el['code'] = 'None'
+					el['color'] = 'None'
+					break
+			for el in board:
+				if el['position'] == 'd8':
+					el['figure'] = figure
+					el['code'] = code
+					el['color'] = color
+					break
 			return True
+
 	else:
 		raise "Illegal value at position 0"
 
 
-	return false
+	return False
 
-def send_data(move):
+def sendData(move):
 	# send data to cpp socket
-	argc = len(sys.argv)
 	HOST = '0::1'    # The remote host
 	PORT = 8001      # The same port as used by the server
 	try:
@@ -575,9 +707,9 @@ def function():
 		print ("move:" , move)
 		print ('type move before function', type(move))
 		if move != "":
-			if send_data(move) == False:
+			if sendData(move) == False:
 				print ('Could not send string')
-		printer()
+		# printer()
 		return render_template("index.html", board = board, len = len(board), message = message)
 	else:
 		return render_template("index.html", board = board, len = len(board), message = message)
