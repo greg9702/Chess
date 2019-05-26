@@ -32,10 +32,10 @@
 					<th> {{ (8 - i/8)|int }}</th>
 					{% endif %}
 							{% if board[i].figure != 'None' %}
-						    <td class={{board[i].square_color}} id={{board[i].position}} onclick="pickSquare(this)">&{{board[i].code}};</td>
+						    <td figure="{{board[i].figure}}" figure_col="{{board[i].color}}" class={{board[i].square_color}} id={{board[i].position}} onclick="pickSquare(this)">&{{board[i].code}};</td>
 							{% endif %}
 							{% if board[i].figure == 'None' %}
-						    <td class={{board[i].square_color}} id={{board[i].position}} onclick="pickSquare(this)"></td>
+						    <td figure="{{board[i].figure}}" figure_col="{{board[i].color}}" class={{board[i].square_color}} id={{board[i].position}} onclick="pickSquare(this)"></td>
 							{% endif %}
 					{% if (i+1)%8 == 0 %}
 					</tr>

@@ -459,7 +459,6 @@ board = [
 ]
 message = "White turn!"
 wrong_move = False
-game_over = False
 
 def setMesssage(info):
 	# set message to display
@@ -494,32 +493,84 @@ def setMesssage(info):
 
 	return
 
-def moveFigure(move):
-	move = str(move, 'utf-8')
-	print ('who move', move[0:2])
-	print ('type move inside', type(move))
-	print ('move at 0', move[0])
-	for el in board:
+def moveFigure(move, new_type):
+	if new_type == None:
+		move = str(move, 'utf-8')
+		print ('who move', move[0:2])
+		print ('type move inside', type(move))
+		print ('move at 0', move[0])
 		figure = ""
 		code = ""
 		color = ""
-		if el['position'] == move[0:2]:
-			figure = el['figure']
-			code = el['code']
-			color = el['color']
-			print ('XDDD', figure, code, color)
-			el['figure'] = 'None'
-			el['code'] = 'None'
-			el['color'] = 'None'
-			break
+		for el in board:
+			if el['position'] == move[0:2]:
+				figure = el['figure']
+				code = el['code']
+				color = el['color']
+				print ('XDDD', figure, code, color)
+				el['figure'] = 'None'
+				el['code'] = 'None'
+				el['color'] = 'None'
+				break
 
-	for el in board:
-		if el['position'] == move[2:4]:
-			el['figure'] = figure
-			el['code'] = code
-			el['color'] = color
+		for el in board:
+			if el['position'] == move[2:4]:
+				el['figure'] = figure
+				el['code'] = code
+				el['color'] = color
 
-	return
+		return True
+	
+	elif new_type != None:
+			move = str(move, 'utf-8')
+			print ('who move', move[0:2])
+			print ('type move inside', type(move))
+			print ('move at 0', move[0])
+			color = ""
+			for el in board:
+				if el['position'] == move[0:2]:
+					color = el['color']
+					el['figure'] = 'None'
+					el['code'] = 'None'
+					el['color'] = 'None'
+					break
+
+			# change type of new element
+			print ('new TYPE:', new_type)
+			for el in board:
+				if el['position'] == move[2:4]:
+					el['color'] = color
+					if new_type == 'Q':
+						el['figure'] = 'Queen'
+						if color == 'whte':
+							el['code'] = '#9813'
+						elif color == 'black':
+							el['code'] = '#9819'
+					elif new_type == 'N':
+						el['figure'] = 'Knight'
+						if color == 'whte':
+							el['code'] = '#9816'
+						elif color == 'black':
+							el['code'] = '#9822'
+					elif new_type == 'B':
+						el['figure'] = 'Bishop'
+						if color == 'whte':
+							el['code'] = '#9815'
+						elif color == 'black':
+							el['code'] = '#9821'
+					elif new_type == 'R':
+						el['figure'] = 'Rook'
+						if color == 'whte':
+							el['code'] = '#9814'
+						elif color == 'black':
+							el['code'] = '#9820'
+					else:
+						raise "Error in promoting Pawn"
+			return True
+	return False
+
+# def moveFigure(move, new_type):
+
 
 def updateData(move, server_resp):
 	# update board
@@ -527,6 +578,7 @@ def updateData(move, server_resp):
 
 	global message
 	global wrong_move
+
 	if len(server_resp) != 4:
 		raise ValueError("Invalid size of passed string")
 
@@ -538,8 +590,11 @@ def updateData(move, server_resp):
 	if server_resp[0] == '1': # correct move
 		setMesssage(server_resp[2:4])
 		if server_resp[1] == '0':
-			moveFigure(move)		#normal move, no castling
-			return True
+			if len(move) == 4:
+				moveFigure(move, None)		#normal move, no castling
+				return True
+			elif len(move) == 5:		#move with promotion
+				moveFigure(move[0:4], move[4])
 
 		elif server_resp[1] == '1': # white short castling
 			figure = "" 	# old position
@@ -735,9 +790,9 @@ def function():
 			if sendData(move) == False:
 				print ('Could not send string')
 		# printer()
-		return render_template("index.html", board = board, len = len(board), message = message, game_over = game_over)
+		return render_template("index.html", board = board, len = len(board), message = message)
 	else:
-		return render_template("index.html", board = board, len = len(board), message = message, game_over = game_over)
+		return render_template("index.html", board = board, len = len(board), message = message)
 
 
 if __name__ == "__main__":
