@@ -458,16 +458,39 @@ board = [
 	},
 ]
 message = "White turn!"
+wrong_move = False
+game_over = False
 
 def setMesssage(info):
 	# set message to display
 	print ('info', info)
 	global message
+	global game_over
 	message = ""
 	if info[1] == '1':
-		message += "Black turn!"
-	elif info[0] == '0':
-		message += "White turn!"
+		message += "Black turn! "
+	elif info[1] == '0':
+		message += "White turn! "
+	elif info[1] == '2':
+		game_over = True
+
+	if info[0] == '0':
+		message += ""
+	elif info[0] == '1':
+		message += "White in check! "
+	elif info[0] == '2':
+		message + "White in checkmate! "
+	elif info[0] == '3':
+		message += "Black in check! "
+	elif info[0] == '4':
+		message + "Black in checkmate! "
+	elif info[0] == '5':
+		message += "Statement "
+
+	global wrong_move
+	if wrong_move:
+		message += "Wrong move! "
+		wrong_move = False
 
 	return
 
@@ -503,13 +526,13 @@ def updateData(move, server_resp):
 	# @param 4 long string
 
 	global message
+	global wrong_move
 	if len(server_resp) != 4:
 		raise ValueError("Invalid size of passed string")
-	if server_resp == 'wron':
-		return False
 
 	if server_resp[0] == '0': # wrong move
-		message += " Wrong move!"
+		wrong_move = True;
+		setMesssage(server_resp[2:4])
 		return False
 
 	if server_resp[0] == '1': # correct move
@@ -523,7 +546,7 @@ def updateData(move, server_resp):
 			code = ""
 			color = ""
 			for el in board:  # move king
-				if el['position'] == 'e1':
+				if el['position'] == 'e1':   	# TODO move this to seperate function
 					figure = el['figure']
 					code = el['code']
 					color = el['color']
@@ -712,9 +735,9 @@ def function():
 			if sendData(move) == False:
 				print ('Could not send string')
 		# printer()
-		return render_template("index.html", board = board, len = len(board), message = message)
+		return render_template("index.html", board = board, len = len(board), message = message, game_over = game_over)
 	else:
-		return render_template("index.html", board = board, len = len(board), message = message)
+		return render_template("index.html", board = board, len = len(board), message = message, game_over = game_over)
 
 
 if __name__ == "__main__":
