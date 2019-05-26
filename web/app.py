@@ -479,11 +479,11 @@ def setMesssage(info):
 	elif info[0] == '1':
 		message += "White in check! "
 	elif info[0] == '2':
-		message + "White in checkmate! "
+		message = "White in checkmate! "
 	elif info[0] == '3':
 		message += "Black in check! "
 	elif info[0] == '4':
-		message + "Black in checkmate! "
+		message = "Black in checkmate! "
 	elif info[0] == '5':
 		message += "Statement "
 
