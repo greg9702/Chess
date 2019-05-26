@@ -597,7 +597,7 @@ def updateData(move, server_resp):
 			code = ""
 			color = ""
 			for el in board:  # move king
-				if el['position'] == 'e1':
+				if el['position'] == 'e8':
 					figure = el['figure']
 					code = el['code']
 					color = el['color']
@@ -606,7 +606,7 @@ def updateData(move, server_resp):
 					el['color'] = 'None'
 					break
 			for el in board:
-				if el['position'] == 'g1':
+				if el['position'] == 'g8':
 					el['figure'] = figure
 					el['code'] = code
 					el['color'] = color
@@ -634,7 +634,7 @@ def updateData(move, server_resp):
 			code = ""
 			color = ""
 			for el in board:  # move king
-				if el['position'] == 'e1':
+				if el['position'] == 'e8':
 					el['figure'] = figure
 					el['code'] = code
 					el['color'] = color
