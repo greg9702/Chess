@@ -119,7 +119,7 @@ game_state Board::getGameState(color col) {
                     // if there is a move possible
                     if (!isCheck(col,std::pair<char,char>('0','0'))) {
                         stale_mate_flag = false;
-                        mover->square->setOccupator(nullptr);
+                        mover->square->setOccupator(was_captured);
                         mover->square = this->getMatrix().at(std::pair<char, char>(src_x, src_y));
                         mover->square->setOccupator(mover);
                         break;
