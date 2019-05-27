@@ -20,6 +20,12 @@ Square::Square(char x_, char y_) {
 
   this->occupator = nullptr;
 
+  if (((x_ - 'a') + (y_ - '1'))%2 == 0)
+      this->col = BLACK;
+  else
+      this->col = WHITE;
+
+
   this->x = x_;
   this->y = y_;
 }
@@ -54,4 +60,8 @@ std::pair<char, char> Square::getCoords() {
    * @return pair<char, char>
    */
   return std::pair<char, char>(this->x, this->y);
+}
+
+color Square::getColor() {
+    return this->col;
 }
