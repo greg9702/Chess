@@ -68,6 +68,12 @@ bool Piece::move(char x_, char y_,special_args add_opt) {
       return false;
   }
 
+  // default no en-passant in next move (if there is, it's being set in Pawn::move())
+  for (char i='a';i<='h';++i) {
+      this->board->getMatrix().at(std::pair<char,char>(i,'3'))->setEnPassant(false);
+      this->board->getMatrix().at(std::pair<char,char>(i,'6'))->setEnPassant(false);
+  }
+
   return true;
 }
 

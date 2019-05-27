@@ -61,8 +61,17 @@ bool Pawn::isPossible(char x_, char y_) {
     if (this->board->getPieceByCoord(x_, y_) != nullptr)
       return false;
   } else {
-    if (this->board->getPieceByCoord(x_, y_) == nullptr ||
-        this->board->getPieceByCoord(x_, y_)->getColor() == col)
+      std::cout << this->board->getMatrix().at(std::pair<char,char>('f','6'))->getEnPassant() << std::endl;
+      std::cout << "im trying\n";
+      if (this->board->getMatrix().at(std::pair<char,char>(x_,y_))->getEnPassant()) {
+          if (this->col == WHITE)
+              this->board->getMatrix().at(std::pair<char,char>(x_,y_-1))->setOccupator(nullptr);
+          else
+              this->board->getMatrix().at(std::pair<char,char>(x_,y_+1))->setOccupator(nullptr);
+          return true;
+      }
+      if (this->board->getPieceByCoord(x_, y_) == nullptr ||
+          this->board->getPieceByCoord(x_, y_)->getColor() == col)
       return false;
   }
   return true;
@@ -70,7 +79,15 @@ bool Pawn::isPossible(char x_, char y_) {
 
 bool Pawn::move(char x_, char y_,special_args add_opt) {
     if (add_opt == NONE && !((this->col == WHITE && y_ == '8') || (this->col == BLACK && y_ == '1'))) {
+        char old_y_ = this->getSquare()->getCoords().second;
         if (Piece::move(x_, y_)) {
+            // en-passant settings
+            int offset = -1;    // offset when white
+            if (this->col == BLACK)
+                offset = 1;     //o offset when black
+            if (abs(old_y_ - y_) == 2)
+                this->board->getMatrix().at(std::pair<char,char>(x_,y_+offset))->setEnPassant(true);
+            std::cout << "After move: " << this->board->getMatrix().at(std::pair<char,char>('f','6'))->getEnPassant() << std::endl;
             return true;
             }
     }
