@@ -35,6 +35,41 @@
 #include 		<iostream>
 #include 		<string>
 
+void showBoard(Board *chessBoard) {
+
+    std::map<std::pair<char, char>, Square *> mt = chessBoard->getMatrix();
+    int i = 8;
+    for (char a = '8'; a >= '1'; a--) {
+        std::cout << i << "| ";
+        i--;
+        for (char b = 'a'; b <= 'h'; b++) {
+            if (mt.at(std::pair<char, char>(b, a))->getOccupator() == nullptr) {
+                std::cout << "-"
+                          << "  ";
+            } else {
+                if (mt.at(std::pair<char, char>(b, a))->getOccupator()->getColor() == WHITE)
+                {
+                    std::cout
+                            << mt.at(std::pair<char, char>(b, a))->getOccupator()->getType()
+                            << "  ";
+                }
+                else {
+                    std::cout
+                            << mt.at(std::pair<char, char>(b, a))->getOccupator()->getType()
+                            << "* ";
+                }
+            }
+        }
+        std::cout << std::endl;
+    }
+    std::cout << "   ";
+    for (char a = 'a'; a <= 'h'; a++) {
+        std::cout << a << "  ";
+    }
+    std::cout << std::endl;
+}
+
+
 #define MAXLINE 1024
 
 //#define SA struct sockaddr
@@ -111,7 +146,7 @@ main(int argc, char **argv)
 
         // Simulation of moveBoard() function
 
-
+        //showBoard(&chess_board);
 
         std::string info_to_front = "";
         game_state gs;
@@ -120,7 +155,7 @@ main(int argc, char **argv)
             for (int i=0;i<3;i+=2) {
                 if (recived_move.at(i) < 'a' || recived_move.at(i) > 'h' ||
                     recived_move.at(i+1) < '1' || recived_move.at(i+1) > '8')
-                info_to_front = "000";
+                    info_to_front = "000";
             }
         }
         if (info_to_front != "000") {
@@ -130,6 +165,8 @@ main(int argc, char **argv)
             } else {
                 info_to_front += "0";
             }
+
+            //showBoard(&chess_board);
 
             //  castling
             if (chess_board.getCastlingType() == SHORT_CASTLE) {
@@ -193,39 +230,6 @@ using namespace std;
 
 class App {};
 
-void showBoard(Board *chessBoard) {
-
-  std::map<std::pair<char, char>, Square *> mt = chessBoard->getMatrix();
-  int i = 8;
-  for (char a = '8'; a >= '1'; a--) {
-    std::cout << i << "| ";
-    i--;
-    for (char b = 'a'; b <= 'h'; b++) {
-      if (mt.at(std::pair<char, char>(b, a))->getOccupator() == nullptr) {
-        std::cout << "-"
-                  << "  ";
-      } else {
-		  if (mt.at(std::pair<char, char>(b, a))->getOccupator()->getColor() == WHITE)
-		  {
-			  std::cout
-				  << mt.at(std::pair<char, char>(b, a))->getOccupator()->getType()
-				  << "  ";
-		  }
-		  else {
-			  std::cout
-				  << mt.at(std::pair<char, char>(b, a))->getOccupator()->getType()
-				  << "* ";
-		  }
-      }
-    }
-    std::cout << std::endl;
-  }
-  std::cout << "   ";
-  for (char a = 'a'; a <= 'h'; a++) {
-    std::cout << a << "  ";
-  }
-  std::cout << std::endl;
-}
 
 
 
