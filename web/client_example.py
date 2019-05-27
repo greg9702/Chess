@@ -4,7 +4,6 @@ import sys
 
 argc = len(sys.argv)
 
-
 if argc > 2:
     #HOST = 'localhost'    # The remote host
     HOST = sys.argv[2]
@@ -22,10 +21,11 @@ for c in range( argc):
 try:
 	s = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
 	s.connect((HOST, PORT))
-	move = b'b4'
+	move = b'None'
 	s.send(move)
-	data = s.recv(1024)			# Return data from server
+	data = s.recv(2048)			# Return data from server
 	print('Received:', repr(data))
+	print('len of data', len(data))
 
 	s.close()
 

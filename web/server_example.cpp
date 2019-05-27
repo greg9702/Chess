@@ -24,16 +24,20 @@
 #include 		<iostream>
 #include 		<string>
 
-#define MAXLINE 1024
+#define MAXLINE 2048
 
 //#define SA struct sockaddr
 
 #define LISTENQ 2
+std::string info_to_front = "";
+
 
 int
 main(int argc, char **argv)
 {
-    Board * chess_board = new Board();
+	for (int i = 0; i < 1500; i++) {
+		info_to_front += 'a';
+	}
     int				listenfd, connfd;
     socklen_t			len;
     char				buff[MAXLINE], str[INET6_ADDRSTRLEN+1];
@@ -50,68 +54,51 @@ main(int argc, char **argv)
     servaddr.sin6_addr   = in6addr_any;
     servaddr.sin6_port   = htons(8001);	/* daytime server */
 
-    if (setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &buff, sizeof(buff)) < 0){
-        fprintf(stderr,"SO_REUSEADDR setsockopt error : %s\n", strerror(errno));
-    }
-
     if ( bind( listenfd, (struct sockaddr *) &servaddr, sizeof(servaddr)) < 0){
         fprintf(stderr,"bind error : %s\n", strerror(errno));
         return 1;
     }
 
-    if ( listen(listenfd, LISTENQ) < 0){
+	if (setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &buff, sizeof(buff)) < 0){
+	fprintf(stderr,"SO_REUSEADDR setsockopt error : %s\n", strerror(errno));
+	}
+
+	if ( listen(listenfd, LISTENQ) < 0){
         fprintf(stderr,"listen error : %s\n", strerror(errno));
         return 1;
     }
 
-    for ( ; ; ) {
+	for ( ; ; ) {
         len = sizeof(cliaddr);
-        if ( (connfd = accept(listenfd, (struct sockaddr *) &cliaddr, &len)) < 0){
-            fprintf(stderr,"accept error : %s\n", strerror(errno));
-            continue;
-        }
+            if ( (connfd = accept(listenfd, (struct sockaddr *) &cliaddr, &len)) < 0){
+                fprintf(stderr,"accept error : %s\n", strerror(errno));
+                continue;
+        	}
 
-        bzero(str, sizeof(str));
+		bzero(str, sizeof(str));
         inet_ntop(AF_INET6, (struct sockaddr  *) &cliaddr.sin6_addr,  str, sizeof(str));
         printf("Connection from %s\n", str);
 
-        int ret;
-        std::string recived_move = "";
-        if ((ret = read(connfd, buff, sizeof(buff)-1)) > 0) {
-            buff[ret] = 0x00;
-            printf("block read: \n%s\n", buff);
-            std::cout << "BUFFER" << std::endl;
-            for (int i = 0; i < ret; i++) {
-                recived_move += buff[i];
-            }
-        }
-        // buff is 1024 size array and keep trash elements when data is shorter
+		int ret;
+		if ((ret = read(connfd, buff, sizeof(buff)-1)) > 0) {
+      		buff[ret] = 0x00;
+      		printf("block read: \n%s\n", buff);
+    	}
 
-        // recived_move keeps only valuable data and is std::string
-        std::cout << "recived move string: " << recived_move << std::endl;
-
-        // std::string response = "";
-        // // if (moveBoard(recived_move) == false) { // in final version
-        // if (buff == "b4") {				// for debug purpose
-        // 	response = "wrong";
-        // } else {
-        // 	response = "true";
-        // }
-
-        // Simulation of moveBoard() function
+        ticks = time(NULL);
 
 
-        if (chess_board->move(recived_move)) {
-            snprintf(buff, sizeof(buff), "%s", "true");						// there we would send response from
-            if( write(connfd, buff, strlen(buff))< 0 )
-                fprintf(stderr,"write error : %s\n", strerror(errno));
-        } else {
-            snprintf(buff, sizeof(buff), "%s", "false");						// there we would send response from
-            if( write(connfd, buff, strlen(buff))< 0 )
-                fprintf(stderr,"write error : %s\n", strerror(errno));
-        }
+		// std::string response = "";
+		// // if (moveBoard(buff) == false) { // in final version
+		// if (buff == "b4") {				// for debug purpose
+		// 	response = "wrong";
+		// } else {
+		// 	response = "true";
+		// }
+	   snprintf(buff, sizeof(buff), "%s", info_to_front.c_str());						// there we would send response from
+	   if( write(connfd, buff, strlen(buff))< 0 )
+		   fprintf(stderr,"write error : %s\n", strerror(errno));
 
-        close(connfd);
-    }
-    delete chess_board;
+	   close(connfd);
+	}
 }

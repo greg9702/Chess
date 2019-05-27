@@ -520,7 +520,7 @@ def moveFigure(move, new_type):
 				el['color'] = color
 
 		return True
-	
+
 	elif new_type != None:
 			move = str(move, 'utf-8')
 			print ('who move', move[0:2])
@@ -570,7 +570,6 @@ def moveFigure(move, new_type):
 	return False
 
 # def moveFigure(move, new_type):
-
 
 def updateData(move, server_resp):
 	# update board
