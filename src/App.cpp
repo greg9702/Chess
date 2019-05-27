@@ -37,7 +37,8 @@
 
 void showBoard(Board *chessBoard) {
 
-    std::map<std::pair<char, char>, Square *> mt = chessBoard->getMatrix();
+    std::map<std::pair<char, char>, Square *,MyComparator> mt = chessBoard->getMatrix();
+
     int i = 8;
     for (char a = '8'; a >= '1'; a--) {
         std::cout << i << "| ";
@@ -69,8 +70,8 @@ void showBoard(Board *chessBoard) {
     std::cout << std::endl;
 }
 
+#define MAXLINE 2048
 
-#define MAXLINE 1024
 
 //#define SA struct sockaddr
 
@@ -155,15 +156,17 @@ main(int argc, char **argv)
             for (int i=0;i<3;i+=2) {
                 if (recived_move.at(i) < 'a' || recived_move.at(i) > 'h' ||
                     recived_move.at(i+1) < '1' || recived_move.at(i+1) > '8')
-                    info_to_front = "000";
+
+                    info_to_front = "0;0;";
+
             }
         }
-        if (info_to_front != "000") {
+        if (info_to_front != "0;0;") {
             //  correct move
             if (chess_board.move(recived_move)) {
-                info_to_front += "1";
+                info_to_front += "1;";
             } else {
-                info_to_front += "0";
+                info_to_front += "0;";
             }
 
             //showBoard(&chess_board);
@@ -187,34 +190,62 @@ main(int argc, char **argv)
             gs = chess_board.getGameState(chess_board.getTurn());
             switch (gs) {
                 case NORMAL:
-                    info_to_front += "0";
+                    info_to_front += "0;";
                     break;
                 case CHECK:
                     if (chess_board.getTurn() == WHITE)
-                        info_to_front += "1";
+                        info_to_front += "1;";
                     else
-                        info_to_front += "3";
+                        info_to_front += "3;";
                     break;
                 case CHECK_MATE:
                     if (chess_board.getTurn() == WHITE)
-                        info_to_front += "2";
+                        info_to_front += "2;";
                     else
-                        info_to_front += "4";
+                        info_to_front += "4;";
                     break;
                 case STALE_MATE:
-                    info_to_front += "5";
+                    info_to_front += "5;";
             }
         }
         //COLOR TO MOVE
         if (gs == CHECK_MATE || gs == STALE_MATE)
-            info_to_front += "2";
+            info_to_front += "2;";
         else {
             if (chess_board.getTurn() == WHITE)
-                info_to_front += "0";
+                info_to_front += "0;";
             else
-                info_to_front += "1";
+                info_to_front += "1;";
         }
 
+        std::string colorTable[] = {"white","black"};
+        std::string pieceTable[] = {"Pawn","Rook","Knight","Bishop","Queen","King"};
+        std::string codeTable[] = {"#PAWN","#ROOK","#KNIGHT","#BISHOP","#QUEEN","#KING"};
+
+
+        auto squares = chess_board.getMatrix();
+        for (auto sq : squares){
+            info_to_front += colorTable[sq.second->getColor()] + ",";
+            if (sq.second->getOccupator() == nullptr){
+                info_to_front += ",,";
+            }
+            else {
+                info_to_front += colorTable[sq.second->getOccupator()->getColor()] + ",";
+                info_to_front += pieceTable[sq.second->getOccupator()->getType()] + ",";
+            }
+            info_to_front.append(1,sq.first.first);
+            info_to_front.append(1,sq.first.second);
+            info_to_front += ",";
+            if (sq.second->getOccupator() == nullptr){
+                info_to_front += ";";
+            }
+            else {
+                info_to_front += codeTable[sq.second->getOccupator()->getType()] + ";";
+            }
+        }
+        info_to_front = info_to_front.substr(0,info_to_front.size()-1);
+
+        std::cout << info_to_front << std::endl;
 
         snprintf(buff, sizeof(buff), "%s", info_to_front.c_str());						// there we would send response from
         if( write(connfd, buff, strlen(buff))< 0 )

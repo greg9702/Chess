@@ -10,12 +10,25 @@
 #include "Enums.h"
 #include <algorithm>
 
+
+struct MyComparator {
+    bool operator()(const std::pair<char,char>& a, const std::pair<char,char>& b) const {
+        if (a.second == b.second){
+            return a.first < b.first;
+        }
+        else {
+            return a.second > b.second;
+        }
+    }
+};
+
+
 class Board {
 private:
     special_args cas_type;
 	color turn;
 	game_state game_s;
-	std::map<std::pair<char, char>, Square*> matrix;
+	std::map<std::pair<char, char>, Square*,MyComparator> matrix;
 	std::vector<Piece*> piecesOnBoard;
 	std::vector<std::string> history;
 	Board * backup;
@@ -34,7 +47,7 @@ public:
     game_state getGameState(color col);
     color getTurn();
     Piece* getPieceByCoord(char x_, char y_);
-    std::map<std::pair<char,char>, Square*> getMatrix();
+    std::map<std::pair<char,char>, Square*,MyComparator> getMatrix();
     std::string getHistory();
     special_args getCastlingType();
 };

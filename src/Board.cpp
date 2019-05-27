@@ -8,6 +8,8 @@
 #include <assert.h>
 #include <cmath>
 
+
+
 Board::Board() {
   /**
    * Parameterless constructor, initializes table with all pieces
@@ -16,7 +18,7 @@ Board::Board() {
   game_s = NORMAL;
   this->undo_flag = false;
   // create matrix
-  for (char tmp_y = '1'; tmp_y <= '8'; ++tmp_y) {
+  for (char tmp_y = '8'; tmp_y >= '1'; --tmp_y) {
     for (char tmp_x = 'a'; tmp_x <= 'h'; ++tmp_x) {
       matrix.insert(std::pair<std::pair<char, char>, Square *>(
           std::make_pair(tmp_x, tmp_y), new Square(tmp_x, tmp_y)));
@@ -247,7 +249,7 @@ std::string Board::getHistory() {
   return formattedHistory;
 }
 
-std::map<std::pair<char, char>, Square *> Board::getMatrix() {
+std::map<std::pair<char, char>, Square *,MyComparator> Board::getMatrix() {
   /**
    * Getter of matrix
    * @return map containing indexes of squares and object Square describing the
