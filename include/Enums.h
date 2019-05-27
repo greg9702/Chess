@@ -19,8 +19,8 @@ enum game_state {
 };
 
 enum color {
-    BLACK,
-    WHITE
+    WHITE,
+    BLACK
 };
 
 enum special_args {
