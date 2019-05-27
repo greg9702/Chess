@@ -38,6 +38,7 @@
 void showBoard(Board *chessBoard) {
 
     std::map<std::pair<char, char>, Square *,MyComparator> mt = chessBoard->getMatrix();
+
     int i = 8;
     for (char a = '8'; a >= '1'; a--) {
         std::cout << i << "| ";
@@ -69,8 +70,8 @@ void showBoard(Board *chessBoard) {
     std::cout << std::endl;
 }
 
-
 #define MAXLINE 2048
+
 
 //#define SA struct sockaddr
 
@@ -155,7 +156,9 @@ main(int argc, char **argv)
             for (int i=0;i<3;i+=2) {
                 if (recived_move.at(i) < 'a' || recived_move.at(i) > 'h' ||
                     recived_move.at(i+1) < '1' || recived_move.at(i+1) > '8')
+
                     info_to_front = "0;0;";
+
             }
         }
         if (info_to_front != "0;0;") {
@@ -167,6 +170,21 @@ main(int argc, char **argv)
             }
 
             //showBoard(&chess_board);
+
+            //  castling
+            if (chess_board.getCastlingType() == SHORT_CASTLE) {
+                if (chess_board.getTurn() == WHITE)
+                    info_to_front += "3";
+                else
+                    info_to_front += "1";
+            } else if (chess_board.getCastlingType() == LONG_CASTLE) {
+                if (chess_board.getTurn() == WHITE)
+                    info_to_front += "4";
+                else
+                    info_to_front += "2";
+            } else {
+                info_to_front += "0";
+            }
 
             // GAMESTATE
             gs = chess_board.getGameState(chess_board.getTurn());
