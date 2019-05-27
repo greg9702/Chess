@@ -6,20 +6,23 @@ app = Flask(__name__)
 
 board = []
 # store all squares on board
+start_game = True
+
 message = "White turn!"
 # wrong_move = False
 
 def updateMessage(staus):
 	status = staus.split(';')
+	print ("STATUS", status)
 	global message
+	message = ''
 
-	if status[3] == '1':
+	if status[2] == '1':
 		message += 'Black turn! '
-	elif status[3] == '0'
+	elif status[2] == '0':
 		message += 'White turn! '
 	else:
 		return False
-
 
 	if status[0] == '0':
 		message += 'Wrong move! '
@@ -27,17 +30,17 @@ def updateMessage(staus):
 		# correct move
 		message += ''
 
-	if status[2] == '0':
+	if status[1] == '0':
 		message += ''
-	elif status[2] == '1':
+	elif status[1] == '1':
 		message += 'White in check! '
-	elif status[2] == '2':
+	elif status[1] == '2':
 		message += 'White in checkmate! '
-	elif status[2] == '3':
+	elif status[1] == '3':
 		message += 'Black in check! '
-	elif status[2] == '4':
+	elif status[1] == '4':
 		message += 'Black in checkmate! '
-	elif status[2] == '5':
+	elif status[1] == '5':
 		message = 'Stale mate '
 	else:
 		return False
@@ -47,9 +50,14 @@ def updateMessage(staus):
 
 def updateBoard(recived_data):
 	global board
-	status = recived_data[0:6]
+	status = recived_data[0:5]
 	board_data = recived_data[7:]
-	updateMessage(status)
+
+	global start_game
+	if start_game == True:
+		start_game = False
+	else:
+		updateMessage(status)
 
 	# update board
 	board = []
@@ -115,14 +123,11 @@ def printer():
 	for el in board:
 		print (el)
 
-start_game = True
-
 @app.route("/", methods = ['GET', 'POST'])
 def function():
 	global start_game
 	if start_game == True:
 		print ('Start game')
-		start_game = False
 		move = 'e6' # i send wrong move to synchronize database
 		sendData(move)
 
