@@ -1,5 +1,6 @@
 let move = ""
 
+
 function pickSquare(elmnt) {
 	console.log(elmnt.getAttribute('id'));
 	move = move + elmnt.getAttribute('id');
