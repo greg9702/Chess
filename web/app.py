@@ -10,7 +10,39 @@ message = "White turn!"
 # wrong_move = False
 
 def updateMessage(staus):
-	return False;
+	status = staus.split(';')
+	global message
+
+	if status[3] == '1':
+		message += 'Black turn! '
+	elif status[3] == '0'
+		message += 'White turn! '
+	else:
+		return False
+
+
+	if status[0] == '0':
+		message += 'Wrong move! '
+	elif status[1] == '1':
+		# correct move
+		message += ''
+
+	if status[2] == '0':
+		message += ''
+	elif status[2] == '1':
+		message += 'White in check! '
+	elif status[2] == '2':
+		message += 'White in checkmate! '
+	elif status[2] == '3':
+		message += 'Black in check! '
+	elif status[2] == '4':
+		message += 'Black in checkmate! '
+	elif status[2] == '5':
+		message = 'Stale mate '
+	else:
+		return False
+
+	return True
 
 
 def updateBoard(recived_data):

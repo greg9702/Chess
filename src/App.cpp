@@ -132,7 +132,7 @@ main(int argc, char **argv)
                 recived_move += buff[i];
             }
         }
-        // buff is 1024 size array and keep trash elements when data is shorter
+        // buff is MAXLINE size array and keep trash elements when data is shorter
 
         // recived_move keeps only valuable data and is std::string
         std::cout << "recived move string: " << recived_move << std::endl;
