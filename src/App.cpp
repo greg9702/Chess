@@ -169,22 +169,6 @@ main(int argc, char **argv)
                 info_to_front += "0;";
             }
 
-            //showBoard(&chess_board);
-
-            //  castling
-            if (chess_board.getCastlingType() == SHORT_CASTLE) {
-                if (chess_board.getTurn() == WHITE)
-                    info_to_front += "3";
-                else
-                    info_to_front += "1";
-            } else if (chess_board.getCastlingType() == LONG_CASTLE) {
-                if (chess_board.getTurn() == WHITE)
-                    info_to_front += "4";
-                else
-                    info_to_front += "2";
-            } else {
-                info_to_front += "0";
-            }
 
             // GAMESTATE
             gs = chess_board.getGameState(chess_board.getTurn());
@@ -220,7 +204,8 @@ main(int argc, char **argv)
 
         std::string colorTable[] = {"white","black"};
         std::string pieceTable[] = {"Pawn","Rook","Knight","Bishop","Queen","King"};
-        std::string codeTable[] = {"#PAWN","#ROOK","#KNIGHT","#BISHOP","#QUEEN","#KING"};
+        std::string whiteCodeTable[] = {"#9817","#9814","#9816","#9815","#9813","#9812"};
+        std::string blackCodeTable[] = {"#9823","#9820","#9822","#9821","#9819","#9818"};
 
 
         auto squares = chess_board.getMatrix();
@@ -240,7 +225,10 @@ main(int argc, char **argv)
                 info_to_front += ";";
             }
             else {
-                info_to_front += codeTable[sq.second->getOccupator()->getType()] + ";";
+                if (sq.second->getOccupator()->getColor() == WHITE)
+                    info_to_front += whiteCodeTable[sq.second->getOccupator()->getType()] + ";";
+                else
+                    info_to_front += blackCodeTable[sq.second->getOccupator()->getType()] + ";";
             }
         }
         info_to_front = info_to_front.substr(0,info_to_front.size()-1);
