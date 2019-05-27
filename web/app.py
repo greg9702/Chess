@@ -4,8 +4,9 @@ import sys
 
 app = Flask(__name__)
 
+board = []
 # store all squares on board
-board = [
+# board = [
 	{
 		'square_color' : 'white',
 		'color': 'black',
@@ -457,10 +458,10 @@ board = [
 		'code': '#9814'
 	},
 ]
-message = "White turn!"
-wrong_move = False
+# message = "White turn!"
+# wrong_move = False
 
-def setMesssage(info):
+# def setMesssage(info):
 	# set message to display
 	print ('info', info)
 	global message
@@ -493,7 +494,7 @@ def setMesssage(info):
 
 	return
 
-def moveFigure(move, new_type):
+# def moveFigure(move, new_type):
 	if new_type == None:
 		move = str(move, 'utf-8')
 		print ('who move', move[0:2])
@@ -571,7 +572,7 @@ def moveFigure(move, new_type):
 
 # def moveFigure(move, new_type):
 
-def updateData(move, server_resp):
+# def updateData(move, server_resp):
 	# update board
 	# @param 4 long string
 
@@ -749,6 +750,44 @@ def updateData(move, server_resp):
 
 	return False
 
+def updateMessage(staus):
+	return False;
+
+
+def updateBoard(recived_data):
+	global board
+	status = recived_data[0:6]
+	board_data = recived_data[6:]
+	updateMessage(status)
+
+	# update board
+	board = []
+	square = board_data.split(';')
+	for el in square:
+		field = el.split(',')
+		square_col = field[0]
+		figure_col = field[1]
+		figure = field[2]
+		position = field[3]
+		code = field[4]
+
+		if figure_col == '':
+			figure_col = 'None'
+			figure = 'None'
+			code = 'None'
+
+		board.append({
+			'square_col' : square_col,
+			'color' : color,
+			'figure' : figure,
+			'position' : position,
+			'code' : code
+		})
+
+	return True
+
+
+
 def sendData(move):
 	# send data to cpp socket
 	HOST = '0::1'    # The remote host
@@ -762,10 +801,11 @@ def sendData(move):
 			return False
 		s.send(move)
 		data = s.recv(1024)			# Return data from server in binary stream
-		print('Received from server:', data)
+		# print('Received from server:', data)
 		server_resp = str(data, 'utf-8')
 		print ("recived", server_resp) # in string form
-		updateData(move, server_resp)
+		# updateData(move, server_resp)
+		updateBoard(server_resp)
 		s.close()
 
 	except socket.error as e:
