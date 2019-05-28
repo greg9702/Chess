@@ -233,7 +233,7 @@ main(int argc, char **argv)
         }
         info_to_front = info_to_front.substr(0,info_to_front.size()-1);
 
-        std::cout << info_to_front << std::endl;
+        //std::cout << info_to_front << std::endl;
 
         snprintf(buff, sizeof(buff), "%s", info_to_front.c_str());						// there we would send response from
         if( write(connfd, buff, strlen(buff))< 0 )

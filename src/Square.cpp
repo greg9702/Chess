@@ -25,6 +25,7 @@ Square::Square(char x_, char y_) {
   else
       this->col = WHITE;
 
+  this->en_passant_flag = false;
 
   this->x = x_;
   this->y = y_;
@@ -64,4 +65,12 @@ std::pair<char, char> Square::getCoords() {
 
 color Square::getColor() {
     return this->col;
+}
+
+void Square::setEnPassant(bool en_pass) {
+    this->en_passant_flag = en_pass;
+}
+
+bool Square::getEnPassant() {
+    return this->en_passant_flag;
 }

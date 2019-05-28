@@ -10,6 +10,7 @@ private:
 	char y;
 	Piece* occupator;
 	color col;
+	bool en_passant_flag;
 public:
 	Square(char x_, char y_);
 	~Square();
@@ -17,7 +18,8 @@ public:
 	void setOccupator(Piece* occupator_);
 	std::pair<char, char> getCoords();
 	color getColor();
-
+    bool getEnPassant();
+    void setEnPassant(bool en_pass);
 };
 
 #endif

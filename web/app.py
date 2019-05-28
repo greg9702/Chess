@@ -85,13 +85,14 @@ def updateBoard(recived_data):
 		})
 
 	for el in board:
-		print (el)
+		#print (el)
+		pass;
 	return True
 
 
 
 def sendData(move):
-	print ('send move: ', move)
+	#print ('send move: ', move)
 	# send data to cpp socket
 	HOST = '0::1'    # The remote host
 	PORT = 8001      # The same port as used by the server
@@ -102,7 +103,7 @@ def sendData(move):
 			move = move.encode()
 		else:
 			return False
-		print ('Send data function')
+		#print ('Send data function')
 		s.send(move)
 		data = s.recv(2048)			# Return data from server in binary stream
 		# print('Received from server:', data)
@@ -121,7 +122,8 @@ def sendData(move):
 
 def printer():
 	for el in board:
-		print (el)
+		#print (el)
+		pass;
 
 @app.route("/", methods = ['GET', 'POST'])
 def function():
