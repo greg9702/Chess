@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from flask import Flask, render_template, request
 import socket
 import sys
@@ -7,6 +9,7 @@ app = Flask(__name__)
 board = []
 # store all squares on board
 start_game = True
+turn = 'white'
 
 message = "White turn!"
 # wrong_move = False
@@ -14,15 +17,16 @@ message = "White turn!"
 def updateMessage(staus):
 	status = staus.split(';')
 	print ("STATUS", status)
+	global turn
 	global message
 	message = ''
 
 	if status[2] == '1':
 		message += 'Black turn! '
+		turn = 'black'
 	elif status[2] == '0':
 		message += 'White turn! '
-	else:
-		return False
+		turn = 'white'
 
 	if status[0] == '0':
 		message += 'Wrong move! '
@@ -141,9 +145,9 @@ def function():
 			if sendData(move) == False:
 				print ('Could not send string')
 		# printer()
-		return render_template("index.html", board = board, len = len(board), message = message)
+		return render_template("index.html", board = board, len = len(board), message = message, turn = turn)
 	else:
-		return render_template("index.html", board = board, len = len(board), message = message)
+		return render_template("index.html", board = board, len = len(board), message = message, turn = turn)
 
 
 if __name__ == "__main__":
