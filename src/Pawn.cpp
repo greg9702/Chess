@@ -61,13 +61,7 @@ bool Pawn::isPossible(char x_, char y_) {
     if (this->board->getPieceByCoord(x_, y_) != nullptr)
       return false;
   } else {
-      std::cout << this->board->getMatrix().at(std::pair<char,char>('f','6'))->getEnPassant() << std::endl;
-      std::cout << "im trying\n";
-      if (this->board->getMatrix().at(std::pair<char,char>(x_,y_))->getEnPassant()) {
-          if (this->col == WHITE)
-              this->board->getMatrix().at(std::pair<char,char>(x_,y_-1))->setOccupator(nullptr);
-          else
-              this->board->getMatrix().at(std::pair<char,char>(x_,y_+1))->setOccupator(nullptr);
+      if (this->board->getMatrix().at(std::pair<char, char>(x_, y_))->getEnPassant()) {
           return true;
       }
       if (this->board->getPieceByCoord(x_, y_) == nullptr ||
@@ -79,6 +73,14 @@ bool Pawn::isPossible(char x_, char y_) {
 
 bool Pawn::move(char x_, char y_,special_args add_opt) {
     if (add_opt == NONE && !((this->col == WHITE && y_ == '8') || (this->col == BLACK && y_ == '1'))) {
+        if (x_ != this->square->getCoords().first) {
+            if (this->board->getMatrix().at(std::pair<char, char>(x_, y_))->getEnPassant()) {
+                if (this->col == WHITE)
+                    this->board->getMatrix().at(std::pair<char, char>(x_, y_ - 1))->setOccupator(nullptr);
+                else
+                    this->board->getMatrix().at(std::pair<char, char>(x_, y_ + 1))->setOccupator(nullptr);
+            }
+        }
         char old_y_ = this->getSquare()->getCoords().second;
         if (Piece::move(x_, y_)) {
             // en-passant settings

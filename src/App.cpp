@@ -147,7 +147,6 @@ main(int argc, char **argv)
 
         // Simulation of moveBoard() function
 
-        //showBoard(&chess_board);
 
         std::string info_to_front = "";
         game_state gs;
@@ -168,6 +167,7 @@ main(int argc, char **argv)
             } else {
                 info_to_front += "0;";
             }
+            showBoard(&chess_board);
 
 
             // GAMESTATE
@@ -192,6 +192,7 @@ main(int argc, char **argv)
                     info_to_front += "5;";
             }
         }
+        showBoard(&chess_board);
         //COLOR TO MOVE
         if (gs == CHECK_MATE || gs == STALE_MATE)
             info_to_front += "2;";
