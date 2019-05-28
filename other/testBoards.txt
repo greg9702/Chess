@@ -1,4 +1,4 @@
-////////// COMPLETE BOARD //////////
+////////// COMPLETE BOARD ////////// 
 
 
 PAWN, ----------- 0
