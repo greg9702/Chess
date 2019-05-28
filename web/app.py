@@ -23,8 +23,6 @@ def updateMessage(staus):
 		message += 'Black turn! '
 	elif status[2] == '0':
 		message += 'White turn! '
-	else:
-		return False
 
 	if status[0] == '0':
 		message += 'Wrong move! '
