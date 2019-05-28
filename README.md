@@ -18,20 +18,6 @@ Application provide full chess logic and functionality. <br>
 Build by running _build.sh_ script. <br>
 Then run _run.sh_.
 
-#### On Windows:
-
-Build by running _build.sh_ script <br>
-> _run.sh_  do not work on windows - fix in progress
-
-Manually run ./build/chess. <br>
-Then run flask app:
-```
-cd web
-export FLASK_APP=app.py
-flask run
-```
-
-
 ### Board view: <br>
 You can view board using web browser.
 
