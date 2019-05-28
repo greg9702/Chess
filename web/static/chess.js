@@ -1,12 +1,26 @@
-let move = ""
+let move = "";
 
+function highlightSquare(move) {
+	square = document.getElementById(move);
+	console.log(square);
+	square.style.backgroundColor = '#47d147';
+}
 
 function pickSquare(elmnt) {
 	console.log(elmnt.getAttribute('id'));
+	let turn = document.getElementById("turn").getAttribute('turn');
+	console.log('turn', turn);
+	if (move.length == 2) {
 	move = move + elmnt.getAttribute('id');
+	}
+	if (move.length == 0 && elmnt.getAttribute('figure_col') == turn) {
+		move = move + elmnt.getAttribute('id');
+		highlightSquare(move);
+	}
 	if (move.length == 4) {
 		sendMove(move);
 	}
+
 }
 
 function sendMove(move_) {
