@@ -5,7 +5,7 @@ function trap_ctrlc ()
     # perform cleanup here
     echo "Exiting..."
 	killall chess
-
+	killall python3
     exit 2
 }
 
@@ -18,7 +18,8 @@ echo "Open your browser 127.0.0.1:5000 to play chess"
 	killall chess
 	./build/chess &
 	cd web
-	flask run
-} &> /dev/null
-# }
+	flask run -p 5000 &
+	flask run -p 5001
+#} &> /dev/null
+}
 echo "Error running application"
