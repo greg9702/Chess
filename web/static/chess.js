@@ -1,5 +1,13 @@
 let move = "";
 
+setInterval(function(){ sendFake('b4') }, 3000);
+
+function sendFake(move_) {
+	document.body.innerHTML += '<form id="send_fake" action="" method="post"><input type="hidden" name="move" value="' + move_ + '"></form>';
+	document.getElementById("send_fake").submit();
+}
+
+
 function highlightSquare(move) {
 	square = document.getElementById(move);
 	console.log(square);
@@ -20,7 +28,6 @@ function pickSquare(elmnt) {
 	if (move.length == 4) {
 		sendMove(move);
 	}
-
 }
 
 function sendMove(move_) {
