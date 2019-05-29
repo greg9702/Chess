@@ -74,7 +74,7 @@ bool Pawn::isPossible(char x_, char y_) {
 bool Pawn::move(char x_, char y_,special_args add_opt) {
     if (add_opt == NONE && !((this->col == WHITE && y_ == '8') || (this->col == BLACK && y_ == '1'))) {
         if (x_ != this->square->getCoords().first) {
-            if (this->board->getMatrix().at(std::pair<char, char>(x_, y_))->getEnPassant()) {
+            if (Pawn::isPossible(x_,y_) && this->board->getMatrix().at(std::pair<char, char>(x_, y_))->getEnPassant()) {
                 if (this->col == WHITE)
                     this->board->getMatrix().at(std::pair<char, char>(x_, y_ - 1))->setOccupator(nullptr);
                 else
