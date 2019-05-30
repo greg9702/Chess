@@ -157,7 +157,7 @@ main(int argc, char **argv)
             info_to_front = "3;";
         }
         if (recived_move.size() == 4 || recived_move.size() == 5){
-            for (int i=0;i<3;i+=2) {
+            for (int i = 0; i < 3; i += 2) {
                 if (recived_move.at(i) < 'a' || recived_move.at(i) > 'h' ||
                     recived_move.at(i+1) < '1' || recived_move.at(i+1) > '8')
 

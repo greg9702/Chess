@@ -57,7 +57,7 @@ def updateMessage(staus):
 def updateBoard(recived_data):
 	global board
 	status = recived_data[0:5]
-	board_data = recived_data[7:]
+	board_data = recived_data[6:]
 
 	global start_game
 	if start_game == True:
@@ -135,7 +135,7 @@ def function():
 	global start_game
 	if start_game == True:
 		print ('Start game')
-		move = 'e6' # i send wrong move to synchronize database
+		move = 'XD' # i send wrong move to synchronize database
 		sendData(move)
 
 	if request.method == 'POST':

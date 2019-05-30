@@ -2,13 +2,13 @@ let move = "";
 let last_hash;
 let turn;
 
-setInterval(function(){ sendFake('b4c') }, 1000);
+setInterval(function(){ sendFake('XD') }, 1000);
 
 function sendFake(move_) {
 	var http = new XMLHttpRequest();
 	var url = '';
 	var params = 'move=' + move_;
-	console.log('params', params);
+	// console.log('params', params);
 	http.open('POST', url, true);
 
 	http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
@@ -22,13 +22,13 @@ function sendFake(move_) {
 
 function highlightSquare(move) {
 	square = document.getElementById(move);
-	console.log(square);
+	// console.log(square);
 	square.style.backgroundColor = '#47d147';
 }
 
 function pickSquare(elmnt) {
-	console.log(elmnt.getAttribute('id'));
-	console.log('turn', turn);
+	// console.log(elmnt.getAttribute('id'));
+	// console.log('turn', turn);
 	if (move.length == 2) {
 	move = move + elmnt.getAttribute('id');
 	}
@@ -46,7 +46,7 @@ function sendMove(move_) {
 	let figure_position = move_.substring(0, 2);
 	let element = document.getElementById(figure_position);
 	let figure_row = figure_position.substring(1,2);
-	console.log(element)
+	// console.log(element)
 	if (element.getAttribute('figure') == 'Pawn' && element.getAttribute('figure_col') == 'white' && figure_row == '7') {
 		// ask for details about new figure type
 		let a = prompt("Promote to: ","Q");
@@ -60,7 +60,7 @@ function sendMove(move_) {
 	var http = new XMLHttpRequest();
 	var url = '';
 	var params = 'move=' + move_;
-	console.log('params', params);
+	// console.log('params', params);
 	http.open('POST', url, true);
 
 
@@ -76,7 +76,9 @@ function sendMove(move_) {
 
 function parseNewBoard(json_str) {
 			data = JSON.parse(json_str);
+			// console.log('hash', data.hash);
 			if (data.hash != last_hash) {
+				console.log('draw');
 				board = document.getElementById("board")
 				board.innerHTML = data.content;
 				last_hash = data.hash;
