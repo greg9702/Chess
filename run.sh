@@ -5,7 +5,7 @@ function trap_ctrlc ()
     # perform cleanup here
     echo "Exiting..."
 	killall chess
-	killall python3
+	killall flask
     exit 2
 }
 
