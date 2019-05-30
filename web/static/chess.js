@@ -1,12 +1,23 @@
 let move = "";
 
-setInterval(function(){ sendFake('b4') }, 3000);
+
+
+setInterval(function(){ sendFake('b4c') }, 1000);
 
 function sendFake(move_) {
-	document.body.innerHTML += '<form id="send_fake" action="" method="post"><input type="hidden" name="move" value="' + move_ + '"></form>';
-	document.getElementById("send_fake").submit();
-}
+	var http = new XMLHttpRequest();
+	var url = '';
+	var params = 'move=' + move_;
+	console.log('params', params);
+	http.open('POST', url, true);
 
+	http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	http.onreadystatechange = function() {//Call a function when the state changes.
+		if(http.readyState == 4 && http.status == 200) {
+		}
+	}
+	http.send(params);
+}
 
 function highlightSquare(move) {
 	square = document.getElementById(move);
@@ -39,14 +50,25 @@ function sendMove(move_) {
 	if (element.getAttribute('figure') == 'Pawn' && element.getAttribute('figure_col') == 'white' && figure_row == '7') {
 		// ask for details about new figure type
 		let a = prompt("Promote to: ","Q");
-		document.body.innerHTML += '<form id="send_move" action="" method="post"><input type="hidden" name="move" value="' + move_ + a + '"></form>';
+		move_ = move_ + a;
 	} else if (element.getAttribute('figure') == 'Pawn' && element.getAttribute('figure_col') == 'black'&& figure_row == '2') {
 		// ask for details about new figure type
 		let a = prompt("Promote to: ","Q");
-		document.body.innerHTML += '<form id="send_move" action="" method="post"><input type="hidden" name="move" value="' + move_ + a +'"></form>';
-	} else {
-		document.body.innerHTML += '<form id="send_move" action="" method="post"><input type="hidden" name="move" value="' + move_ + '"></form>';
+		move_ = move_ + a;
 	}
-	console.log(document.getElementById("send_move"));
-	document.getElementById("send_move").submit();
+
+	var http = new XMLHttpRequest();
+	var url = '';
+	var params = 'move=' + move_;
+	console.log('params', params);
+	http.open('POST', url, true);
+
+	http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	http.onreadystatechange = function() {//Call a function when the state changes.
+    	if(http.readyState == 4 && http.status == 200) {
+			console.log(http.responseText);
+    	}
+	}
+	http.send(params);
+
 }

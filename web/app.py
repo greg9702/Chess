@@ -89,8 +89,7 @@ def updateBoard(recived_data):
 		})
 
 	for el in board:
-		#print (el)
-		pass;
+		print (el)
 	return True
 
 
@@ -110,7 +109,7 @@ def sendData(move):
 		#print ('Send data function')
 		s.send(move)
 		data = s.recv(2048)			# Return data from server in binary stream
-		print('Received from server:', data)
+		# print('Received from server:', data)
 		server_resp = str(data, 'utf-8')
 		# print ("RECIVED", server_resp) # in string form
 		# updateData(move, server_resp)
@@ -151,4 +150,4 @@ def function():
 
 
 if __name__ == "__main__":
-	app.run()
+	app.run(use_reloader=True)
