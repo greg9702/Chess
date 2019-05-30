@@ -3,6 +3,8 @@
 from flask import Flask, render_template, request
 import socket
 import sys
+import json
+import hashlib
 
 app = Flask(__name__)
 
@@ -89,8 +91,7 @@ def updateBoard(recived_data):
 		})
 
 	for el in board:
-		#print (el)
-		pass;
+		print (el)
 	return True
 
 
@@ -110,7 +111,7 @@ def sendData(move):
 		#print ('Send data function')
 		s.send(move)
 		data = s.recv(2048)			# Return data from server in binary stream
-		print('Received from server:', data)
+		# print('Received from server:', data)
 		server_resp = str(data, 'utf-8')
 		# print ("RECIVED", server_resp) # in string form
 		# updateData(move, server_resp)
@@ -145,10 +146,15 @@ def function():
 			if sendData(move) == False:
 				print ('Could not send string')
 		# printer()
-		return render_template("index.html", board = board, len = len(board), message = message, turn = turn)
+		render = render_template("board.html", board = board, len = len(board))
+		m = hashlib.sha256();
+		m.update(render.encode());
+
+		ren_j = { 'content' : render, 'hash' : m.hexdigest(), 'message' : message, 'turn' : turn};
+		return json.dumps(ren_j);
 	else:
-		return render_template("index.html", board = board, len = len(board), message = message, turn = turn)
+		return render_template("index.html")
 
 
 if __name__ == "__main__":
-	app.run()
+	app.run(use_reloader=True)
