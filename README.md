@@ -13,8 +13,6 @@ Cpp application is used as server. <br>
 
 ### How to run?
 
-#### On Linux:
-
 Build by running _build.sh_ script. <br>
 Then run _run.sh_.
 
