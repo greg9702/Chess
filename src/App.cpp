@@ -151,16 +151,21 @@ main(int argc, char **argv)
         std::string info_to_front = "";
         game_state gs;
 
+        // fake move
+        std::cout << "rcvd move size: " << recived_move.size() << std::endl;
+        if (recived_move.size() == 2){
+            info_to_front = "3;";
+        }
         if (recived_move.size() == 4 || recived_move.size() == 5){
             for (int i=0;i<3;i+=2) {
                 if (recived_move.at(i) < 'a' || recived_move.at(i) > 'h' ||
                     recived_move.at(i+1) < '1' || recived_move.at(i+1) > '8')
 
-                    info_to_front = "0;0;";
+                    info_to_front = "0;";
 
             }
         }
-        if (info_to_front != "0;0;") {
+        if (info_to_front != "0;" && info_to_front != "3;") {
             //  correct move
             if (chess_board.move(recived_move)) {
                 info_to_front += "1;";
@@ -168,30 +173,30 @@ main(int argc, char **argv)
                 info_to_front += "0;";
             }
             showBoard(&chess_board);
-
-
-            // GAMESTATE
-            gs = chess_board.getGameState(chess_board.getTurn());
-            switch (gs) {
-                case NORMAL:
-                    info_to_front += "0;";
-                    break;
-                case CHECK:
-                    if (chess_board.getTurn() == WHITE)
-                        info_to_front += "1;";
-                    else
-                        info_to_front += "3;";
-                    break;
-                case CHECK_MATE:
-                    if (chess_board.getTurn() == WHITE)
-                        info_to_front += "2;";
-                    else
-                        info_to_front += "4;";
-                    break;
-                case STALE_MATE:
-                    info_to_front += "5;";
-            }
         }
+
+        // GAMESTATE
+        gs = chess_board.getGameState(chess_board.getTurn());
+        switch (gs) {
+            case NORMAL:
+                info_to_front += "0;";
+                break;
+            case CHECK:
+                if (chess_board.getTurn() == WHITE)
+                    info_to_front += "1;";
+                else
+                    info_to_front += "3;";
+                break;
+            case CHECK_MATE:
+                if (chess_board.getTurn() == WHITE)
+                    info_to_front += "2;";
+                else
+                    info_to_front += "4;";
+                break;
+            case STALE_MATE:
+                info_to_front += "5;";
+        }
+
         showBoard(&chess_board);
         //COLOR TO MOVE
         if (gs == CHECK_MATE || gs == STALE_MATE)
