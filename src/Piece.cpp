@@ -29,7 +29,7 @@ bool Piece::isCorrect(char x_, char y_) {
    * Ckeck if proposed move is correct for this type of Piece
    * @return true if is correct false otherwise
    */
-	return true;
+  return true;
 }
 
 bool Piece::isPossible(char x_, char y_) {
@@ -37,17 +37,16 @@ bool Piece::isPossible(char x_, char y_) {
    * Ckeck if proposed move is correct
    * @return true if is move is possible false otherwise
    */
-	return true;
+  return true;
 }
 
-bool Piece::move(char x_, char y_,special_args add_opt) {
+bool Piece::move(char x_, char y_, special_args add_opt) {
   /**
    * Move Piece to new position
    * @param first cordinate of board
    * @param second cordinate of board
    * @return true if Piece was moved sucesfully false otherwise
    */
-
 
   if (x_ < 'a' || x_ > 'h' || y_ < '1' || y_ > '8')
     return false;
@@ -64,21 +63,24 @@ bool Piece::move(char x_, char y_,special_args add_opt) {
   this->first_move_made = true;
 
   if (this->board->isCheck(this->col)) {
-      this->board->setUndoFlag();
-      return false;
+    this->board->setUndoFlag();
+    return false;
   }
 
-  // default no en-passant in next move (if there is, it's being set in Pawn::move())
-  for (char i='a';i<='h';++i) {
-      this->board->getMatrix().at(std::pair<char,char>(i,'3'))->setEnPassant(false);
-      this->board->getMatrix().at(std::pair<char,char>(i,'6'))->setEnPassant(false);
+  // default no en-passant in next move (if there is, it's being set in
+  // Pawn::move())
+  for (char i = 'a'; i <= 'h'; ++i) {
+    this->board->getMatrix()
+        .at(std::pair<char, char>(i, '3'))
+        ->setEnPassant(false);
+    this->board->getMatrix()
+        .at(std::pair<char, char>(i, '6'))
+        ->setEnPassant(false);
   }
 
   return true;
 }
 
-Square * Piece::getSquare() { return this->square; }
+Square *Piece::getSquare() { return this->square; }
 
-bool Piece::isStarting() {
-    return !first_move_made;
-}
+bool Piece::isStarting() { return !first_move_made; }

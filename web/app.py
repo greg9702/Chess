@@ -12,9 +12,7 @@ board = []
 # store all squares on board
 start_game = True
 turn = 'white'
-
 message = "White turn!"
-# wrong_move = False
 
 def updateMessage(staus):
 	status = staus.split(';')
@@ -50,7 +48,6 @@ def updateMessage(staus):
 		message = 'Stale mate '
 	else:
 		return False
-
 	return True
 
 
@@ -64,11 +61,9 @@ def updateBoard(recived_data):
 		start_game = False
 	else:
 		updateMessage(status)
-
 	# update board
 	board = []
 	square = board_data.split(';')
-	# print ('SQUARE', square)
 	for el in square:
 		field = el.split(',')
 		square_col = field[0]
@@ -94,8 +89,6 @@ def updateBoard(recived_data):
 		print (el)
 	return True
 
-
-
 def sendData(move):
 	#print ('send move: ', move)
 	# send data to cpp socket
@@ -108,13 +101,9 @@ def sendData(move):
 			move = move.encode()
 		else:
 			return False
-		#print ('Send data function')
 		s.send(move)
 		data = s.recv(2048)			# Return data from server in binary stream
-		# print('Received from server:', data)
 		server_resp = str(data, 'utf-8')
-		# print ("RECIVED", server_resp) # in string form
-		# updateData(move, server_resp)
 		updateBoard(server_resp)
 		s.close()
 
@@ -127,15 +116,14 @@ def sendData(move):
 
 def printer():
 	for el in board:
-		#print (el)
-		pass;
+		print (el)
 
 @app.route("/", methods = ['GET', 'POST'])
 def function():
 	global start_game
 	if start_game == True:
 		print ('Start game')
-		move = 'XD' # i send wrong move to synchronize database
+		move = 'XD' # send wrong move to synchronize board
 		sendData(move)
 
 	if request.method == 'POST':
@@ -145,16 +133,14 @@ def function():
 		if move != '':
 			if sendData(move) == False:
 				print ('Could not send string')
-		# printer()
+
 		render = render_template("board.html", board = board, len = len(board))
 		m = hashlib.sha256();
 		m.update(render.encode());
-
 		ren_j = { 'content' : render, 'hash' : m.hexdigest(), 'message' : message, 'turn' : turn};
 		return json.dumps(ren_j);
 	else:
 		return render_template("index.html")
 
-
 if __name__ == "__main__":
-	app.run(use_reloader=True)
+	app.run()

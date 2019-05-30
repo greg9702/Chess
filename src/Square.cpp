@@ -20,10 +20,10 @@ Square::Square(char x_, char y_) {
 
   this->occupator = nullptr;
 
-  if (((x_ - 'a') + (y_ - '1'))%2 == 0)
-      this->col = BLACK;
+  if (((x_ - 'a') + (y_ - '1')) % 2 == 0)
+    this->col = BLACK;
   else
-      this->col = WHITE;
+    this->col = WHITE;
 
   this->en_passant_flag = false;
 
@@ -63,14 +63,8 @@ std::pair<char, char> Square::getCoords() {
   return std::pair<char, char>(this->x, this->y);
 }
 
-color Square::getColor() {
-    return this->col;
-}
+color Square::getColor() { return this->col; }
 
-void Square::setEnPassant(bool en_pass) {
-    this->en_passant_flag = en_pass;
-}
+void Square::setEnPassant(bool en_pass) { this->en_passant_flag = en_pass; }
 
-bool Square::getEnPassant() {
-    return this->en_passant_flag;
-}
+bool Square::getEnPassant() { return this->en_passant_flag; }

@@ -26,6 +26,15 @@ function highlightSquare(move) {
 	square.style.backgroundColor = '#47d147';
 }
 
+function undoHighlightSquare(position) {
+	let highlighted_figure = document.getElementById(position);
+	if (highlighted_figure.getAttribute('class') == 'white') {
+		square.style.backgroundColor = '#eee';
+	} else if (highlighted_figure.getAttribute('class') == 'black') {
+		square.style.backgroundColor = '#a40f08';
+	}
+}
+
 function pickSquare(elmnt) {
 	// console.log(elmnt.getAttribute('id'));
 	// console.log('turn', turn);
@@ -36,6 +45,7 @@ function pickSquare(elmnt) {
 		move = move + elmnt.getAttribute('id');
 		highlightSquare(move);
 	}
+	console.log('move', move);
 	if (move.length == 4) {
 		sendMove(move);
 	}
@@ -43,6 +53,7 @@ function pickSquare(elmnt) {
 
 function sendMove(move_) {
 	move = "";
+	undoHighlightSquare(move_.substring(0,2));
 	let figure_position = move_.substring(0, 2);
 	let element = document.getElementById(figure_position);
 	let figure_row = figure_position.substring(1,2);

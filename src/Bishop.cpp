@@ -14,7 +14,6 @@ bool Bishop::isCorrect(char x_, char y_) {
   if (abs(y_ - current_pos.second) != abs(x_ - current_pos.first)) {
     return false;
   }
-
   return true;
 }
 

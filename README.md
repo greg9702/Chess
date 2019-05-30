@@ -7,7 +7,7 @@ Cpp application is used as server. <br>
 ### Requirements:
 - CMake
 - g++
-- Python
+- Python3
 - pip
 - virtualenv
 
