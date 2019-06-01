@@ -73,6 +73,7 @@ Board::Board(Board &brd) {
    * Copy constructor - we need a deep copy
    * @param brd - Object where from to copy
    */
+
   this->deepCopy(&brd);
   this->backup = nullptr;
 }
@@ -81,6 +82,7 @@ Board::~Board() {
   /**
    * Destructor
    */
+
   for (auto &it : piecesOnBoard)
     delete it;
   // std::cout << "Board destructor" << std::endl;
@@ -96,6 +98,7 @@ game_state Board::getGameState(color col) {
    * @param col - color to check the state
    * @return current game_state
    */
+
   bool stale_mate_flag = true;
   // low performance, highly recommended to change
   std::vector<Piece *> my_pieces = this->findPieces(col);
@@ -342,6 +345,7 @@ bool Board::undo() {
   /**
    * Method that changes the content of the board to the state stored in backup
    */
+
   for (auto &it : piecesOnBoard)
     delete it;
   for (auto &mp : matrix) {
@@ -361,6 +365,7 @@ void Board::setUndoFlag() {
   /**
    * Method that sets the private member undo_flag
    */
+
   this->undo_flag = true;
 }
 
@@ -371,6 +376,7 @@ void Board::deepCopy(Board *src) {
    * There is need that *this has cleared squares map and pieces vector
    * @param src - pointer to Board, where from we will copy the data
    */
+
   for (char tmp_y = '1'; tmp_y <= '8'; ++tmp_y) {
     for (char tmp_x = 'a'; tmp_x <= 'h'; ++tmp_x) {
       matrix.insert(std::pair<std::pair<char, char>, Square *>(
@@ -438,4 +444,11 @@ void Board::deepCopy(Board *src) {
   this->game_s = src->game_s;
 }
 
-special_args Board::getCastlingType() { return this->cas_type; }
+special_args Board::getCastlingType() {
+  /**
+   * Return enum type of castling type
+   * @return enum type of castling
+   */
+
+  return this->cas_type;
+}

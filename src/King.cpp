@@ -2,6 +2,12 @@
 #include <cmath>
 
 bool King::isPossible(char x_, char y_) {
+  /**
+   * Check if move is possible if we consider postion of other pieces on board
+   * @param x cord of new square on board
+   * @param x cord of new square on board
+   * @return true if move is possbile, false otherwise
+   */
 
   if (!isCorrect(x_, y_)) {
     return false;
@@ -19,11 +25,17 @@ bool King::isPossible(char x_, char y_) {
     return false;
   }
 
-  // TODO check if there is no check
   return true;
 }
 
 bool King::isCorrect(char x_, char y_) {
+  /**
+   * Check if move is correct for King type
+   * @param x cord of new square on board
+   * @param x cord of new square on board
+   * @return true if move is correct, false otherwise
+   */
+
   std::pair<char, char> current_pos = this->square->getCoords();
 
   if ((abs(current_pos.first - x_) > 1) || (abs(current_pos.second - y_) > 1)) {
@@ -35,13 +47,29 @@ bool King::isCorrect(char x_, char y_) {
 
 King::King(color col_, Board *board_, Square *square_)
     : Piece(col_, board_, square_) {
+  /**
+   * Constructor
+   */
+
   this->type = KING;
   first_move_made = false;
 }
 
-King::~King() {}
+King::~King() {
+  /**
+   * Destructor
+   */
+}
 
 bool King::move(char x_, char y_, special_args add_opt) {
+  /**
+   * Move piece to new position
+   * @param x cord of new position
+   * @param y cord of new postion
+   * @param enum type, needed for castling
+   * @return true if move was performed successfully, false otherwise
+   */
+
   if (add_opt == NONE) {
     if (Piece::move(x_, y_)) {
       first_move_made = true;

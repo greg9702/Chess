@@ -9,19 +9,34 @@
 
 Pawn::Pawn(color col_, Board *board_, Square *square_)
     : Piece(col_, board_, square_) {
+  /**
+   * Constructor
+   */
+
   this->type = PAWN;
   this->first_move_made = false;
 }
 
 Pawn::~Pawn() {
+  /**
+   * Destructor
+   */
+
   /*
-std::cout << "Deleted PAWN OF POSITION: "
+  std::cout << "Deleted PAWN OF POSITION: "
           << this->getSquare()->getCoords().first
           << this->getSquare()->getCoords().second << std::endl;
   */
 }
 
 bool Pawn::isCorrect(char x_, char y_) {
+  /**
+   * Check if move is correct for Pawn type
+   * @param x cord of new position
+   * @param x cord of new position
+   * @return true if move is correct, false otherwise
+   */
+
   int my_x = this->square->getCoords().first;
   int my_y = this->square->getCoords().second;
 
@@ -43,6 +58,13 @@ bool Pawn::isCorrect(char x_, char y_) {
 }
 
 bool Pawn::isPossible(char x_, char y_) {
+  /**
+   * Check if move is possible if we consider other pieces on board
+   * @param x cord of new position
+   * @param x cord of new position
+   * @return true if move is possible, false otherwise
+   */
+
   if (!isCorrect(x_, y_))
     return false;
   int my_x = this->square->getCoords().first;
@@ -74,6 +96,14 @@ bool Pawn::isPossible(char x_, char y_) {
 }
 
 bool Pawn::move(char x_, char y_, special_args add_opt) {
+  /**
+   * Move Pawn piece to new position
+   * @param x cord of new position
+   * @param y cord of new position
+   * @param enum type, used for Pawn promotion
+   * @return true if move was sucessfully performed, false otherwise
+   */
+
   if (add_opt == NONE && !((this->col == WHITE && y_ == '8') ||
                            (this->col == BLACK && y_ == '1'))) {
     if (x_ != this->square->getCoords().first) {

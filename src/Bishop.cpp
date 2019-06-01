@@ -8,6 +8,12 @@ Bishop::Bishop(color col_, Board *board_, Square *square_)
 Bishop::~Bishop() {}
 
 bool Bishop::isCorrect(char x_, char y_) {
+  /**
+   * Check if move is correct for Bishop type
+   * @param x cord of new square on board
+   * @param y cord of new square on board
+   * @return true if it is correct move, false otherwise
+   */
 
   std::pair<char, char> current_pos = this->square->getCoords();
 
@@ -18,6 +24,13 @@ bool Bishop::isCorrect(char x_, char y_) {
 }
 
 bool Bishop::isPossible(char x_, char y_) {
+  /**
+   * Check if move is possible if we consider postion of other pieces on board
+   * @param x cord of new square on board
+   * @param x cord of new square on board
+   * @return true if move is possbile, false otherwise
+   */
+
   if (!isCorrect(x_, y_)) {
     return false;
   }
@@ -76,4 +89,4 @@ bool Bishop::isPossible(char x_, char y_) {
     }
   }
   return true;
-};
+}
