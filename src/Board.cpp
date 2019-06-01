@@ -12,6 +12,7 @@ Board::Board() {
   /**
    * Parameterless constructor, initializes table with all pieces
    */
+
   turn = WHITE;
   game_s = NORMAL;
   this->undo_flag = false;
@@ -208,7 +209,7 @@ bool Board::move(std::string instruction) {
     fig_to_move = PAWN;
   }
 
-  Piece *candidate_to_move = this->getPieceByCoord(src_x, src_y);
+  Piece* candidate_to_move = this->getPieceByCoord(src_x, src_y);
 
   if (fig_to_move != candidate_to_move->getType() ||
       this->turn != candidate_to_move->getColor())
@@ -238,6 +239,7 @@ std::string Board::getHistory() {
    * Getter of history
    * @return history of the chess game, using standard chess notation
    */
+
   std::string formattedHistory = "";
   for (int i = 0; i < history.size(); ++i) {
     formattedHistory += history[i];
@@ -256,6 +258,7 @@ std::map<std::pair<char, char>, Square *, MyComparator> Board::getMatrix() {
    * @return map containing indexes of squares and object Square describing the
    * square
    */
+
   return this->matrix;
 }
 
@@ -264,10 +267,11 @@ color Board::getTurn() {
    * Getter of turn
    * @return if black or white is about to move
    */
+
   return this->turn;
 }
 
-std::vector<Piece *> Board::findPieces(color col, Piece_type typ) {
+std::vector<Piece*> Board::findPieces(color col, Piece_type typ) {
   /**
    * Searches for every possible type of piece on the whole board
    * @return vector of suitable pieces
@@ -291,17 +295,23 @@ std::vector<Piece *> Board::findPieces(color col, Piece_type typ) {
   return matching_pieces;
 }
 
-Piece *Board::getPieceByCoord(char x_, char y_) {
+Piece* Board::getPieceByCoord(char x_, char y_) {
   /**
    * Getter
    * @param x_ x-coordinate
    * @param y_ y-coordinate
    * @return pointer to Piece on the Square of coordinated x_, y_
    */
+
   return (this->matrix.at(std::pair<char, char>(x_, y_)))->getOccupator();
 }
 
-void Board::addNewPiece(Piece *new_piece) {
+void Board::addNewPiece(Piece* new_piece) {
+  /**
+   * Add new piece to pieces vector
+   * @param pointer to piece object
+   */
+  
   this->piecesOnBoard.push_back(new_piece);
 }
 
@@ -314,6 +324,7 @@ bool Board::isCheck(color col, std::pair<char, char> king_pos) {
    * checking if castling is possible)
    * @return vector of pointers to the pieces that are checking the king
    */
+
   char king_x, king_y;
   // if there is no special position to check, use current king position
   if (king_pos == std::pair<char, char>('0', '0')) {
