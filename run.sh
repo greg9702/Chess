@@ -21,6 +21,6 @@ echo "Open your browser http://127.0.0.1:5001 to play chess"
 	cd web
 	flask run -p 5000 &
 	flask run -p 5001
-} &> /dev/null
-# }
+#} &> /dev/null
+}
 echo "Error running application"

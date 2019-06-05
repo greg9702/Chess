@@ -22,7 +22,8 @@ function sendFake(move_) {
     if (http.readyState == 4 && http.status == 200) {
       parseNewBoard(http.responseText);
     }
-  } http.send(params);
+  } 
+  http.send(params);
 }
 
 function highlightSquare(move_) {
@@ -108,7 +109,8 @@ function sendMove(move_) {
     if (http.readyState == 4 && http.status == 200) {
       parseNewBoard(http.responseText);
     }
-  } http.send(params);
+  } 
+  http.send(params);
 }
 
 function parseNewBoard(json_str) {
