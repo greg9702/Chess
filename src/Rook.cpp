@@ -4,17 +4,39 @@
 
 Rook::Rook(color col_, Board *board_, Square *square_)
     : Piece(col_, board_, square_) {
+  /**
+   * Constructor
+   */
+
   this->type = ROOK;
 }
 
-Rook::~Rook() {}
+Rook::~Rook() {
+  /**
+   * Destructor
+   */
+}
 
 bool Rook::isCorrect(char x_, char y_) {
+  /**
+   * Check if move to new position is correct for Rook type
+   * @param x cord of new position
+   * @param y cord of new position
+   * @return true if it is correct, false otherwise
+   */
+
   return ((x_ == this->square->getCoords().first) !=
           (y_ == this->square->getCoords().second));
 }
 
 bool Rook::isPossible(char x_, char y_) {
+  /**
+   * Check if move to new position is possible
+   * @param x cord of new position
+   * @param y cord of new position
+   * @return true if it is possible, false otherwise
+   */
+
   if (!this->isCorrect(x_, y_))
     return false;
   if (this->board->getPieceByCoord(x_, y_) != nullptr &&

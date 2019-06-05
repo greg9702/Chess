@@ -1,19 +1,18 @@
 # __Chess__
 
-Chess multiplayer game build using C++. <br>
-Flask application is client which play with other client using server. <br>
+Chess multiplayer game built using C++. <br>
+Provided full logic and functionallity of chess. <br>
+Two Flask applications play with each other through the server. <br>
 Cpp application is used as server. <br>
 
 ### Requirements:
 - CMake
 - g++
-- Python
+- Python3
 - pip
 - virtualenv
 
 ### How to run?
-
-#### On Linux:
 
 Build by running _build.sh_ script. <br>
 Then run _run.sh_.

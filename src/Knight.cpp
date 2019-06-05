@@ -6,12 +6,27 @@
 
 Knight::Knight(color col_, Board *board_, Square *square_)
     : Piece(col_, board_, square_) {
+  /**
+   * Constructor
+   */
+
   this->type = KNIGHT;
 }
 
-Knight::~Knight() {}
+Knight::~Knight() {
+  /**
+   * Destructor
+   */
+}
 
 bool Knight::isPossible(char x_, char y_) {
+  /**
+   * Check if move is possible if we consider postion of other pieces on board
+   * @param x cord of new square on board
+   * @param x cord of new square on board
+   * @return true if move is possbile, false otherwise
+   */
+
   if (!(isCorrect(x_, y_))) {
     return false;
   }
@@ -27,6 +42,13 @@ bool Knight::isPossible(char x_, char y_) {
 }
 
 bool Knight::isCorrect(char x_, char y_) {
+  /**
+   * Check if move is correct for Knight type
+   * @param x cord of new position
+   * @param x cord of new position
+   * @return true if move is correct, false otherwise
+   */
+
   char my_x = this->square->getCoords().first;
   char my_y = this->square->getCoords().second;
 

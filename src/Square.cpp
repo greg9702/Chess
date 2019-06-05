@@ -13,17 +13,16 @@ Square::Square(char x_, char y_) {
    * @param Piece object - if piece stand on square, nullptr otherwise
    */
 
-  // TODO check crectness of x and y asserts
   assert((x_ >= (int)'a' && x_ <= (int)'h') ||
          (x_ >= (int)'A' && x_ <= (int)'H'));
   assert(y_ >= (int)'1' && y_ <= (int)'8');
 
   this->occupator = nullptr;
 
-  if (((x_ - 'a') + (y_ - '1'))%2 == 0)
-      this->col = BLACK;
+  if (((x_ - 'a') + (y_ - '1')) % 2 == 0)
+    this->col = BLACK;
   else
-      this->col = WHITE;
+    this->col = WHITE;
 
   this->en_passant_flag = false;
 
@@ -46,6 +45,7 @@ void Square::setOccupator(Piece *occupator_) {
    * Set occupatr
    * @param pointer to occupator obj //TODO what about nullptr
    */
+
   this->occupator = occupator_;
 }
 
@@ -58,19 +58,35 @@ Square::~Square() {
 std::pair<char, char> Square::getCoords() {
   /**
    * Return cords x and y of square as pair
-   * @return pair<char, char>
+   * @return pair<char, char> of cords <x,y>
    */
+
   return std::pair<char, char>(this->x, this->y);
 }
 
 color Square::getColor() {
-    return this->col;
+  /**
+   * Getter for square color
+   * @return enum color type
+   */
+
+  return this->col;
 }
 
 void Square::setEnPassant(bool en_pass) {
-    this->en_passant_flag = en_pass;
+  /**
+   * Setter for En passant flag
+   * @param en passant boolean
+   */
+
+  this->en_passant_flag = en_pass;
 }
 
 bool Square::getEnPassant() {
-    return this->en_passant_flag;
+  /**
+   * Getter for en passant flag
+   * @return boolean en passant flag
+   */
+
+  return this->en_passant_flag;
 }

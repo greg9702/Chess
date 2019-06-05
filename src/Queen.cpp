@@ -4,12 +4,26 @@
 
 Queen::Queen(color col_, Board *board_, Square *square_)
     : Piece(col_, board_, square_) {
+  /**
+   * Constructor
+   */
+
   this->type = QUEEN;
 }
 
-Queen::~Queen() {}
+Queen::~Queen() {
+  /**
+   * Destructor
+   */
+}
 
 bool Queen::isPossible(char x_, char y_) {
+  /**
+   * Check if move to new position is possible
+   * @param x cord of new position
+   * @param y cord of new position
+   * @return true if it is possible, false otherwise
+   */
 
   if (!(this->isCorrect(x_, y_))) {
     return false;
@@ -97,6 +111,13 @@ bool Queen::isPossible(char x_, char y_) {
 }
 
 bool Queen::isCorrect(char x_, char y_) {
+  /**
+   * Check if move to new position is correct for Queen type
+   * @param x cord of new position
+   * @param y cord of new position
+   * @return true if it is correct, false otherwise
+   */
+
   std::pair<char, char> current_pos = this->square->getCoords();
 
   if ((x_ == current_pos.first) == (y_ == current_pos.second)) {

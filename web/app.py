@@ -8,15 +8,23 @@ import hashlib
 
 app = Flask(__name__)
 
-board = []
 # store all squares on board
-start_game = True
-turn = 'white'
+board = []
 
+# boolean flag to indicate if first move was performed
+start_game = True
+# keep value what player color has move
+turn = 'white'
+# message displayed to players
 message = "White turn!"
-# wrong_move = False
 
 def updateMessage(staus):
+	'''
+	Update displayed message to players, based on server response
+	@param status: array contaning 3 values  
+	@return: true if message was set sucessfully, false otherwise
+	'''
+	
 	status = staus.split(';')
 	print ("STATUS", status)
 	global turn
@@ -32,7 +40,7 @@ def updateMessage(staus):
 
 	if status[0] == '0':
 		message += 'Wrong move! '
-	elif status[1] == '1':
+	elif status[0] == '1':
 		# correct move
 		message += ''
 
@@ -50,11 +58,15 @@ def updateMessage(staus):
 		message = 'Stale mate '
 	else:
 		return False
-
 	return True
 
-
 def updateBoard(recived_data):
+	'''
+	Update board dictionary
+	@param recived_data: dictionary contaning values for each square on board
+	@return: true if board was updated sucessfully
+	'''
+
 	global board
 	status = recived_data[0:5]
 	board_data = recived_data[6:]
@@ -68,7 +80,6 @@ def updateBoard(recived_data):
 	# update board
 	board = []
 	square = board_data.split(';')
-	# print ('SQUARE', square)
 	for el in square:
 		field = el.split(',')
 		square_col = field[0]
@@ -90,71 +101,86 @@ def updateBoard(recived_data):
 			'code' : code
 		})
 
-	for el in board:
-		print (el)
+	# for el in board:
+	# 	print (el)
 	return True
 
-
-
 def sendData(move):
-	#print ('send move: ', move)
-	# send data to cpp socket
+	'''
+	Send move to the server, and wait for response containing info about game status 
+	and pieces position, create short TCP session with server
+	@param move: string 4 chars long
+	@return: True if move was send sucessfully and got server response, False otherwise
+	'''
+
 	HOST = '0::1'    # The remote host
-	PORT = 8001      # The same port as used by the server
+	PORT = 8001      # The port as used by the server
 	try:
 		s = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
-		s.connect((HOST, PORT))
-		if move != None:
-			move = move.encode()
+		s.connect((HOST, PORT))							
+
+		if move != None:			
+			move = move.encode()	# we need encode string to binary stream to send it
 		else:
-			return False
-		#print ('Send data function')
+			return False		# if move is None, do not send it
+
 		s.send(move)
 		data = s.recv(2048)			# Return data from server in binary stream
-		# print('Received from server:', data)
-		server_resp = str(data, 'utf-8')
-		# print ("RECIVED", server_resp) # in string form
-		# updateData(move, server_resp)
-		updateBoard(server_resp)
 		s.close()
-
+		server_resp = str(data, 'utf-8') # data from server in string form
+		updateBoard(server_resp)
+		
 	except socket.error as e:
 	    print ("Socket error({0}): {1}".format(e.errno, e.strerror))
 	except:
 	    print ("Unexpected error:", sys.exc_info()[0])
 	    raise
-	return
+	return True
 
-def printer():
+def printer():	
+	'''
+	Print all board dictionary elements to console
+	@return:
+	'''
+
 	for el in board:
-		#print (el)
-		pass;
+		print (el)
+	
+	return
+	
 
 @app.route("/", methods = ['GET', 'POST'])
 def function():
+	'''
+	Flask function trigerred when got POST or GET request from application
+	@return: json containing info to application about board and game status
+	@return: render index.html when got GET request
+	@return: False when passed move is empty string
+	'''
+
 	global start_game
 	if start_game == True:
 		print ('Start game')
-		move = 'e6' # i send wrong move to synchronize database
+		move = 'XD'			 # send wrong move to synchronize board
 		sendData(move)
 
-	if request.method == 'POST':
+	if request.method == 'POST':	# we got POST request when move has been performed
 		move = request.form.get('move')
 		print ("move:" , move)
 		print ('type move before function', type(move))
 		if move != '':
 			if sendData(move) == False:
 				print ('Could not send string')
-		# printer()
-		render = render_template("board.html", board = board, len = len(board))
-		m = hashlib.sha256();
-		m.update(render.encode());
+		else:
+			return False
 
-		ren_j = { 'content' : render, 'hash' : m.hexdigest(), 'message' : message, 'turn' : turn};
-		return json.dumps(ren_j);
+		render = render_template("board.html", board = board, len = len(board)) # after we got board updated, render new board template
+		m = hashlib.sha256()	# hash value of board
+		m.update(render.encode())
+		ren_j = { 'content' : render, 'hash' : m.hexdigest(), 'message' : message, 'turn' : turn}
+		return json.dumps(ren_j)	# return json to application
 	else:
 		return render_template("index.html")
 
-
 if __name__ == "__main__":
-	app.run(use_reloader=True)
+	app.run()
