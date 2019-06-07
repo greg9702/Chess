@@ -1,6 +1,12 @@
 let move = ''; // keep move string eg. e3e4
 let last_hash; // keep hash of previous board
 let turn;      // keep turn
+let color;     // keep color (one for each client)
+
+// delay
+const sleep = (milliseconds) => {
+  return new Promise(resolve => setTimeout(resolve, milliseconds))
+}
 
 setInterval(function() { sendFake('XD') }, 1000);
 
@@ -61,8 +67,7 @@ function pickSquare(elmnt) {
     move = move + elmnt.getAttribute('id');
   }
   if (move.length == 0 &&
-      elmnt.getAttribute('figure_col') ==
-          turn) { // check if piece is picked correct for turn
+       elmnt.getAttribute('figure_col') == color) { // check if piece is picked correct for color that user is playing
     move = move + elmnt.getAttribute('id');
     highlightSquare(move);
   }
@@ -82,7 +87,17 @@ function sendMove(move_) {
   let figure_position = move_.substring(0, 2);
   let element = document.getElementById(figure_position);
   let figure_row = figure_position.substring(1, 2);
-
+  // premove
+  if (element.getAttribute('figure_col') !=
+      turn) {
+    console.log(move_)
+    // try to do premove
+    sleep(500).then(() => {
+      sendMove(move_);
+    })
+    return
+  }
+  // normal move (not premove)
   if (element.getAttribute('figure') == 'Pawn' &&
       element.getAttribute('figure_col') == 'white' && figure_row == '7') {
     // if Pawn has to be promoted
@@ -127,6 +142,7 @@ function parseNewBoard(json_str) {
     board.innerHTML = data.content;
     last_hash = data.hash;
     turn = data.turn;
+    color = data.color;
     mess = document.getElementById('message');
     mess.innerHTML = data.message;
   }

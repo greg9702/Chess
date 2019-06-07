@@ -120,21 +120,21 @@ int main(int argc, char **argv) {
     std::string recived_move = "";
     if ((ret = read(connfd, buff, sizeof(buff) - 1)) > 0) {
       buff[ret] = 0x00;
-      printf("block read: \n%s\n", buff);
-      std::cout << "BUFFER" << std::endl;
+      //printf("block read: \n%s\n", buff);
+      //std::cout << "BUFFER" << std::endl;
       for (int i = 0; i < ret; i++) {
         recived_move += buff[i];
       }
     }
 
     // buff is MAXLINE size array and keep trash elements when data is shorter
-    std::cout << "recived move string: " << recived_move << std::endl;
+    //std::cout << "recived move string: " << recived_move << std::endl;
 
     std::string info_to_front = "";
     game_state gs;
 
     // fake move
-    std::cout << "rcvd move size: " << recived_move.size() << std::endl;
+    //std::cout << "rcvd move size: " << recived_move.size() << std::endl;
     if (recived_move.size() == 2) {
       info_to_front = "3;";
     }
@@ -153,7 +153,7 @@ int main(int argc, char **argv) {
       } else {
         info_to_front += "0;";
       }
-      showBoard(&chess_board);
+      //showBoard(&chess_board);
     }
 
     // GAMESTATE
@@ -178,7 +178,7 @@ int main(int argc, char **argv) {
       info_to_front += "5;";
     }
 
-    showBoard(&chess_board);
+    //showBoard(&chess_board);
     // COLOR TO MOVE
     if (gs == CHECK_MATE || gs == STALE_MATE)
       info_to_front += "2;";
