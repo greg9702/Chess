@@ -1,7 +1,8 @@
 let move = ''; // keep move string eg. e3e4
 let last_hash; // keep hash of previous board
 let turn;      // keep turn
-let color;     // keep color (one for each client)
+let player_color;     // keep color (one for each client)
+let premove_flag = false;
 
 // delay
 const sleep = (milliseconds) => {
@@ -67,12 +68,14 @@ function pickSquare(elmnt) {
     move = move + elmnt.getAttribute('id');
   }
   if (move.length == 0 &&
-       elmnt.getAttribute('figure_col') == color) { // check if piece is picked correct for color that user is playing
+       elmnt.getAttribute('figure_col') == player_color) { // check if piece is picked correct for color that user is playing
     move = move + elmnt.getAttribute('id');
     highlightSquare(move);
   }
   if (move.length == 4) {
-    sendMove(move);
+    if (!premove_flag) {
+      sendMove(move);
+    }
   }
 }
 
@@ -82,14 +85,14 @@ function sendMove(move_) {
    * @param move_ string lenght 4, containing complete move
    */
 
-  move = '';
   undoHighlightSquare(move_.substring(0, 2));
   let figure_position = move_.substring(0, 2);
   let element = document.getElementById(figure_position);
   let figure_row = figure_position.substring(1, 2);
   // premove
-  if (element.getAttribute('figure_col') !=
+  if (element.getAttribute('figure_col') == player_color && element.getAttribute('figure_col') !=
       turn) {
+    premove_flag = true;
     highlightSquare(move_.substring(0,2));
     highlightSquare(move_.substring(2,4));
     console.log(move_)
@@ -100,6 +103,8 @@ function sendMove(move_) {
     return
   }
   // normal move (not premove)
+  move = '';
+  premove_flag = false;
   if (element.getAttribute('figure') == 'Pawn' &&
       element.getAttribute('figure_col') == 'white' && figure_row == '7') {
     // if Pawn has to be promoted
@@ -144,7 +149,7 @@ function parseNewBoard(json_str) {
     board.innerHTML = data.content;
     last_hash = data.hash;
     turn = data.turn;
-    color = data.color;
+    player_color = data.player_color;
     mess = document.getElementById('message');
     mess.innerHTML = data.message;
   }

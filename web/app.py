@@ -157,11 +157,11 @@ def function():
 	@return: render index.html when got GET request
 	@return: False when passed move is empty string
 	'''
-	global color
+	global player_color
 	if request.host == '127.0.0.1:5000':
-		color = 'white'
+		player_color = 'white'
 	else:
-		color = 'black'
+		player_color = 'black'
 	global start_game
 	if start_game == True:
 		print ('Start game')
@@ -181,7 +181,7 @@ def function():
 		render = render_template("board.html", board = board, len = len(board)) # after we got board updated, render new board template
 		m = hashlib.sha256()	# hash value of board
 		m.update(render.encode())
-		ren_j = { 'content' : render, 'hash' : m.hexdigest(), 'message' : message, 'turn' : turn, 'color': color}
+		ren_j = { 'content' : render, 'hash' : m.hexdigest(), 'message' : message, 'turn' : turn, 'player_color': player_color}
 		return json.dumps(ren_j)	# return json to application
 	else:
 		return render_template("index.html")
