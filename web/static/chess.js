@@ -90,6 +90,8 @@ function sendMove(move_) {
   // premove
   if (element.getAttribute('figure_col') !=
       turn) {
+    highlightSquare(move_.substring(0,2));
+    highlightSquare(move_.substring(2,4));
     console.log(move_)
     // try to do premove
     sleep(500).then(() => {
