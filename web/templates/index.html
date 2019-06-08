@@ -13,9 +13,10 @@
 		</style>
 	</head>
 	<body>
-	<div id="board"></div>
-	</br>
-	<div id="message"></div>
-	<script type="text/javascript" src="{{ url_for('static', filename='chess.js') }}"></script>
+		<div id="player_col">You are {{player_color}}</div>
+		<div id="board"></div>
+		</br>
+		<div id="message"></div>
+		<script type="text/javascript" src="{{ url_for('static', filename='chess.js') }}"></script>
 	</body>
 </html>

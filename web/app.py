@@ -184,7 +184,7 @@ def function():
 		ren_j = { 'content' : render, 'hash' : m.hexdigest(), 'message' : message, 'turn' : turn, 'player_color': player_color}
 		return json.dumps(ren_j)	# return json to application
 	else:
-		return render_template("index.html")
+		return render_template("index.html", player_color = player_color)
 
 if __name__ == "__main__":
 	app.run()

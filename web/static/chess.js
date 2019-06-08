@@ -51,9 +51,9 @@ function undoHighlightSquare(position) {
 
   let highlighted_figure = document.getElementById(position);
   if (highlighted_figure.getAttribute('class') == 'white') {
-    square.style.backgroundColor = '#eee';
+    square.style.backgroundColor = '#eaeeae';
   } else if (highlighted_figure.getAttribute('class') == 'black') {
-    square.style.backgroundColor = '#a40f08';
+    square.style.backgroundColor = '#996335';
   }
 }
 
