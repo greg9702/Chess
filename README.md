@@ -3,7 +3,7 @@
 Chess multiplayer game built using C++. <br>
 Provided full logic and functionallity of chess. <br>
 Two Flask applications play with each other through the server. <br>
-Cpp application is used as server. <br>
+C++ application is used as server. <br>
 
 ### Requirements:
 - CMake
@@ -30,5 +30,6 @@ Just click the figure and select where to move it!
 - [Castlings](https://en.wikipedia.org/wiki/Castling)	```done```
 - [En passant](https://en.wikipedia.org/wiki/En_passant) ```done```
 - [Pawn promotions](https://en.wikipedia.org/wiki/Promotion_(chess)) ```done```
-- multiplayer (client <-> client or client <-> server)  ``` in progress```
+- multiplayer (client <-> server <-> client)  ```done```
+- [Premoves](https://en.wikipedia.org/wiki/Premove) ```done```
 - [Crazyhouse mode](https://en.wikipedia.org/wiki/Crazyhouse)
