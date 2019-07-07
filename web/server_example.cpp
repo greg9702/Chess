@@ -51,7 +51,7 @@ main(int argc, char **argv)
 
     bzero(&servaddr, sizeof(servaddr));
     servaddr.sin6_family = AF_INET6;
-    servaddr.sin6_addr   = in6addr_any;
+    servaddr.sin6_addr   = "fe80::b210:41ff:fe81:1bb";
     servaddr.sin6_port   = htons(8001);	/* daytime server */
 
     if ( bind( listenfd, (struct sockaddr *) &servaddr, sizeof(servaddr)) < 0){

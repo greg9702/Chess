@@ -17,19 +17,20 @@ C++ application is used as server. <br>
 Build by running _build.sh_ script. <br>
 Then run _run.sh_.
 
-### Board view: <br>
-You can view board using web browser.
+### Demo: <br>
 
-![Alt Text](https://i.imgur.com/m2S5ZxZ.png)
-
+![Alt Text](/other/demo/Chess_demo.gif)
 
 ### How to play?
 Just click the figure and select where to move it!
 
-### TODO
-- [Castlings](https://en.wikipedia.org/wiki/Castling)	```done```
-- [En passant](https://en.wikipedia.org/wiki/En_passant) ```done```
-- [Pawn promotions](https://en.wikipedia.org/wiki/Promotion_(chess)) ```done```
-- multiplayer (client <-> server <-> client)  ```done```
-- [Premoves](https://en.wikipedia.org/wiki/Premove) ```done```
+### Features:
+- [Castlings](https://en.wikipedia.org/wiki/Castling)
+- [En passant](https://en.wikipedia.org/wiki/En_passant)
+- [Pawn promotions](https://en.wikipedia.org/wiki/Promotion_(chess))
+- [Premoves](https://en.wikipedia.org/wiki/Premove)
+
+
+### TODO:
 - [Crazyhouse mode](https://en.wikipedia.org/wiki/Crazyhouse)
+- Multiple concurrent games
