@@ -34,9 +34,9 @@ Just click the figure and select where to move it!
 ### TODO:
 #### Priority tasks
 - Seperate server and clients
-- Server should pair two players, than fork 
+- Server should pair two players, than fork
 - Make server to run as a daemon
 
-#### Long term
+#### Long term tasks
 - [Crazyhouse mode](https://en.wikipedia.org/wiki/Crazyhouse)
 - Multiple concurrent games
