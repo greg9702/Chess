@@ -13,6 +13,9 @@ cd build
 cmake ..
 make
 
+# TODO do CMake'a
+g++ -o MainServer ../Network/MainServer.cpp
+
 #build flask app
 cd ..
 cd web
