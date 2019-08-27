@@ -13,7 +13,7 @@
 
 void printVectorContent(const std::vector<std::pair<char *, unsigned short>> &users);
 
-int main(){
+int main() {
 
     int sockfd, ret;
     struct sockaddr_in serverAddr;
@@ -27,7 +27,7 @@ int main(){
     pid_t childpid;
 
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    if(sockfd < 0){
+    if (sockfd < 0) {
         printf("[-]Error in connection.\n");
         return 1;
     }
@@ -46,48 +46,48 @@ int main(){
     }
 #endif
 
-    ret = bind(sockfd, (struct sockaddr*)&serverAddr, sizeof(serverAddr));
-    if(ret < 0){
+    ret = bind(sockfd, (struct sockaddr *) &serverAddr, sizeof(serverAddr));
+    if (ret < 0) {
         printf("[-]Error in binding.\n");
         return 1;
     }
     printf("[+]Bind to port %d\n", 4444);
 
-    if(listen(sockfd, 10) == 0){
+    if (listen(sockfd, 10) == 0) {
         printf("[+]Listening....\n");
-    }else{
+    } else {
         printf("[-]Error in binding.\n");
     }
-    std::vector<std::pair<char*, short unsigned int>> users;
+    std::vector<std::pair<char *, short unsigned int>> users;
 
-    int board_port = 8001;
+    int board_port = 5000;
 
 
-    while(1){
-        newSocket = accept(sockfd, (struct sockaddr*)&newAddr, &addr_size);
+    while (1) {
+        newSocket = accept(sockfd, (struct sockaddr *) &newAddr, &addr_size);
         users.push_back(std::make_pair(inet_ntoa(newAddr.sin_addr), ntohs(newAddr.sin_port)));
 
-        if(newSocket < 0){
+        if (newSocket < 0) {
             return 1;
         }
         printf("Connection accepted from %s:%d\n", inet_ntoa(newAddr.sin_addr), ntohs(newAddr.sin_port));
         printVectorContent(users);
         if (users.size() % 2 == 0) {
-//      STARTUJEMY NOWY SERWER Z NOWYM PORTEM EFEMERYCZNYM
-            int white_port = users[0].second;
-            int black_port = users[1].second;
-            std::cout << "white port: " << white_port
-                      << " black port: " << black_port
-                      << " server port: " << board_port << std::endl;
-            char command[50];
-            sprintf( command, "../run.sh %d", board_port );
-            printf("%s", command);
-//            system(command);
-//            board_port++;
 
-//      FORKI ITD
-//            if((childpid = fork()) == 0){
-//                close(sockfd);
+
+            if ((childpid = fork()) == 0) {
+                close(sockfd);
+                //      STARTUJEMY NOWY SERWER Z NOWYM PORTEM EFEMERYCZNYM
+                int white_port = users[0].second;
+                int black_port = users[1].second;
+                std::cout << "white port: " << white_port
+                          << " black port: " << black_port
+                          << " server port: " << board_port << std::endl;
+                std::string command = "../run.sh " + std::to_string(board_port) + " " +
+                                      std::to_string(white_port) + " " + std::to_string(black_port);
+                std::cout << "Command " << command;
+                system(command.c_str());
+//            board_port++;
 //                printf("forked\n");
 //
 //                while(1){
@@ -101,7 +101,7 @@ int main(){
 //                        bzero(buffer, sizeof(buffer));
 //                    }
 //                }
-//            }
+            }
 
         }
 

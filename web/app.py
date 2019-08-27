@@ -120,6 +120,7 @@ def sendData(move):
     HOST = '0::1'  # The remote host
     # PORT = 8001  # The port as used by the server
     PORT = int(app.config['server_port'])
+    print("server port: " + PORT)
     try:
         s = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
         s.connect((HOST, PORT))
@@ -207,5 +208,5 @@ if __name__ == '__main__':
     server_port = args.s
     app.config['server_port'] = server_port
     app.config['player_color'] = player_color
-
+    print('xd')
     app.run(port=port)
