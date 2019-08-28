@@ -6,22 +6,23 @@ function trap_ctrlc ()
     echo "Exiting..."
 	killall chess
 	killall flask
-	killall python3
+	killall python
     exit 2
 }
 
-trap "trap_ctrlc" 2
+#trap "trap_ctrlc" 2
 
+cd .. # bo odpalamy z builda
 source web/venv/bin/activate
 echo "Running application"
-echo "Open your browser http://127.0.0.1:5000 to play chess"
-echo "Open your browser http://127.0.0.1:5001 to play chess"
+echo "Open your browser http://127.0.0.1:$2 to play chess"
+echo "Open your browser http://127.0.0.1:$3 to play chess"
 {
-	killall chess
-	./build/chess &
+#	killall chess
+	./build/chess $1 &
 	cd web
-	flask run -p 5000 &
-	flask run -p 5001
+	python app.py -p $2 -s $1 -c white &
+	python app.py -p $3 -s $1 -c black
 } &> /dev/null
 #}
 echo "Error running application"

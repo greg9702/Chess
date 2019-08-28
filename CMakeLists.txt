@@ -6,4 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 include_directories(include)
 file(GLOB SOURCES "src/*.cpp" "include/*.h")
 
-add_executable(chess ${SOURCES} )
+add_executable(chess ${SOURCES})
+
+add_executable(server Network/MainServer.cpp)
+add_executable(client Network/OuterClient.cpp)
