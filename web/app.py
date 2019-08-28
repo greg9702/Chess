@@ -120,7 +120,7 @@ def sendData(move):
     HOST = '0::1'  # The remote host
     # PORT = 8001  # The port as used by the server
     PORT = int(app.config['server_port'])
-    print("server port: " + PORT)
+    print("server port: " + str(PORT))
     try:
         s = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
         s.connect((HOST, PORT))

@@ -70,6 +70,8 @@ int main() {
         if (newSocket < 0) {
             return 1;
         }
+
+        close(newSocket);
         printf("Connection accepted from %s:%d\n", inet_ntoa(newAddr.sin_addr), ntohs(newAddr.sin_port));
         printVectorContent(users);
         if (users.size() % 2 == 0) {
@@ -77,6 +79,7 @@ int main() {
 
             if ((childpid = fork()) == 0) {
                 close(sockfd);
+
                 //      STARTUJEMY NOWY SERWER Z NOWYM PORTEM EFEMERYCZNYM
                 int white_port = users[0].second;
                 int black_port = users[1].second;
@@ -102,13 +105,14 @@ int main() {
 //                    }
 //                }
             }
-
+            users.clear();
+            board_port++;
         }
 
 
     }
 
-    close(newSocket);
+//    close(newSocket);
 
 
     return 0;

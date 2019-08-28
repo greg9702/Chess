@@ -10,17 +10,18 @@ function trap_ctrlc ()
     exit 2
 }
 
-trap "trap_ctrlc" 2
+#trap "trap_ctrlc" 2
 
+cd .. # bo odpalamy z builda
 source web/venv/bin/activate
 echo "Running application"
 echo "Open your browser http://127.0.0.1:$2 to play chess"
 echo "Open your browser http://127.0.0.1:$3 to play chess"
 {
-	killall chess
+#	killall chess
 	./build/chess $1 &
 	cd web
-	python app.py -p $2 -s $1 -c white
+	python app.py -p $2 -s $1 -c white &
 	python app.py -p $3 -s $1 -c black
 } &> /dev/null
 #}
