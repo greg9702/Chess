@@ -8,12 +8,28 @@
 #include <arpa/inet.h>
 #include <vector>
 #include <iostream>
+#include <cstdlib>
 
 #define PORT 4444
 
 void printVectorContent(const std::vector<std::pair<char *, unsigned short>> &users);
 
+void killBoardServers();
+
+std::string prepareMessageForClient(const std::pair<char *, unsigned short> &user);
+
+std::basic_string<char> getAddress(const std::pair<char *, unsigned short> &user);
+
+std::string getPort(const std::pair<char *, unsigned short> &user);
+
+bool arePlayersToPair(const std::vector<std::pair<char *, unsigned short>> &users);
+
+std::string getCommandRunningSingleGame(int board_port, const std::string &white_port, const std::string &black_port);
+
+void runCommand(const std::string &command);
+
 int main() {
+    killBoardServers();
 
     int sockfd, ret;
     struct sockaddr_in serverAddr;
@@ -58,65 +74,78 @@ int main() {
     } else {
         printf("[-]Error in binding.\n");
     }
+
+//    int prevSocket;
     std::vector<std::pair<char *, short unsigned int>> users;
-
     int board_port = 5000;
-
 
     while (1) {
         newSocket = accept(sockfd, (struct sockaddr *) &newAddr, &addr_size);
-        users.push_back(std::make_pair(inet_ntoa(newAddr.sin_addr), ntohs(newAddr.sin_port)));
+        std::pair<char *, unsigned short> current_user = std::make_pair(inet_ntoa(newAddr.sin_addr),
+                                                                        ntohs(newAddr.sin_port));
+        users.push_back(current_user);
 
         if (newSocket < 0) {
             return 1;
         }
+        std::string messageToClient = prepareMessageForClient(current_user);
+        if(!arePlayersToPair(users)) {
+            messageToClient.append("Wait for second player...\n");
+        }
 
+        send(newSocket, messageToClient.c_str(), strlen(messageToClient.c_str()), 0);
         close(newSocket);
+
+//        TODO żeby zamykać później gniazdo, dopiero jak znajdzie partnera do gry
+//        prevSocket = newSocket;
+
         printf("Connection accepted from %s:%d\n", inet_ntoa(newAddr.sin_addr), ntohs(newAddr.sin_port));
-        printVectorContent(users);
-        if (users.size() % 2 == 0) {
+//        printVectorContent(users);
+        if (arePlayersToPair(users)) {
 
-
+//            close(prevSocket);
             if ((childpid = fork()) == 0) {
                 close(sockfd);
-
-                //      STARTUJEMY NOWY SERWER Z NOWYM PORTEM EFEMERYCZNYM
-                int white_port = users[0].second;
-                int black_port = users[1].second;
+                std::string white_port = getPort(users.at(0));
+                std::string black_port = getPort(users.at(1));
                 std::cout << "white port: " << white_port
                           << " black port: " << black_port
                           << " server port: " << board_port << std::endl;
-                std::string command = "../run.sh " + std::to_string(board_port) + " " +
-                                      std::to_string(white_port) + " " + std::to_string(black_port);
-                std::cout << "Command " << command;
-                system(command.c_str());
-//            board_port++;
-//                printf("forked\n");
-//
-//                while(1){
-//                    recv(newSocket, buffer, 1024, 0);
-//                    if(strcmp(buffer, ":exit") == 0){
-//                        printf("Disconnected from %s:%d\n", inet_ntoa(newAddr.sin_addr), ntohs(newAddr.sin_port));
-//                        break;
-//                    }else{
-//                        printf("Client: %s\n", buffer);
-//                        send(newSocket, buffer, strlen(buffer), 0);
-//                        bzero(buffer, sizeof(buffer));
-//                    }
-//                }
+                std::string command = getCommandRunningSingleGame(board_port, white_port, black_port);
+                runCommand(command);
             }
             users.clear();
             board_port++;
         }
-
-
     }
-
-//    close(newSocket);
-
 
     return 0;
 }
+
+void runCommand(const std::string &command) { system(command.c_str()); }
+
+std::string getCommandRunningSingleGame(int board_port, const std::string &white_port, const std::string &black_port) {
+    std::string command = "../run.sh " + std::to_string(board_port) + " " +
+                          white_port + " " + black_port;
+    return command;
+}
+
+bool arePlayersToPair(const std::vector<std::pair<char *, unsigned short>> &users) { return users.size() % 2 == 0; }
+
+std::string prepareMessageForClient(const std::pair<char *, unsigned short> &user) {
+    std::string messageToClient = "Open your browser http://" +
+                                  getAddress(user) +
+                                  ":" +
+                                  getPort(user) +
+                                  " to play chess\n";
+    return messageToClient;
+}
+
+std::string getPort(const std::pair<char *, unsigned short> &user) { return std::to_string(user.second); }
+
+std::basic_string<char> getAddress(const std::pair<char *, unsigned short> &user) { return std::string(user.first); }
+
+void killBoardServers() { system("killall chess"); }
 
 void printVectorContent(const std::vector<std::pair<char *, unsigned short>> &users) {
     for (auto i : users)
