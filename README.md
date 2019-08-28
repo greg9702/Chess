@@ -31,11 +31,10 @@ Just click the figure and select where to move it!
 - [Premoves](https://en.wikipedia.org/wiki/Premove)
 
 
-### TODO:
-#### Priority tasks
-- Seperate server and clients
-- Server should pair two players, than fork
+### Tasks
+#### #1
 - Make server to run as a daemon
+- Add logger 
 
 #### Long term tasks
 - [Crazyhouse mode](https://en.wikipedia.org/wiki/Crazyhouse)

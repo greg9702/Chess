@@ -175,7 +175,7 @@ def function():
         print ('Start game')
         move = 'XD'  # send wrong move to synchronize board
         sendData(move)
-
+zbudowae
     if request.method == 'POST':  # we got POST request when move has been performed
         move = request.form.get('move')
         # print ("move:" , move)
@@ -209,4 +209,4 @@ if __name__ == '__main__':
     app.config['server_port'] = server_port
     app.config['player_color'] = player_color
     print('xd')
-    app.run(port=port)
+    app.run(port = port)
