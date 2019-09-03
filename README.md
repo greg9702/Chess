@@ -33,7 +33,7 @@ Just click the figure and select where to move it!
 
 ### Tasks
 #### #1
-- Make server to run as a daemon
+- Make server to run as a daemon `done`
 - Add logger 
 
 #### Long term tasks
