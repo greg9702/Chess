@@ -175,6 +175,7 @@ def function():
         print ('Start game')
         move = 'XD'  # send wrong move to synchronize board
         sendData(move)
+        
     if request.method == 'POST':  # we got POST request when move has been performed
         move = request.form.get('move')
         # print ("move:" , move)
