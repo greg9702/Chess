@@ -11,8 +11,9 @@ function trap_ctrlc ()
 }
 
 #trap "trap_ctrlc" 2
+DIRECTORY=`dirname $0`
+cd "$DIRECTORY"
 
-cd .. # bo odpalamy z builda
 source web/venv/bin/activate
 echo "Running application"
 echo "Open your browser http://127.0.0.1:$2 to play chess"

@@ -9,6 +9,11 @@
 #include <vector>
 #include <iostream>
 #include <cstdlib>
+#include <sys/signal.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <syslog.h>
+#include <experimental/filesystem>
 
 #define PORT 4444
 
@@ -24,11 +29,61 @@ std::string getPort(const std::pair<char *, unsigned short> &user);
 
 bool arePlayersToPair(const std::vector<std::pair<char *, unsigned short>> &users);
 
-std::string getCommandRunningSingleGame(int board_port, const std::string &white_port, const std::string &black_port);
+std::string getCommandRunningSingleGame(std::string path_to_build, int board_port, const std::string &white_port, const std::string &black_port);
 
 void runCommand(const std::string &command);
 
-int main() {
+#define	MAXFD	64
+
+int
+daemon_init(const char *pname, int facility, uid_t uid, int socket, std::string & path_to_build)
+{
+    int		i, p;
+    pid_t	pid;
+
+    if ( (pid = fork()) < 0)
+        return (-1);
+    else if (pid)
+        exit(0);			/* parent terminates */
+
+    /* child 1 continues... */
+
+    if (setsid() < 0)			/* become session leader */
+        return (-1);
+
+    signal(SIGHUP, SIG_IGN);
+    if ( (pid = fork()) < 0)
+        return (-1);
+    else if (pid)
+        exit(0);			/* child 1 terminates */
+
+    /* child 2 continues... */
+    path_to_build = std::experimental::filesystem::current_path();
+    std::cout << std::experimental::filesystem::current_path() << std::endl;
+    chdir("/tmp");				/* change working directory  or chroot()*/
+//	chroot("/tmp");
+
+    /* close off file descriptors */
+    for (i = 0; i < MAXFD; i++){
+        if(socket != i )
+            close(i);
+    }
+
+    /* redirect stdin, stdout, and stderr to /dev/null */
+    p= open("/dev/null", O_RDONLY);
+    open("/dev/null", O_RDWR);
+    open("/dev/null", O_RDWR);
+
+    openlog(pname, LOG_PID, facility);
+
+    syslog(LOG_ERR," STDIN =   %i\n", p);
+    setuid(uid); /* change user */
+
+    return (0);				/* success */
+}
+//----------------------
+
+int main(int argc, char **argv) {
     killBoardServers();
 
     int sockfd, ret;
@@ -74,10 +129,15 @@ int main() {
     } else {
         printf("[-]Error in binding.\n");
     }
+    std::string path_to_build;
+    daemon_init(argv[0], LOG_USER, 1000, sockfd, path_to_build);
+    syslog (LOG_NOTICE, "Program started by User %d", getuid ());
+    syslog (LOG_INFO,"Waiting for clients ... ");
 
 //    int prevSocket;
     std::vector<std::pair<char *, short unsigned int>> users;
     int board_port = 5000;
+
 
     while (1) {
         newSocket = accept(sockfd, (struct sockaddr *) &newAddr, &addr_size);
@@ -111,7 +171,8 @@ int main() {
                 std::cout << "white port: " << white_port
                           << " black port: " << black_port
                           << " server port: " << board_port << std::endl;
-                std::string command = getCommandRunningSingleGame(board_port, white_port, black_port);
+                std::string command = getCommandRunningSingleGame(path_to_build, board_port, white_port, black_port);
+                syslog (LOG_INFO, command.c_str());
                 runCommand(command);
             }
             users.clear();
@@ -124,8 +185,8 @@ int main() {
 
 void runCommand(const std::string &command) { system(command.c_str()); }
 
-std::string getCommandRunningSingleGame(int board_port, const std::string &white_port, const std::string &black_port) {
-    std::string command = "../run.sh " + std::to_string(board_port) + " " +
+std::string getCommandRunningSingleGame(std::string path_to_build, int board_port, const std::string &white_port, const std::string &black_port) {
+    std::string command = path_to_build + "/../run.sh " + std::to_string(board_port) + " " +
                           white_port + " " + black_port;
     return command;
 }
