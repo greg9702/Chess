@@ -2,21 +2,22 @@
 	<head>
 		<title></title>
 		<meta charset="UTF-8">
-		<!-- <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='static/styel.css') }}"> -->
+		<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
 		<!-- TODO make this working in seperate file -->
-		<style>
-			.chess-board { border-spacing: 0; border-collapse: collapse;}
-			.chess-board th { padding: .5em; }
-			.chess-board td { border: 1px solid; width: 40px; height: 40px; font-size: 30px; text-align: center;}
-			.chess-board .white { background: #eaeeae; cursor: pointer;}
-			.chess-board .black { background: #996335; cursor: pointer;}
-		</style>
+<!--		<style>-->
+<!--			.chess-board { border-spacing: 0; border-collapse: collapse;}-->
+<!--			.chess-board th { padding: .5em; }-->
+<!--			.chess-board td { border: 1px solid; width: 40px; height: 40px; font-size: 30px; text-align: center;}-->
+<!--			.chess-board .white { background: #eaeeae; cursor: pointer;}-->
+<!--			.chess-board .black { background: #996335; cursor: pointer;}-->
+<!--		</style>-->
 	</head>
 	<body>
 		<div id="player_col">You are {{player_color}}</div>
 		<div id="board"></div>
 		</br>
 		<div id="message"></div>
+		<script type="">var player_color = "{{player_color}}"</script>
 		<script type="text/javascript" src="{{ url_for('static', filename='chess.js') }}"></script>
 	</body>
 </html>

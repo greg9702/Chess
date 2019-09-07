@@ -19,7 +19,7 @@
 
 void printVectorContent(const std::vector<std::pair<char *, unsigned short>> &users);
 
-void killBoardServers();
+void killBoardServersAndClients();
 
 std::string prepareMessageForClient(const std::pair<char *, unsigned short> &user);
 
@@ -84,7 +84,7 @@ daemon_init(const char *pname, int facility, uid_t uid, int socket, std::string 
 //----------------------
 
 int main(int argc, char **argv) {
-    killBoardServers();
+    killBoardServersAndClients();
 
     int sockfd, ret;
     struct sockaddr_in serverAddr;
@@ -206,7 +206,7 @@ std::string getPort(const std::pair<char *, unsigned short> &user) { return std:
 
 std::basic_string<char> getAddress(const std::pair<char *, unsigned short> &user) { return std::string(user.first); }
 
-void killBoardServers() { system("killall chess"); }
+void killBoardServersAndClients() { system("killall chess"); system("killall python");}
 
 void printVectorContent(const std::vector<std::pair<char *, unsigned short>> &users) {
     for (auto i : users)
