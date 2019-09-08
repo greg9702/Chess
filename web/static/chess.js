@@ -28,7 +28,7 @@ function sendFake(move_) {
     http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     http.onreadystatechange =
         function () { // Call a function when the state changes.
-            if (http.readyState == 4 && http.status == 200) {
+            if (http.readyState === 4 && http.status === 200) {
                 parseNewBoard(http.responseText);
             }
         }
@@ -52,9 +52,9 @@ function undoHighlightSquare(position) {
      */
 
     let highlighted_figure = document.getElementById(position);
-    if (highlighted_figure.getAttribute('class') == 'white') {
+    if (highlighted_figure.classList.contains('white')) {
         square.style.backgroundColor = '#eaeeae';
-    } else if (highlighted_figure.getAttribute('class') == 'black') {
+    } else if (highlighted_figure.classList.contains('black')) {
         square.style.backgroundColor = '#996335';
     }
 }
@@ -65,16 +65,15 @@ function pickSquare(elmnt) {
      * @param elemnt div containing square info
      */
 
-    if (move.length ==
-        2) { // if move lenght is 2, player has to choose one more square
+    if (move.length === 2) { // if move lenght is 2, player has to choose one more square
         move = move + elmnt.getAttribute('id');
     }
-    if (move.length == 0 &&
-        elmnt.getAttribute('figure_col') == player_color) { // check if piece is picked correct for color that user is playing
+    if (move.length === 0 &&
+        elmnt.getAttribute('figure_col') === player_color) { // check if piece is picked correct for color that user is playing
         move = move + elmnt.getAttribute('id');
         highlightSquare(move);
     }
-    if (move.length == 4) {
+    if (move.length === 4) {
         if (!premove_flag) {
             sendMove(move);
         }
@@ -92,30 +91,30 @@ function sendMove(move_) {
     let element = document.getElementById(figure_position);
     let figure_row = figure_position.substring(1, 2);
     // premove
-    if (element.getAttribute('figure_col') == player_color && element.getAttribute('figure_col') !=
+    if (element.getAttribute('figure_col') === player_color && element.getAttribute('figure_col') !==
         turn) {
         premove_flag = true;
         highlightSquare(move_.substring(0, 2));
         highlightSquare(move_.substring(2, 4));
-        console.log(move_)
+        console.log(move_);
         // try to do premove
         sleep(500).then(() => {
             sendMove(move_);
-        })
+        });
         return
     }
     // normal move (not premove)
     move = '';
     premove_flag = false;
-    if (element.getAttribute('figure') == 'Pawn' &&
-        element.getAttribute('figure_col') == 'white' && figure_row == '7') {
+    if (element.getAttribute('figure') === 'Pawn' &&
+        element.getAttribute('figure_col') === 'white' && figure_row === '7') {
         // if Pawn has to be promoted
         // ask for details about new figure type
         let a = prompt("Promote to: ", "Q");
         move_ = move_ + a;
-    } else if (element.getAttribute('figure') == 'Pawn' &&
-        element.getAttribute('figure_col') == 'black' &&
-        figure_row == '2') {
+    } else if (element.getAttribute('figure') === 'Pawn' &&
+        element.getAttribute('figure_col') === 'black' &&
+        figure_row === '2') {
         // if Pawn has to be promoted
         // ask for details about new figure type
         let a = prompt("Promote to: ", "Q");
@@ -130,10 +129,10 @@ function sendMove(move_) {
     http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     http.onreadystatechange =
         function () { // Call a function when the state changes.
-            if (http.readyState == 4 && http.status == 200) {
+            if (http.readyState === 4 && http.status === 200) {
                 parseNewBoard(http.responseText);
             }
-        }
+        };
     http.send(params);
 }
 
@@ -144,7 +143,7 @@ function parseNewBoard(json_str) {
      */
 
     data = JSON.parse(json_str);
-    if (data.hash != last_hash) { // check if hash of recived board if different
+    if (data.hash !== last_hash) { // check if hash of recived board if different
         // from the previous one
         // if it is, replace the content of page, because board has changed
         board = document.getElementById('board')
@@ -162,17 +161,17 @@ function parseNewBoard(json_str) {
 }
 
 flipBoard = () => {
-    let chess_board_tbody = document.getElementsByClassName('chess-board')[0].children[0];
-    flipWholeBoard(chess_board_tbody);
-    flipFiguresAndLineNrsOnBoard(chess_board_tbody);
+    let chess_board_table = document.getElementsByClassName('chess-board')[0];
+    flipWholeBoard(chess_board_table);
+    flipFiguresAndLineNrsOnBoard(chess_board_table);
 };
 
 function flipWholeBoard(chess_board_tbody) {
     addNewClass(chess_board_tbody, 'black-rotation');
 }
 
-flipFiguresAndLineNrsOnBoard = (chess_board_tbody) => {
-    let chess_board_rows = chess_board_tbody.children;
+flipFiguresAndLineNrsOnBoard = (chess_board_table) => {
+    let chess_board_rows = chess_board_table.children[0].children;
     for (let i = 0; i < chess_board_rows.length; i++) {
         let chess_board_elems = chess_board_rows[i].children;
         for (let j = 0; j < chess_board_elems.length; j++) {
@@ -183,7 +182,6 @@ flipFiguresAndLineNrsOnBoard = (chess_board_tbody) => {
 };
 
 addNewClass = (elem, newClassName) => {
-    let classString = elem.className; // returns the string of all the classes for myDiv
-    const newClass = classString.concat(' ' + newClassName); // Adds the class "main__section" to the string (notice the leading space)
-    elem.className = newClass; // sets className to the new string
+    let classString = elem.className;
+    elem.className = classString.concat(' ' + newClassName);
 };
