@@ -187,7 +187,7 @@ void runCommand(const std::string &command) { system(command.c_str()); }
 
 std::string getCommandRunningSingleGame(const std::string &path_to_build, int board_port, const std::string &white_port,
                                         const std::string &black_port) {
-    std::string command = path_to_build + "/../run.sh " + std::to_string(board_port) + " " +
+    std::string command = path_to_build + "/../run_single_game.sh " + std::to_string(board_port) + " " +
                           white_port + " " + black_port;
     return command;
 }

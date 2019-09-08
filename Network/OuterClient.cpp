@@ -11,8 +11,9 @@
 #include        <stdio.h>
 #include        <stdlib.h>
 #include        <string.h>
-#include    <netinet/tcp.h>        /* for TCP_MAXSEG */
+#include        <netinet/tcp.h>        /* for TCP_MAXSEG */
 #include        <unistd.h>
+#include        <string>
 
 
 #define SA      struct sockaddr
@@ -27,10 +28,13 @@ main(int argc, char **argv) {
     int err, n;
     struct timeval start, stop;
 
-    if (argc != 2) {
-        fprintf(stderr, "ERROR: usage: %s <IPv4 address>\n", argv[0]);
+    if (argc > 2) {
+        fprintf(stderr, "ERROR: usage: %s <IPv4 address> (default 127.0.0.1)\n", argv[0]);
         return 1;
     }
+
+    std::string asked_addr;
+    argc == 1 ? asked_addr = "127.0.0.1" : asked_addr = argv[1];
 
     if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         fprintf(stderr, "socket error : %s\n", strerror(errno));
@@ -50,7 +54,7 @@ main(int argc, char **argv) {
     servaddr.sin_family = AF_INET;
     servaddr.sin_port = htons(4444);        /* daytime server */
     int er;
-    if ((er = inet_pton(AF_INET, argv[1], &servaddr.sin_addr)) == -1) {
+    if ((er = inet_pton(AF_INET, asked_addr.c_str(), &servaddr.sin_addr)) == -1) {
         fprintf(stderr, "inet_pton error : %s\n", strerror(errno));
         return 1;
     } else if (er = 0) {
