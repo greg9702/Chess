@@ -1,7 +1,7 @@
 # __Multiplayer Chess__
 
 Chess multiplayer game built using C++ and Python. <br>
-Provided full logic and functionallity of chess. <br>
+It provides full logic and functionality of chess. <br>
 
 ### __Features:__
 - [Castlings](https://en.wikipedia.org/wiki/Castling)
@@ -24,28 +24,28 @@ Provided full logic and functionallity of chess. <br>
 
 ### How to run and how it works?
 
-Build project by running command <br>
+Build project by running command: <br>
 ```
 ./build.sh
 ```
-Then run server  
+Then run server:
 ```
 cd build
 ./server
 ```
-Server run as system daemon on a well known address. <br>
-To start a client run in _build_ directory command
+Now server runs as system daemon on _127.0.0.1:4444_. <br>
+To start a client run following command in _build_ directory:
 ```
 ./client
 ```
-Client connect to server, than its registered by the server. <br>
-Server assign new port for the client and then respond to the client with <br>
-an address on which will host an application for client. <br>
+Client connects to server, than it's registered by the server. <br>
+Server assigns new port for the client and then sends back <br>
+an address and port on which application will be hosted. <br>
 
 ![Alt Text](/other/respondexample.png) <br>
 
-When server register two new clients, starts two _Flask_ applications, <br>
-and clients can start using them by opening web browser.
+When server registers two new clients, it starts two _Flask_ applications, <br>
+and clients can start using them after opening web browser.
 
 
 
