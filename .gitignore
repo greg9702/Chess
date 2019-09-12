@@ -1,0 +1,7 @@
+build
+cmake-build-debug
+.idea
+venv
+web/__pycache__/
+web/serv
+web/venv
