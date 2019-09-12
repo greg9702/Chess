@@ -1,42 +1,59 @@
-# __Chess__
+# __Multiplayer Chess__
 
-Chess multiplayer game built using C++. <br>
+Chess multiplayer game built using C++ and Python. <br>
 Provided full logic and functionallity of chess. <br>
-Two Flask applications play with each other through the server. <br>
-C++ application is used as server. <br>
 
-### Requirements:
+### __Features:__
+- [Castlings](https://en.wikipedia.org/wiki/Castling)
+- [En passant](https://en.wikipedia.org/wiki/En_passant)
+- [Pawn promotions](https://en.wikipedia.org/wiki/Promotion_(chess))
+- [Premoves](https://en.wikipedia.org/wiki/Premove)
+- Many pairs of players can play with each other at the same time.
+- Server using _syslog_ for logging.
+
+### Demo: <br>
+
+![Alt Text](/other/demo/Chess_demo.gif)
+
+### __Requirements:__
 - CMake
 - g++
 - Python3
 - pip
 - virtualenv
 
-### How to run?
+### How to run and how it works?
 
-Build by running _build.sh_ script. <br>
-Then run _run.sh_.
+Build project by running command <br>
+```
+./build.sh
+```
+Then run server  
+```
+cd build
+./server
+```
+Server run as system daemon on a well known address. <br>
+To start a client run in _build_ directory command
+```
+./client
+```
+Client connect to server, than its registered by the server. <br>
+Server assign new port for the client and then respond to the client with <br>
+an address on which will host an application for client. <br>
 
-### Demo: <br>
+![Alt Text](/other/respondexample.png) <br>
 
-![Alt Text](/other/demo/Chess_demo.gif)
-
-### How to play?
-Just click the figure and select where to move it!
-
-### Features:
-- [Castlings](https://en.wikipedia.org/wiki/Castling)
-- [En passant](https://en.wikipedia.org/wiki/En_passant)
-- [Pawn promotions](https://en.wikipedia.org/wiki/Promotion_(chess))
-- [Premoves](https://en.wikipedia.org/wiki/Premove)
+When server register two new clients, starts two _Flask_ applications, <br>
+and clients can start using them by opening web browser.
 
 
-### TODO:
-#### Priority tasks
-- Seperate server and clients
-- Server should pair two players, than fork 
-- Make server to run as a daemon
 
-#### Long term
+### __How to play?__
+Just click a figure and select where to move it!
+
+
+### __Tasks TODO__
+
+#### Long term tasks
 - [Crazyhouse mode](https://en.wikipedia.org/wiki/Crazyhouse)
-- Multiple concurrent games
